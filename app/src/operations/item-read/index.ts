@@ -1,5 +1,5 @@
-import { defineOperationApp } from '@directus/utils';
-import { toArray } from '@directus/utils';
+import { defineOperationApp } from '@brio/utils';
+import { toArray } from '@brio/utils';
 
 export default defineOperationApp({
 	id: 'item-read',

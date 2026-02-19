@@ -97,7 +97,7 @@ public_label: Public
 public_description: Controls what API data is available without authenticating.
 admin_description: Initial administrative role with unrestricted App/API access.
 not_allowed: Not Allowed
-directus_version: Directus Version
+directus_version: Brio Version
 node_version: Node Version
 node_uptime: Node Uptime
 os_type: OS Type

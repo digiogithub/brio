@@ -1,5 +1,5 @@
-import { REGEX_BETWEEN_PARENS } from '@directus/constants';
-import { FieldFunction } from '@directus/types';
+import { REGEX_BETWEEN_PARENS } from '@brio/constants';
+import { FieldFunction } from '@brio/types';
 
 /**
  * Extracts the function and field name of a field wrapped in a function

@@ -1,7 +1,7 @@
-import type { ForeignKey, SchemaInspector } from '@directus/schema';
-import { createInspector } from '@directus/schema';
-import type { Accountability, Query, Relation, RelationMeta, SchemaOverview } from '@directus/types';
-import { toArray } from '@directus/utils';
+import type { ForeignKey, SchemaInspector } from '@brio/schema';
+import { createInspector } from '@brio/schema';
+import type { Accountability, Query, Relation, RelationMeta, SchemaOverview } from '@brio/types';
+import { toArray } from '@brio/utils';
 import type Keyv from 'keyv';
 import type { Knex } from 'knex';
 import { clearSystemCache, getCache } from '../cache.js';
@@ -451,7 +451,7 @@ export class RelationsService {
 	}
 
 	/**
-	 * Combine raw schema foreign key information with Directus relations meta rows to form final
+	 * Combine raw schema foreign key information with Brio relations meta rows to form final
 	 * Relation objects
 	 */
 	private stitchRelations(metaRows: RelationMeta[], schemaRows: ForeignKey[]) {

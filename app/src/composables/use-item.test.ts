@@ -1,6 +1,6 @@
 import api from '@/api';
-import { useCollection } from '@directus/composables';
-import { AppCollection, Field } from '@directus/types';
+import { useCollection } from '@brio/composables';
+import { AppCollection, Field } from '@brio/types';
 import { createTestingPinia } from '@pinia/testing';
 import { setActivePinia } from 'pinia';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
@@ -21,7 +21,7 @@ vi.mock('@/api', () => {
 	};
 });
 
-vi.mock('@directus/composables');
+vi.mock('@brio/composables');
 
 beforeEach(() => {
 	setActivePinia(

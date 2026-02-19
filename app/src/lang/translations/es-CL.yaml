@@ -130,7 +130,7 @@ archive_confirm: '¿Estás seguro de archivar este ítem?'
 archive_confirm_count: >-
   No hay elementos seleccionados | ¿Estás seguro de archivar este ítem? | ¿Estás seguro de archivar estos {count} ítems?
 reset_system_permissions_to: 'Restablecer permisos del sistema a:'
-reset_system_permissions_copy: Esta acción sobrescribirá cualquier permiso personalizado que hayas aplicado a las colecciones de Directus. ¿Estás seguro?
+reset_system_permissions_copy: Esta acción sobrescribirá cualquier permiso personalizado que hayas aplicado a las colecciones de Brio. ¿Estás seguro?
 app_access_minimum: Acceso mínimo a la app
 recommended_defaults: Valores recomendados
 unarchive: Desarchivar
@@ -1701,7 +1701,7 @@ interfaces:
     recursive_only: La interfaz de vista en árbol sólo funciona para relaciones recursivas.
   user:
     user: Usuario
-    description: Seleccionar un usuario existente de Directus
+    description: Seleccionar un usuario de Brio
     select_mode: Seleccionar Modo
     modes:
       auto: Automático
@@ -1865,7 +1865,7 @@ displays:
     display_template_configure_notice: Puede configurar la plantilla de pantalla después de crear este campo.
   user:
     user: Usuario
-    description: Presentar un usuario de Directus
+    description: Presentar un usuario de Brio
     avatar: Avatar
     name: Nombre
     both: Ambos

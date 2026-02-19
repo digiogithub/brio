@@ -1,5 +1,5 @@
 ---
-description: REST and GraphQL API documentation for filter rules in Directus.
+description: REST and GraphQL API documentation for filter rules in Brio.
 readTime: 5 min read
 ---
 
@@ -27,7 +27,7 @@ readTime: 5 min read
 ```json
 {
 	"title": {
-		"_contains": "Directus"
+		"_contains": "Brio"
 	}
 }
 ```
@@ -161,7 +161,7 @@ into Logical Operators. However, they cannot be sub-nested into Filter Rules.
 
 ### Some vs None in One-to-Many
 
-When applying filters to a one-to-many field, Directus will default to a "some" search, for example in:
+When applying filters to a one-to-many field, Brio will default to a "some" search, for example in:
 
 ```json
 {

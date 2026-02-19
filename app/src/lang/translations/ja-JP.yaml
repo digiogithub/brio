@@ -105,7 +105,7 @@ logoutReason:
   SESSION_EXPIRED: セッションが期限切れです
 public_description: 認証せずに利用できる API データを制御します。
 not_allowed: 許可されていない
-directus_version: Directus Version
+directus_version: Brio Version
 os_type: OS 種類
 os_version: OSバージョン
 os_uptime: OS 稼働時間

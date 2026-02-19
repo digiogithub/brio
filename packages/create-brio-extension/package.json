@@ -1,0 +1,40 @@
+{
+	"name": "create-brio-extension",
+	"version": "9.26.0",
+	"description": "A small util that will scaffold a Brio extension",
+	"keywords": [
+		"brio",
+		"extensions"
+	],
+	"type": "module",
+	"homepage": "https://brio.io",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nicobrio/brio.git",
+		"directory": "packages/create-brio-extension"
+	},
+	"funding": "https://github.com/nicobrio/brio?sponsor=1",
+	"license": "GPL-3.0-only",
+	"author": "Nicola Krumschmidt",
+	"contributors": [
+		"Joonas Palosuo <joonas.palosuo@gmail.com>",
+		"Rijk van Zanten <rijkvanzanten@me.com>"
+	],
+	"exports": {
+		".": "./lib/index.js",
+		"./package.json": "./package.json"
+	},
+	"main": "lib/index.js",
+	"bin": {
+		"cde": "./lib/index.js",
+		"create-brio-extension": "./lib/index.js"
+	},
+	"files": [
+		"lib/index.js"
+	],
+	"dependencies": {
+		"@brio/constants": "workspace:*",
+		"@brio/extensions-sdk": "workspace:*",
+		"inquirer": "9.1.5"
+	}
+}

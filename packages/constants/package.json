@@ -1,25 +1,26 @@
 {
-	"name": "@directus/constants",
+	"name": "@brio/constants",
 	"version": "9.26.0",
 	"type": "module",
 	"scripts": {
-		"build": "tsc --build",
-		"dev": "tsc --watch"
+		"build": "echo 'No build needed - Bun runs TypeScript natively'",
+		"dev": "echo 'No dev build needed - Bun runs TypeScript natively'"
 	},
-	"description": "Shared constants for Directus",
+	"description": "Shared constants for Brio",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/directus/directus.git",
+		"url": "https://github.com/nicobrio/brio.git",
 		"directory": "packages/constants"
 	},
-	"funding": "https://github.com/directus/directus?sponsor=1",
+	"funding": "https://github.com/nicobrio/brio?sponsor=1",
 	"license": "GPL-3.0",
 	"author": "Rijk van Zanten <rijkvanzanten@me.com>",
 	"exports": {
-		".": "./dist/index.js",
+		".": "./src/index.ts",
 		"./package.json": "./package.json"
 	},
-	"main": "dist/index.js",
+	"main": "src/index.ts",
+	"types": "src/index.ts",
 	"files": [
 		"dist"
 	],
@@ -27,7 +28,7 @@
 		"access": "public"
 	},
 	"devDependencies": {
-		"@directus/tsconfig": "0.0.7",
+		"@brio/tsconfig": "0.0.7",
 		"typescript": "5.0.4"
 	},
 	"dependencies": {

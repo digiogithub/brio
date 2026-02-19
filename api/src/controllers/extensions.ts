@@ -1,6 +1,6 @@
-import { EXTENSION_TYPES } from '@directus/constants';
-import type { Plural } from '@directus/types';
-import { depluralize, isIn } from '@directus/utils';
+import { EXTENSION_TYPES } from '@brio/constants';
+import type { Plural } from '@brio/types';
+import { depluralize, isIn } from '@brio/utils';
 import { Router } from 'express';
 import env from '../env.js';
 import { RouteNotFoundException } from '../exceptions/index.js';

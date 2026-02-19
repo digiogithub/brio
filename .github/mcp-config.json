@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "hyper-mcp": {
+      "type": "stdio",
+      "command": "hyper-mcp",
+      "args": [
+        "--config-file",
+        "/home/sevir/.config/hyper-mcp/mesnada.yaml"
+      ],
+      "tools": [
+        "*"
+      ]
+    },
+    "remembrances": {
+      "type": "http",
+      "url": "http://127.0.0.1:3888/mcp",
+      "tools": [
+        "*"
+      ]
+    },
+    "mesnada": {
+      "type": "http",
+      "url": "http://127.0.0.1:8765/mcp",
+      "tools": [
+        "*"
+      ]
+    }
+  }
+}

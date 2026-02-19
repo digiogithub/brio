@@ -1,0 +1,20 @@
+{
+    "name": "@brio/tsconfig",
+    "version": "0.0.7",
+    "description": "TSConfig files used in Brio projects",
+    "homepage": "https://brio.io",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/brio/brio.git",
+        "directory": "packages/tsconfig"
+    },
+    "license": "GPL-3.0",
+    "exports": {
+        "./base": "./base/tsconfig.json",
+        "./base.json": "./base/tsconfig.json",
+        "./node18-cjs": "./node18-cjs/tsconfig.json",
+        "./node18-cjs.json": "./node18-cjs/tsconfig.json",
+        "./node18-esm": "./node18-esm/tsconfig.json",
+        "./node18-esm.json": "./node18-esm/tsconfig.json"
+    }
+}

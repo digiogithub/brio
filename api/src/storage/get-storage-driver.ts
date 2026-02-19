@@ -1,11 +1,11 @@
-import type { Driver } from '@directus/storage';
+import type { Driver } from '@brio/storage';
 
 export const _aliasMap: Record<string, string> = {
-	local: '@directus/storage-driver-local',
-	s3: '@directus/storage-driver-s3',
-	gcs: '@directus/storage-driver-gcs',
-	azure: '@directus/storage-driver-azure',
-	cloudinary: '@directus/storage-driver-cloudinary',
+	local: '@brio/storage-driver-local',
+	s3: '@brio/storage-driver-s3',
+	gcs: '@brio/storage-driver-gcs',
+	azure: '@brio/storage-driver-azure',
+	cloudinary: '@brio/storage-driver-cloudinary',
 };
 
 export const getStorageDriver = async (driverName: string): Promise<typeof Driver> => {

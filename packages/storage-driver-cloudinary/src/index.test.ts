@@ -1,4 +1,4 @@
-import { normalizePath } from '@directus/utils';
+import { normalizePath } from '@brio/utils';
 import {
 	rand,
 	randAlphaNumeric,
@@ -20,19 +20,16 @@ import type { ParsedPath } from 'node:path';
 import { extname, join, parse } from 'node:path';
 import { PassThrough, Readable } from 'node:stream';
 import { ReadableStream } from 'node:stream/web';
-import type { Response } from 'undici';
-import { fetch, FormData } from 'undici';
 import type { Mock } from 'vitest';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { IMAGE_EXTENSIONS, VIDEO_EXTENSIONS } from './constants.js';
 import type { DriverCloudinaryConfig } from './index.js';
 import { DriverCloudinary } from './index.js';
 
-vi.mock('@directus/utils/node');
-vi.mock('@directus/utils');
+vi.mock('@brio/utils/node');
+vi.mock('@brio/utils');
 vi.mock('node:path');
 vi.mock('node:crypto');
-vi.mock('undici');
 
 let sample: {
 	config: Required<DriverCloudinaryConfig>;

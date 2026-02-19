@@ -1,0 +1,80 @@
+PHASE 5B VERIFICATION CHECKLIST
+================================
+
+✅ ARGON2 REPLACEMENTS (7 files)
+--------------------------------
+1. api/src/utils/generate-hash.ts
+   - Removed: import argon2 from 'argon2'
+   - Changed: argon2.hash() → Bun.password.hash()
+   - Added: algorithm: 'argon2id' option
+   
+2. api/src/services/shares.ts
+   - Removed: import argon2 from 'argon2'
+   - Changed: argon2.verify(hash, password) → Bun.password.verify(password, hash)
+   
+3. api/src/auth/drivers/local.ts
+   - Removed: import argon2 from 'argon2'
+   - Changed: argon2.verify(hash, password) → Bun.password.verify(password, hash)
+   
+4. api/src/services/graphql/index.ts
+   - Removed: import argon2 from 'argon2'
+   - Changed: argon2.verify(hash, string) → Bun.password.verify(string, hash)
+   
+5. api/src/controllers/utils.ts
+   - Removed: import argon2 from 'argon2'
+   - Changed: argon2.verify(hash, string) → Bun.password.verify(string, hash)
+   
+6. tests/blackbox/setup/setup-utils.js
+   - Removed: const argon2 = require('argon2')
+   - Changed: argon2.hash() → Bun.password.hash()
+   
+7. api/package.json
+   - Removed: "argon2": "0.30.3"
+
+✅ UNDICI REPLACEMENTS (6 files)
+--------------------------------
+8. packages/storage-driver-cloudinary/src/index.ts
+   - Removed: import type { RequestInit } from 'undici'
+   - Removed: import { fetch, FormData } from 'undici'
+   - Now using: global fetch and FormData
+   
+9. packages/storage-driver-cloudinary/src/index.test.ts
+   - Removed: import type { Response } from 'undici'
+   - Removed: import { fetch, FormData } from 'undici'
+   - Removed: vi.mock('undici')
+   
+10. packages/update-check/src/index.ts
+    - Removed: import { fetch } from 'undici'
+    - Now using: global fetch
+    
+11. packages/update-check/src/index.test.ts
+    - Removed: import type { Response } from 'undici'
+    - Removed: import { fetch } from 'undici'
+    - Removed: vi.mock('undici')
+    
+12. packages/storage-driver-cloudinary/package.json
+    - Removed: "undici": "5.22.0"
+    
+13. packages/update-check/package.json
+    - Removed: "undici": "5.22.0"
+
+✅ NOT FOUND (As Expected)
+--------------------------
+- better-sqlite3: Not present in codebase ✓
+- No changes needed ✓
+
+✅ VERIFIED WORKING
+-------------------
+- Bun.password.hash() tested ✓
+- Bun.password.verify() tested ✓
+- Native fetch() tested ✓
+- Native FormData tested ✓
+
+✅ DOCUMENTATION CREATED
+------------------------
+- logs/phase-5b-bun-native-apis-completion.md
+- logs/phase-5b-testing-notes.md
+
+TOTAL: 13 files modified
+       3 dependencies removed
+       0 dependencies added

@@ -1,5 +1,5 @@
-import type { KNEX_TYPES } from '@directus/constants';
-import type { Field, Relation, Type } from '@directus/types';
+import type { KNEX_TYPES } from '@brio/constants';
+import type { Field, Relation, Type } from '@brio/types';
 import type { Options } from '../types.js';
 import { SchemaHelper } from '../types.js';
 

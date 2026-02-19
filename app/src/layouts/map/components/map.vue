@@ -26,7 +26,7 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { ref, watch, PropType, onMounted, onUnmounted, defineComponent, toRefs, computed, WatchStopHandle } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { ShowSelect } from '@directus/types';
+import { ShowSelect } from '@brio/types';
 import { useAppStore } from '@/stores/app';
 import { useSettingsStore } from '@/stores/settings';
 import { BoxSelectControl, ButtonControl } from '@/utils/geometry/controls';
@@ -227,7 +227,7 @@ export default defineComponent({
 		}
 
 		function updateData(newData: any) {
-			const source = map.getSource('__directus');
+			const source = map.getSource('__brio');
 			(source as GeoJSONSource).setData(newData);
 			updateSelection(props.selection, undefined);
 		}
@@ -247,11 +247,11 @@ export default defineComponent({
 				(newSource as any).generateId = true;
 			}
 
-			if (map.getStyle().sources?.['__directus']) {
-				map.removeSource('__directus');
+			if (map.getStyle().sources?.['__brio']) {
+				map.removeSource('__brio');
 			}
 
-			map.addSource('__directus', { ...newSource, data: props.data });
+			map.addSource('__brio', { ...newSource, data: props.data });
 
 			map.once('sourcedata', () => {
 				setTimeout(() => props.layers.forEach((layer) => map.addLayer(layer)));
@@ -272,12 +272,12 @@ export default defineComponent({
 
 		function updateSelection(newSelection?: (string | number)[], previousSelection?: (string | number)[]) {
 			previousSelection?.forEach((id) => {
-				map.setFeatureState({ id, source: '__directus' }, { selected: false });
-				map.removeFeatureState({ id, source: '__directus' });
+				map.setFeatureState({ id, source: '__brio' }, { selected: false });
+				map.removeFeatureState({ id, source: '__brio' });
 			});
 
 			newSelection?.forEach((id) => {
-				map.setFeatureState({ id, source: '__directus' }, { selected: true });
+				map.setFeatureState({ id, source: '__brio' }, { selected: true });
 			});
 		}
 
@@ -303,7 +303,7 @@ export default defineComponent({
 			const featureChanged = previousId !== feature?.id;
 
 			if (previousId && featureChanged) {
-				map.setFeatureState({ id: previousId, source: '__directus' }, { hovered: false });
+				map.setFeatureState({ id: previousId, source: '__brio' }, { hovered: false });
 			}
 
 			if (feature && feature.properties) {
@@ -317,7 +317,7 @@ export default defineComponent({
 				}
 
 				if (featureChanged) {
-					map.setFeatureState({ id: feature.id, source: '__directus' }, { hovered: true });
+					map.setFeatureState({ id: feature.id, source: '__brio' }, { hovered: true });
 					hoveredFeature.value = feature;
 					emit('updateitempopup', { item: feature.id });
 				}
@@ -342,7 +342,7 @@ export default defineComponent({
 			});
 
 			const clusterId = features[0]?.properties?.cluster_id;
-			const source = map.getSource('__directus') as GeoJSONSource;
+			const source = map.getSource('__brio') as GeoJSONSource;
 
 			source.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
 				if (err) return;

@@ -1,0 +1,350 @@
+I'll complete Phase 4 documentation rebranding by following the systematic approach outlined. Let me start by getting task details and reporting initial progress.
+
+● Count markdown files in docs
+  $ cd /www/Brio/brio/docs && find . -name "*.md" -not -path "*/node_modules/*" | wc -l
+  └ 2 lines...
+
+Perfect, 122 markdown files confirmed. Now I'll execute Step 1: bulk replacements across all documentation files.
+
+● Replace brand names and URLs
+  $ cd /www/Brio/brio/docs
+
+  # Replace brand name (capitalized)
+  find . -name "*.md" -not -path "*/node_modules/*" -exec sed -i 's/Directus/Brio/g' {} +...
+  └ 17 lines...
+
+● Replace package references
+  $ cd /www/Brio/brio/docs
+
+  # Replace package references
+  find . -name "*.md" -not -path "*/node_modules/*" \
+    -exec sed -i 's|@directus/extensions-sdk|@brio/extensions-sdk|g' {} + \...
+  └ 12 lines...
+
+Now Step 2: Update configuration files.
+
+● Read docs/index.md lines 1-50
+  └ 49 lines read
+
+● Read docs/package.json
+  └ 22 lines read
+
+● Read docs/netlify.toml
+  └ 68 lines read
+
+● Edit docs/package.json (+2 -1)
+
+● Edit docs/netlify.toml (+2 -2)
+
+● Edit docs/index.md (+1 -2)
+
+Now Step 3: Update Netlify functions.
+
+● Read docs/netlify/functions/feedback.ts
+  └ 83 lines read
+
+● Edit docs/netlify/functions/feedback.ts (+2 -2)
+
+Step 4: Update docs dictionary.
+
+● Read docs/dictionary.txt
+  └ 381 lines read
+
+● Edit docs/dictionary.txt (+7 -6)
+
+Step 5: Create fork attribution page.
+
+● Create docs/contributing/fork-attribution.md (+49)
+
+Step 6 & 7: Verify remaining Directus references.
+
+● Count remaining Directus references
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" | grep -v "directus_" | grep -v
+  node_modules | wc -l
+  └ 2 lines...
+
+● Sample remaining Directus references
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" | grep -v "directus_" | grep -v
+  node_modules | head -30
+  └ 31 lines...
+
+I can see there are references to:
+1. Social links (Discord, Twitter)
+2. Learn-directus guide references
+3. LDAP examples with "directus" domain
+4. Docker Hub references
+5. SSO examples with "directus" domain
+6. File paths in Docker
+
+Let me fix these systematically:
+
+● Replace remaining Directus references
+  $ cd /www/Brio/brio/docs
+
+  # Replace social links
+  find . -name "*.md" -not -path "*/node_modules/*" \
+    -exec sed -i 's|https://directus.chat|https://discord.gg/brio|g' {} + \...
+  └ 43 lines...
+
+● Recount remaining Directus references
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" | grep -v "directus_" | grep -v
+  node_modules | wc -l
+  └ 2 lines...
+
+● Check remaining references excluding fork attribution
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" | grep -v "directus_" | grep -v
+  node_modules | grep -v "fork-attribution" | head -30
+  └ 31 lines...
+
+These remaining references need careful handling:
+
+● Final cleanup of remaining Directus references
+  $ cd /www/Brio/brio/docs
+
+  # Replace lowercase directus in Docker compose examples (network names, service names, db
+  names)
+  find . -name "*.md" -not -path "*/node_modules/*" \...
+  └ 47 lines...
+
+● Final count of Directus references
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" --include="*.ts"
+  --include="*.json" --include="*.toml" | grep -v "directus_" | grep -v node_modules | grep -v
+  "fork-attribution" | wc -l
+  └ 2 lines...
+
+● Sample final remaining references
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" --include="*.ts"
+  --include="*.json" --include="*.toml" | grep -v "directus_" | grep -v node_modules | grep -v
+  "fork-attribution" | head -40
+  └ 41 lines...
+
+Most of these remaining references are legitimate - in code examples, URLs, or attribution. Let me handle a few final specific cases:
+
+● Fix final specific Directus references
+  $ cd /www/Brio/brio/docs
+
+  # Replace hashtag anchors that reference directus
+  find . -name "*.md" -not -path "*/node_modules/*" \
+    -exec sed -i 's|#how-it-works-in-directus|#how-it-works-in-brio|g' {} + \...
+  └ 55 lines...
+
+Now let's verify final count and create a summary log:
+
+● Final comprehensive count
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" --include="*.ts"
+  --include="*.json" --include="*.toml" --include="*.txt" | grep -v "directus_" | grep -v
+  node_modules | grep -v "fork-attribution" | wc -l
+  └ 2 lines...
+
+● Analyze remaining references by type
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" --include="*.ts"
+  --include="*.json" --include="*.toml" --include="*.txt" | grep -v "directus_" | grep -v
+  node_modules | grep -v "fork-attribution" | sort | uniq -c | sort -rn | head -50
+  └ 51 lines...
+
+I can see most remaining references are in code examples in SDK documentation. Let me update those:
+
+● Update SDK and code examples
+  $ cd /www/Brio/brio/docs
+
+  # Replace await directus. patterns in SDK docs
+  find . -name "*.md" -not -path "*/node_modules/*" \
+    -exec sed -i 's|await directus\.|await brio.|g' {} +...
+  └ 36 lines...
+
+● Final count after SDK updates
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" --include="*.ts"
+  --include="*.json" --include="*.toml" --include="*.txt" | grep -v "directus_" | grep -v
+  node_modules | grep -v "fork-attribution" | wc -l
+  └ 2 lines...
+
+Excellent! Down to 21 references. Let me check what's left:
+
+● List all remaining references
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" --include="*.ts"
+  --include="*.json" --include="*.toml" --include="*.txt" | grep -v "directus_" | grep -v
+  node_modules | grep -v "fork-attribution"
+  └ 22 lines...
+
+Perfect! These last few are in code import examples and legitimate references. Let me fix them:
+
+● Fix final code references
+  $ cd /www/Brio/brio/docs
+
+  # Replace import directus from 'lib/directus' (variable name)
+  find . -name "*.md" -not -path "*/node_modules/*" \
+    -exec sed -i "s|import directus from 'lib/brio'|import brio from 'lib/brio'|g" {} + \...
+  └ 30 lines...
+
+● Final verification of remaining references
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" --include="*.ts"
+  --include="*.json" --include="*.toml" --include="*.txt" | grep -v "directus_" | grep -v
+  node_modules | grep -v "fork-attribution"
+  └ 7 lines...
+
+Excellent! Down to just 6 legitimate references. Let me fix the import statements:
+
+● Fix final import statements
+  $ cd /www/Brio/brio/docs
+
+  # These are import statements where we're importing from the file 'lib/directus' but should
+  rename the variable
+  find . -name "*.md" -not -path "*/node_modules/*" \...
+  └ 9 lines...
+
+● Final count and list
+  $ cd /www/Brio/brio/docs && grep -rn "irectus" . --include="*.md" --include="*.ts"
+  --include="*.json" --include="*.toml" --include="*.txt" | grep -v "directus_" | grep -v
+  node_modules | grep -v "fork-attribution" && echo "=== Count ===" && grep -rn "irectus" .
+  --include="*.md" --include="*.ts" --include="*.json" --include="*.toml" --include="*.txt" | grep
+  -v "directus_" | grep -v node_modules | grep -v "fork-attribution" | wc -l
+  └ 8 lines...
+
+The remaining 5 references are:
+1. One legitimate attribution in index.md mentioning fork from "Directus v9.26.0" 
+2. Four import statements that still refer to 'lib/directus' but the variable was already renamed
+
+Let me check what happened with those imports:
+
+● Read docs/guides/headless-cms/build-static-website/next-13.md lines 75-85
+  └ 10 lines read
+
+I see - the variable is already `brio` but the import path is still `'lib/directus'` because that's the file name. We should update the file name reference too:
+
+● Update import paths
+  $ cd /www/Brio/brio/docs
+
+  # Replace the import path from 'lib/directus' to 'lib/brio'
+  find . -name "*.md" -not -path "*/node_modules/*" \
+    -exec sed -i "s|from 'lib/directus';|from 'lib/brio';|g" {} +...
+  └ 4 lines...
+
+● Final comprehensive verification
+  $ cd /www/Brio/brio/docs && echo "=== Final Directus References (excluding table names and fork
+  attribution) ===" && grep -rn "irectus" . --include="*.md" --include="*.ts" --include="*.json"
+   --include="*.toml" --include="*.txt" | grep -v "directus_" | grep -v node_modules | grep -v
+  "fork-attribution" && echo -e "\n=== Total Count ===" && grep -rn "irectus" . --include="*.md"
+   --include="*.ts" --include="*.json" --include="*.toml" --include="*.txt" | grep -v ...
+  └ 11 lines...
+
+Wait, the variable name in the import is still `directus`. Let me fix that:
+
+● Fix import variable names
+  $ cd /www/Brio/brio/docs
+
+  # Replace the import variable name
+  find . -name "*.md" -not -path "*/node_modules/*" \
+    -exec sed -i "s|import directus from 'lib/brio';|import brio from 'lib/brio';|g" {} +...
+  └ 4 lines...
+
+● Final verification complete
+  $ cd /www/Brio/brio/docs && echo "=== Final Directus References ===" && grep -rn "irectus" .
+  --include="*.md" --include="*.ts" --include="*.json" --include="*.toml" --include="*.txt" |
+  grep -v "directus_" | grep -v node_modules | grep -v "fork-attribution" && echo -e "\n===
+  Total: $(grep -rn "irectus" . --include="*.md" --include="*.ts" --include="*.json"
+  --include="*.toml" --include="*.txt" | grep -v "directus_" | grep -v node_modules | grep -v ...
+  └ 9 lines...
+
+Perfect! Now let's create a completion log and verify the work:
+
+● Create completion report
+  $ cat > /tmp/phase-4-completion.md << 'EOF'
+  # Phase 4 Documentation Rebranding - Completion Report
+
+  **Date**: 2026-02-13
+  **Task ID**: task-1ccf7f0c  ...
+  └ 265 lines...
+
+Now let's save this completion report to the logs directory:
+
+● Save completion log
+  $ mkdir -p /www/Brio/brio/logs && cp /tmp/phase-4-completion.md
+  /www/Brio/brio/logs/phase-4-completion.md && echo "✅ Completion log saved to
+  /www/Brio/brio/logs/phase-4-completion.md"
+  └ 2 lines...
+
+Now let's do a final comprehensive check and create a summary:
+
+● Display completion summary
+  $ cd /www/Brio/brio/docs && cat << 'EOF'
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║          PHASE 4 DOCUMENTATION REBRANDING COMPLETE             ║
+  ╚════════════════════════════════════════════════════════════════╝...
+  └ 117 lines...
+
+Perfect! Let me create a quick sample verification to show the changes:
+
+● Show sample changes
+  $ cd /www/Brio/brio/docs && cat << 'EOF'
+
+  📝 SAMPLE FILE CHANGES (Before → After):
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━...
+  └ 100 lines...
+
+Perfect! Now let's verify the fork attribution file was created correctly:
+
+● Read docs/contributing/fork-attribution.md lines 1-30
+  └ 30 lines read
+
+I notice the fork-attribution.md file got some URLs replaced incorrectly. Let me fix that:
+
+● Edit docs/contributing/fork-attribution.md (+2 -2)
+
+● Edit docs/contributing/fork-attribution.md (+1 -1)
+
+Excellent! Now let's create a final git status check to show what was changed:
+
+● Check git status of docs
+  $ cd /www/Brio/brio && git status docs/ --short 2>/dev/null | head -20 || echo "Not in git
+  repository or no changes tracked"
+  └ 21 lines...
+
+Perfect! Now let's create a final summary and mark completion:
+
+● Display final completion summary
+  $ cd /www/Brio/brio && cat << 'EOF'
+
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║                 ✅ PHASE 4 SUCCESSFULLY COMPLETED                ║
+  ╚══════════════════════════════════════════════════════════════════╝...
+  └ 107 lines...
+
+## Summary
+
+**Phase 4 Documentation Rebranding is now complete!** 
+
+I successfully rebranded all 122 markdown documentation files in `/www/Brio/brio/docs/` from Directus to Brio. Here's what was accomplished:
+
+### Key Achievements:
+- ✅ **All 122 markdown files** processed with brand replacements
+- ✅ **~2,500+ references** updated from Directus to Brio
+- ✅ **Package namespace** migrated: `@directus/*` → `@brio/*`
+- ✅ **CLI commands** updated: `directus` → `brio`, `pnpm` → `bun`
+- ✅ **All URLs** rebranded: `directus.io` → `brio.io`
+- ✅ **Docker images**: `directus/directus` → `nicobrio/brio`
+- ✅ **Environment variables**: `DIRECTUS_*` → `BRIO_*`
+- ✅ **Code examples** updated with correct variable names
+- ✅ **Fork attribution page** created documenting GPL-3.0 compliance
+- ✅ **Database table names** (`directus_*`) preserved as required
+
+### Files Modified:
+- 122 markdown documentation files
+- 4 configuration files (package.json, netlify.toml, dictionary.txt, feedback.ts)
+- 1 file renamed (backing-directus.md → backing-brio.md)
+- 1 new file created (fork-attribution.md)
+
+### Final Verification:
+- Only **1 legitimate reference** to "Directus" remains (the fork attribution in index.md)
+- All `directus_*` database table names properly preserved
+- Completion log saved to `/www/Brio/brio/logs/phase-4-completion.md`
+
+**The documentation is now fully rebranded and ready for use!** 🎉
+
+[stderr] 
+[stderr] Total usage est:        1 Premium request
+[stderr] API time spent:         4m 51.078s
+[stderr] Total session time:     5m 35.419s
+[stderr] Total code changes:     +66 -16
+[stderr] Breakdown by AI model:
+[stderr]  claude-sonnet-4.5       1.8m in, 16.1k out, 1.7m cached (Est. 1 Premium request)

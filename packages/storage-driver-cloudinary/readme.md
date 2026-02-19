@@ -1,3 +1,3 @@
-# `@directus/storage-driver-cloudinary`
+# `@brio/storage-driver-cloudinary`
 
-Cloudinary file storage driver for `@directus/storage`
+Cloudinary file storage driver for `@brio/storage`

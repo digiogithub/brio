@@ -90,12 +90,12 @@ import { useFieldsStore } from '@/stores/fields';
 import { useRelationsStore } from '@/stores/relations';
 import { unexpectedError } from '@/utils/unexpected-error';
 import { validateItem } from '@/utils/validate-item';
-import { useCollection } from '@directus/composables';
-import { Field, Relation } from '@directus/types';
+import { useCollection } from '@brio/composables';
+import { Field, Relation } from '@brio/types';
 import { getDefaultValuesFromFields } from '@/utils/get-default-values-from-fields';
 import { useEditsGuard } from '@/composables/use-edits-guard';
 import { useRouter } from 'vue-router';
-import { getEndpoint } from '@directus/utils';
+import { getEndpoint } from '@brio/utils';
 
 interface Props {
 	collection: string;
@@ -237,12 +237,12 @@ const template = computed(
 const { file } = useFile();
 
 function useFile() {
-	const isDirectusFiles = computed(() => {
+	const isBrioFiles = computed(() => {
 		return relatedCollection.value === 'directus_files';
 	});
 
 	const file = computed(() => {
-		if (isDirectusFiles.value === false || !initialValues.value || !props.junctionField) return null;
+		if (isBrioFiles.value === false || !initialValues.value || !props.junctionField) return null;
 		const fileData = initialValues.value?.[props.junctionField];
 		if (!fileData) return null;
 
@@ -250,7 +250,7 @@ function useFile() {
 		return { ...fileData, src };
 	});
 
-	return { file, isDirectusFiles };
+	return { file, isBrioFiles };
 }
 
 function useActiveState() {

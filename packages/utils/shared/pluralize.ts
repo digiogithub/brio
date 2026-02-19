@@ -1,4 +1,4 @@
-import type { Plural } from '@directus/types';
+import type { Plural } from '@brio/types';
 
 export function pluralize<T extends string>(str: T): Plural<T> {
 	return `${str}s`;

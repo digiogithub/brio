@@ -16,10 +16,10 @@
 			</v-list-item-content>
 		</v-list-item>
 
-		<v-list-item href="https://github.com/directus/directus/releases" class="version">
-			<v-list-item-icon><v-icon name="directus" /></v-list-item-icon>
+		<v-list-item href="https://github.com/brio-cms/brio/releases" class="version">
+			<v-list-item-icon><v-icon name="brio" /></v-list-item-icon>
 			<v-list-item-content>
-				<v-text-overflow class="version" :text="`Directus ${version}`" />
+				<v-text-overflow class="version" :text="`Brio ${version}`" />
 			</v-list-item-content>
 		</v-list-item>
 	</v-list>
@@ -31,7 +31,7 @@ import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
 	setup() {
-		const version = __DIRECTUS_VERSION__;
+		const version = __BRIO_VERSION__;
 
 		const { t } = useI18n();
 
@@ -78,12 +78,12 @@ export default defineComponent({
 				{
 					icon: 'bug_report',
 					name: t('report_bug'),
-					href: 'https://github.com/directus/directus/issues/new?template=bug_report.yml',
+					href: 'https://github.com/brio-cms/brio/issues/new?template=bug_report.yml',
 				},
 				{
 					icon: 'new_releases',
 					name: t('request_feature'),
-					href: 'https://github.com/directus/directus/discussions/new?category=feature-requests',
+					href: 'https://github.com/brio-cms/brio/discussions/new?category=feature-requests',
 				},
 			];
 		});

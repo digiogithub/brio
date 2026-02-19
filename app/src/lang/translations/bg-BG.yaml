@@ -1865,7 +1865,7 @@ displays:
     display_template_configure_notice: Шаблонът за показване може да бъде настроен и след създаването на полето.
   user:
     user: Потребител
-    description: Показване на потребител от Directus
+    description: Показване на потребител от Brio
     avatar: Аватар
     name: Име
     both: Всички

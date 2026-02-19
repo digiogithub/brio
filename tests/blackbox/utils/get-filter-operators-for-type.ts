@@ -1,11 +1,11 @@
 /**
- * @NOTE This is copied from @directus/utils. Once the tests are ESM too, this needs to be removed
- * in favor of using @directus/utils
+ * @NOTE This is copied from @brio/utils. Once the tests are ESM too, this needs to be removed
+ * in favor of using @brio/utils
  *
  * @TODO
  */
 
-import type { ClientFilterOperator, Type } from '@directus/types';
+import type { ClientFilterOperator, Type } from '@brio/types';
 
 type GetFilterOperationsForTypeOptions = {
 	includeValidation?: boolean;

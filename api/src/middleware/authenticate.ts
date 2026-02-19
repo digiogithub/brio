@@ -1,4 +1,4 @@
-import type { Accountability } from '@directus/types';
+import type { Accountability } from '@brio/types';
 import type { NextFunction, Request, Response } from 'express';
 import { isEqual } from 'lodash-es';
 import getDatabase from '../database/index.js';
@@ -7,7 +7,7 @@ import env from '../env.js';
 import { InvalidCredentialsException } from '../exceptions/index.js';
 import asyncHandler from '../utils/async-handler.js';
 import { getIPFromReq } from '../utils/get-ip-from-req.js';
-import isDirectusJWT from '../utils/is-directus-jwt.js';
+import isBrioJWT from '../utils/is-brio-jwt.js';
 import { verifyAccessJWT } from '../utils/jwt.js';
 
 /**
@@ -51,7 +51,7 @@ export const handler = async (req: Request, _res: Response, next: NextFunction) 
 	req.accountability = defaultAccountability;
 
 	if (req.token) {
-		if (isDirectusJWT(req.token)) {
+		if (isBrioJWT(req.token)) {
 			const payload = verifyAccessJWT(req.token, env['SECRET']);
 
 			req.accountability.role = payload.role;

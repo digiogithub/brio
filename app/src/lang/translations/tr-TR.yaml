@@ -1704,7 +1704,7 @@ interfaces:
     recursive_only: Ağaç görünümü arayüzü sadece özyinelemeli ilişkiler içindir.
   user:
     user: Kullanıcı
-    description: Varolan bir Directus kullanıcısı seç
+    description: Varolan bir Brio kullanıcısı seç
     select_mode: Mod Seç
     modes:
       auto: Otomatik
@@ -1868,7 +1868,7 @@ displays:
     display_template_configure_notice: Görüntüleme şablonunu bu alanı oluşturduktan sonra yapılandırabilirsin.
   user:
     user: Kullanıcı
-    description: Bir Directus kullanıcısı göster
+    description: Bir Brio kullanıcısı göster
     avatar: Avatar
     name: İsim
     both: İkisi de

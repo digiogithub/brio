@@ -1,11 +1,11 @@
-import { cssVar } from '@directus/utils/browser';
+import { cssVar } from '@brio/utils/browser';
 
 export function getMapStyle() {
 	return [
 		{
 			id: '__directus_polygons_outline',
 			type: 'line',
-			source: '__directus',
+			source: '__brio',
 			filter: ['all', ['!has', 'point_count'], ['==', '$type', 'Polygon']],
 			paint: {
 				'line-color': [
@@ -25,7 +25,7 @@ export function getMapStyle() {
 		{
 			id: '__directus_polygons',
 			type: 'fill',
-			source: '__directus',
+			source: '__brio',
 			filter: ['all', ['!has', 'point_count'], ['==', '$type', 'Polygon']],
 			paint: {
 				'fill-color': [
@@ -42,7 +42,7 @@ export function getMapStyle() {
 		{
 			id: '__directus_lines',
 			type: 'line',
-			source: '__directus',
+			source: '__brio',
 			filter: ['all', ['!has', 'point_count'], ['==', '$type', 'LineString']],
 			paint: {
 				'line-color': [
@@ -59,7 +59,7 @@ export function getMapStyle() {
 		{
 			id: '__directus_points_shadow',
 			type: 'circle',
-			source: '__directus',
+			source: '__brio',
 			filter: ['all', ['!has', 'point_count'], ['==', '$type', 'Point']],
 			layout: {},
 			paint: {
@@ -72,7 +72,7 @@ export function getMapStyle() {
 		{
 			id: '__directus_points',
 			type: 'circle',
-			source: '__directus',
+			source: '__brio',
 			filter: ['all', ['!has', 'point_count'], ['==', '$type', 'Point']],
 			layout: {},
 			paint: {
@@ -92,7 +92,7 @@ export function getMapStyle() {
 		{
 			id: '__directus_clusters',
 			type: 'circle',
-			source: '__directus',
+			source: '__brio',
 			filter: ['has', 'point_count'],
 			paint: {
 				'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
@@ -103,7 +103,7 @@ export function getMapStyle() {
 		{
 			id: '__directus_cluster_count',
 			type: 'symbol',
-			source: '__directus',
+			source: '__brio',
 			filter: ['has', 'point_count'],
 			layout: {
 				'text-field': '{point_count_abbreviated}',

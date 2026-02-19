@@ -1,26 +1,27 @@
 {
-	"name": "@directus/composables",
+	"name": "@brio/composables",
 	"version": "9.26.0",
 	"type": "module",
 	"scripts": {
-		"build": "tsc --build",
-		"dev": "tsc --watch",
+		"build": "echo 'No build needed - Bun runs TypeScript natively'",
+		"dev": "echo 'No dev build needed - Bun runs TypeScript natively'",
 		"test": "vitest --watch=false"
 	},
-	"description": "Shared Vue composables for Directus use",
+	"description": "Shared Vue composables for Brio use",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/directus/directus.git",
+		"url": "https://github.com/nicobrio/brio.git",
 		"directory": "packages/composables"
 	},
-	"funding": "https://github.com/directus/directus?sponsor=1",
+	"funding": "https://github.com/nicobrio/brio?sponsor=1",
 	"license": "GPL-3.0",
 	"author": "Rijk van Zanten <rijkvanzanten@me.com>",
 	"exports": {
-		".": "./dist/index.js",
+		".": "./src/index.ts",
 		"./package.json": "./package.json"
 	},
-	"main": "dist/index.js",
+	"main": "src/index.ts",
+	"types": "src/index.ts",
 	"files": [
 		"dist",
 		"!**/*.test.{js,d.ts}"
@@ -29,8 +30,8 @@
 		"access": "public"
 	},
 	"devDependencies": {
-		"@directus/tsconfig": "0.0.7",
-		"@directus/types": "workspace:*",
+		"@brio/tsconfig": "0.0.7",
+		"@brio/types": "workspace:*",
 		"@types/lodash-es": "4.17.7",
 		"@vitest/coverage-c8": "0.30.1",
 		"@vue/test-utils": "2.3.2",
@@ -39,8 +40,8 @@
 		"vitest": "0.30.1"
 	},
 	"dependencies": {
-		"@directus/constants": "workspace:*",
-		"@directus/utils": "workspace:*",
+		"@brio/constants": "workspace:*",
+		"@brio/utils": "workspace:*",
 		"lodash-es": "4.17.21",
 		"nanoid": "4.0.2",
 		"vue": "3.2.47"

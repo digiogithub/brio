@@ -1,6 +1,6 @@
 import { useFieldsStore } from '@/stores/fields';
-import { Filter, Query } from '@directus/types';
-import { parseJSON, toArray } from '@directus/utils';
+import { Filter, Query } from '@brio/types';
+import { parseJSON, toArray } from '@brio/utils';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 import { isEmpty, pick, set, omitBy, isUndefined, transform } from 'lodash';
 import { extractFieldFromFunction } from './extract-field-from-function';
@@ -73,7 +73,7 @@ export function formatQuery({ collection, query }: QueryInfo): Record<string, an
 }
 
 /**
- * Replace functions from Directus-Filter format to GraphQL format
+ * Replace functions from Brio-Filter format to GraphQL format
  */
 function replaceFuncs(filter?: Filter | null): null | undefined | Filter {
 	if (!filter) return filter;

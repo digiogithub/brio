@@ -26,7 +26,7 @@ export type Info = {
 		public_note: string | null;
 		custom_css: string | null;
 	};
-	directus?: {
+	brio?: {
 		version: string;
 	};
 	node?: {
@@ -40,11 +40,11 @@ export type Info = {
 		totalmem: number;
 	};
 	rateLimit?:
-		| false
-		| {
-				points: number;
-				duration: number;
-		  };
+	| false
+	| {
+		points: number;
+		duration: number;
+	};
 	flows?: {
 		execAllowedModules: string[];
 	};
@@ -58,7 +58,7 @@ export type Auth = {
 export const useServerStore = defineStore('serverStore', () => {
 	const info = reactive<Info>({
 		project: null,
-		directus: undefined,
+		brio: undefined,
 		node: undefined,
 		os: undefined,
 		rateLimit: undefined,
@@ -93,7 +93,7 @@ export const useServerStore = defineStore('serverStore', () => {
 		]);
 
 		info.project = serverInfoResponse.data.data?.project;
-		info.directus = serverInfoResponse.data.data?.directus;
+		info.brio = serverInfoResponse.data.data?.brio;
 		info.node = serverInfoResponse.data.data?.node;
 		info.os = serverInfoResponse.data.data?.os;
 		info.flows = serverInfoResponse.data.data?.flows;
@@ -121,7 +121,7 @@ export const useServerStore = defineStore('serverStore', () => {
 
 	const dehydrate = () => {
 		info.project = null;
-		info.directus = undefined;
+		info.brio = undefined;
 		info.node = undefined;
 		info.os = undefined;
 

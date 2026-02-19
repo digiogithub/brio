@@ -4,6 +4,10 @@
 # Dependencies
 node_modules
 
+# Bun
+bun.lockb
+.bun
+
 # Builds / Caches
 dist
 storybook-static

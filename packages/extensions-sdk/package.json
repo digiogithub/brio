@@ -1,27 +1,28 @@
 {
-	"name": "@directus/extensions-sdk",
+	"name": "@brio/extensions-sdk",
 	"version": "9.26.0",
-	"description": "A toolkit to develop extensions to extend Directus",
-	"homepage": "https://directus.io",
+	"description": "A toolkit to develop extensions to extend Brio",
+	"homepage": "https://brio.io",
 	"type": "module",
 	"bugs": {
-		"url": "https://github.com/directus/directus/issues"
+		"url": "https://github.com/nicobrio/brio/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/directus/directus.git",
+		"url": "https://github.com/nicobrio/brio.git",
 		"directory": "packages/extensions-sdk"
 	},
-	"funding": "https://github.com/directus/directus?sponsor=1",
+	"funding": "https://github.com/nicobrio/brio?sponsor=1",
 	"author": "Nicola Krumschmidt",
 	"exports": {
-		".": "./dist/index.js",
-		"./cli": "./dist/cli/index.js",
+		".": "./src/index.ts",
+		"./cli": "./src/cli/index.ts",
 		"./package.json": "./package.json"
 	},
-	"main": "dist/index.js",
+	"main": "src/index.ts",
+	"types": "src/index.ts",
 	"bin": {
-		"directus-extension": "cli.js"
+		"brio-extension": "cli.js"
 	},
 	"files": [
 		"dist",
@@ -29,15 +30,15 @@
 		"!**/*.test.{js,d.ts}"
 	],
 	"scripts": {
-		"build": "tsc --build",
-		"dev": "tsc --watch",
+		"build": "echo 'No build needed - Bun runs TypeScript natively'",
+		"dev": "echo 'No dev build needed - Bun runs TypeScript natively'",
 		"test": "vitest --watch=false"
 	},
 	"dependencies": {
-		"@directus/composables": "workspace:*",
-		"@directus/constants": "workspace:*",
-		"@directus/types": "workspace:*",
-		"@directus/utils": "workspace:*",
+		"@brio/composables": "workspace:*",
+		"@brio/constants": "workspace:*",
+		"@brio/types": "workspace:*",
+		"@brio/utils": "workspace:*",
 		"@rollup/plugin-commonjs": "24.1.0",
 		"@rollup/plugin-json": "6.0.0",
 		"@rollup/plugin-node-resolve": "15.0.2",
@@ -58,7 +59,7 @@
 		"rollup-plugin-vue": "6.0.0"
 	},
 	"devDependencies": {
-		"@directus/tsconfig": "0.0.7",
+		"@brio/tsconfig": "0.0.7",
 		"@types/fs-extra": "11.0.1",
 		"@types/inquirer": "9.0.3",
 		"@vitest/coverage-c8": "0.30.1",

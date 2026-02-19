@@ -1,4 +1,4 @@
-import { defineInterface } from '@directus/utils';
+import { defineInterface } from '@brio/utils';
 import InterfaceSystemFilter from './system-filter.vue';
 
 export default defineInterface({

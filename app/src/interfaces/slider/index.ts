@@ -1,4 +1,4 @@
-import { defineInterface } from '@directus/utils';
+import { defineInterface } from '@brio/utils';
 import InterfaceSlider from './slider.vue';
 import PreviewSVG from './preview.svg?raw';
 

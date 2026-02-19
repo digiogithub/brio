@@ -1247,7 +1247,7 @@ interfaces:
     recursive_only: Puuvaate kasutajaliides töötab ainult rekursiivsete seoste korral.
   user:
     user: Kasutaja
-    description: Vali olemasolev Directuse kasutaja
+    description: Vali olemasolev Brio kasutaja
     select_mode: Vali režiim
     modes:
       auto: Automaatne
@@ -1362,7 +1362,7 @@ displays:
     description: Näita seotud väärtusi
   user:
     user: Kasutaja
-    description: Näita Directuse kasutajat
+    description: Näita Brio kasutajat
     avatar: Avatar
     name: Nimi
     both: Mõlemad

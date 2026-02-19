@@ -1,12 +1,12 @@
 ---
-description: REST and GraphQL API documentation on the Presets collection in Directus.
+description: REST and GraphQL API documentation on the Presets collection in Brio.
 readTime: 5 min read
 pageClass: page-reference
 ---
 
 # Preset
 
-> Presets hold the preferences of individual users of the platform. This allows Directus to show and maintain custom
+> Presets hold the preferences of individual users of the platform. This allows Brio to show and maintain custom
 > item listings and bookmarks for users of the app. [Learn more about Presets](/getting-started/glossary#presets).
 
 ---
@@ -77,7 +77,7 @@ The options used by the layout. This structure is based on the used layout.
 
 ## List Presets
 
-List all presets that exist in Directus.
+List all presets that exist in Brio.
 
 ::: tip Permissions
 
@@ -208,7 +208,7 @@ POST /presets
 {
 	"user": "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca",
 	"layout": "cards",
-	"search": "Directus"
+	"search": "Brio"
 }
 ```
 
@@ -228,7 +228,7 @@ type Mutation {
 
 ```graphql
 mutation {
-	create_presets_item(data: { user: "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca", layout: "cards", search: "Directus" }) {
+	create_presets_item(data: { user: "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca", layout: "cards", search: "Brio" }) {
 		id
 		user
 	}
@@ -269,7 +269,7 @@ POST /presets
 		"collection": "directus_files",
 		"user": "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca",
 		"layout": "cards",
-		"search": "Directus"
+		"search": "Brio"
 	},
 	{
 		"collection": "articles",
@@ -301,7 +301,7 @@ mutation {
 				collection: "directus_files"
 				user: "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca"
 				layout: "cards"
-				search: "Directus"
+				search: "Brio"
 			}
 			{ collection: "articles", user: "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca", layout: "tabular" }
 		]

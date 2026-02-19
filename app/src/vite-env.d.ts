@@ -1,1 +1,1 @@
-declare const __DIRECTUS_VERSION__: string;
+declare const __BRIO_VERSION__: string;

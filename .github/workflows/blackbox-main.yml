@@ -9,15 +9,12 @@ on:
       - tests/blackbox/**
       - packages/**
       - package.json
-      - pnpm-lock.yaml
+      - bun.lockb
       - .github/workflows/blackbox-main.yml
 
 concurrency:
   group: blackbox-main
   cancel-in-progress: true
-
-env:
-  NODE_OPTIONS: --max_old_space_size=6144
 
 jobs:
   test:
@@ -49,7 +46,7 @@ jobs:
           sudo apt update -y && sudo apt install -y alien libaio1 && \
           wget https://download.oracle.com/otn_software/linux/instantclient/214000/$ORACLE_DL && \
           sudo alien -i $ORACLE_DL && \
-          pnpm -w -D add oracledb
+          bun -w -D add oracledb
         env:
           ORACLE_DL: oracle-instantclient-basic-21.4.0.0.0-1.el8.x86_64.rpm
 
@@ -65,4 +62,4 @@ jobs:
           --quiet-pull --wait
 
       - name: Run tests
-        run: TEST_DB=${{ matrix.vendor }} pnpm run test:blackbox
+        run: TEST_DB=${{ matrix.vendor }} bun run test:blackbox

@@ -1,59 +1,66 @@
-<p align="center"><img alt="Directus Logo" src="https://user-images.githubusercontent.com/522079/158864859-0fbeae62-9d7a-4619-b35e-f8fa5f68e0c8.png"></p>
+# Brio
+
+**Backend as a Service & Content Management System**
 
 <br />
 
-## 🐰 Introduction
+## 🚀 Introduction
 
-Directus is a real-time API and App dashboard for managing SQL database content.
+Brio is a powerful, real-time API and application dashboard for managing SQL database content. Built as a Backend as a Service (BaaS) platform, Brio provides a comprehensive Content Management System with instant REST & GraphQL APIs.
 
 - **Free & open-source.** No artificial limitations, vendor lock-in, or hidden paywalls.
-- **REST & GraphQL API.** Instantly layers a blazingly fast Node.js API on top of any SQL database.
+- **REST & GraphQL API.** Blazingly fast Node.js API on top of any SQL database.
 - **Manage pure SQL.** Works with new or existing SQL databases, no migration required.
 - **Choose your database.** Supports PostgreSQL, MySQL, SQLite, OracleDB, CockroachDB, MariaDB, and MS-SQL.
-- **On-Prem or Cloud.** Run locally, install on-premises, or use our
-  [self-service Cloud service](https://directus.io/pricing).
-- **Completely extensible.** Built to white-label, it is easy to customize our modular platform.
-- **A modern dashboard.** Our no-code Vue.js app is safe and intuitive for non-technical users, no training required.
-
-**[Learn more about Directus](https://directus.io)** • **[Documentation](https://docs.directus.io)**
+- **Self-hosted.** Run locally or deploy on-premises with full control.
+- **Completely extensible.** Easy to customize and white-label our modular platform.
+- **Modern dashboard.** Intuitive Vue.js app that's safe and easy for non-technical users.
 
 <br />
 
-## 🚀 Directus Cloud
+## 📜 Fork Origin
 
-[Directus Cloud](https://directus.io/pricing) allows you to create projects, hosted by the Directus team, in 90 seconds.
+Brio is a fork of **Directus v9.26.0**, the last version released under the GNU General Public License v3 (GPL-3.0). 
 
-- **No product limitations or service usage quotas (unlimited users, API requests, etc)**
-- A modern self-service dashboard to create and monitor all your projects in one place
-- End-to-end solution: Directus, database, serverless auto-scaling, storage, and a global CDN
-- Select your desired region and provision a new project in ~90 seconds
+We are deeply grateful to [Monospace Inc.](https://github.com/directus) and the Directus community for creating and maintaining such an excellent open-source project. Directus v9.26.0 provided a solid foundation upon which Brio builds with new features, enhancements, and a community-driven development approach.
 
-**[Create a Directus Cloud Project](https://directus.cloud)**
-
-<br />
-
-## 🤔 Community Help
-
-[The Directus Documentation](https://docs.directus.io) is a great place to start, or explore these other channels:
-
-- [Discord](https://directus.chat) (Questions, Live Discussions)
-- [GitHub Issues](https://github.com/directus/directus/issues) (Report Bugs)
-- [GitHub Discussions](https://github.com/directus/directus/discussions) (Feature Requests)
-- [Twitter](https://twitter.com/directus) (Latest News)
-- [YouTube](https://www.youtube.com/c/DirectusVideos/featured) (Video Tutorials)
+**Original Project:**
+- Repository: [https://github.com/directus/directus](https://github.com/directus/directus)
+- Original Copyright: © 2004-2023 Monospace Inc.
+- Fork Point: v9.26.0 (last GPL-3.0 licensed version)
 
 <br />
 
-## ❤️ Contributing & Sponsoring
+## 🤝 Contributing
 
-Please read our [Contributing Guide](./contributing.md) before submitting Pull Requests.
+We welcome contributions from the community! Please read our [Contributing Guide](./contributing.md) before submitting Pull Requests.
 
-All security vulnerabilities should be reported in accordance with our
-[Security Policy](https://docs.directus.io/contributing/introduction/#reporting-security-vulnerabilities).
-
-Directus is a premium open-source ([GPLv3](./license)) project, made possible with support from our passionate core
-team, talented contributors, and amazing [GitHub Sponsors](https://github.com/sponsors/directus). Thank you all!
+All security vulnerabilities should be reported in accordance with our [Security Policy](./security.md).
 
 <br />
 
-© 2004-2023, Monospace Inc
+## 📄 License
+
+Brio is open-source software licensed under the [GNU General Public License v3 (GPL-3.0)](./license).
+
+- **Copyright © 2024-present Brio Contributors**
+- **Original Work © 2004-2023 Monospace Inc. (Directus v9.26.0)**
+
+As a fork of Directus v9.26.0 (GPL-3.0), Brio maintains the GPL-3.0 license as required. All modifications and additions are also released under GPL-3.0. See the [NOTICE](./NOTICE) file for full attribution details.
+
+<br />
+
+## 💬 Community & Support
+
+We're building a community around Brio! Stay tuned for community channels and resources.
+
+For now, you can:
+- Report bugs via GitHub Issues
+- Request features via GitHub Discussions
+- Read the documentation (coming soon)
+
+<br />
+
+---
+
+**Made with ❤️ by the Brio community**

@@ -1624,7 +1624,7 @@ interfaces:
     recursive_only: Interfejs prikaza stabla radi samo za rekurzivne odnose.
   user:
     user: Korisnik
-    description: Odaberite postojećeg Directus korisnika
+    description: Odaberite postojećeg Brio korisnika
     select_mode: Odaberite način rada
     modes:
       auto: Automatski
@@ -1779,7 +1779,7 @@ displays:
     display_template_configure_notice: Možete konfigurisati predložak prikaza nakon kreiranja ovog polja.
   user:
     user: Korisnik
-    description: Prikaži Directus korisnika
+    description: Prikaži Brio korisnika
     name: Naziv
     both: Oboje
     circle_label: Prikaži korisnika u krugu

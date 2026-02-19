@@ -1,0 +1,306 @@
+I'll help you rename all package.json files from @directus/* to @brio/*. Let me start by checking the current structure and then proceed systematically.
+
+● List directory .
+  └ 37 files found
+
+● Read package.json
+  └ 26 lines read
+
+● Read pnpm-workspace.yaml
+  └ 7 lines read
+
+Now let me start by renaming the directus directory to brio and updating the workspace configuration:
+
+● Edit pnpm-workspace.yaml (+1 -1)
+
+● Edit package.json (+1 -1)
+
+● Edit package.json (+1 -1)
+
+● Rename directus directory to brio
+  $ cd /www/Brio/brio && mv directus brio
+  └ 1 line...
+
+Now let me update the main brio package.json (formerly directus):
+
+● Read brio/package.json
+  └ 64 lines read
+
+● Edit brio/package.json (+3 -3)
+
+● Edit brio/package.json (+4 -4)
+
+● Edit brio/package.json (+2 -2)
+
+Now let me update the api package:
+
+● Read api/package.json
+  └ 229 lines read
+
+● Edit api/package.json (+3 -3)
+
+● Edit api/package.json (+4 -4)
+
+● Edit api/package.json (+14 -14)
+
+● Edit api/package.json (+1 -1)
+
+Now let me update the app package:
+
+● Read app/package.json
+  └ 142 lines read
+
+● Edit app/package.json (+5 -5)
+
+● Edit app/package.json (+5 -5)
+
+● Edit app/package.json (+1 -1)
+
+Now let me get a list of all packages to update them systematically:
+
+● List packages directories
+  $ ls -1 /www/Brio/brio/packages/
+  └ 17 lines...
+
+Let me update packages starting with the first batch:
+
+● Read packages/composables/package.json
+  └ 48 lines read
+
+● Read packages/create-directus-extension/package.json
+  └ 40 lines read
+
+● Read packages/constants/package.json
+  └ 36 lines read
+
+● Read packages/exceptions/package.json
+  └ 40 lines read
+
+● Edit packages/constants/package.json (+4 -4)
+
+● Edit packages/composables/package.json (+4 -4)
+
+● Edit packages/create-directus-extension/package.json (+6 -6)
+
+● Edit packages/exceptions/package.json (+4 -4)
+
+● Edit packages/create-directus-extension/package.json (+3 -3)
+
+● Edit packages/composables/package.json (+1 -1)
+
+● Edit packages/exceptions/package.json (+1 -1)
+
+● Edit packages/composables/package.json (+2 -2)
+
+Now continue with the next batch of packages:
+
+● Read packages/extensions-sdk/package.json
+  └ 74 lines read
+
+● Read packages/specs/package.json
+  └ 56 lines read
+
+● Read packages/schema/package.json
+  └ 54 lines read
+
+● Read packages/storage/package.json
+  └ 37 lines read
+
+● Edit packages/extensions-sdk/package.json (+6 -6)
+
+● Edit packages/specs/package.json (+5 -5)
+
+● Edit packages/storage/package.json (+4 -4)
+
+● Edit packages/schema/package.json (+5 -5)
+
+● Edit packages/extensions-sdk/package.json (+1 -1)
+
+● Edit packages/extensions-sdk/package.json (+4 -4)
+
+Now let me update the storage driver packages:
+
+● Read packages/storage-driver-azure/package.json
+  └ 43 lines read
+
+● Read packages/storage-driver-gcs/package.json
+  └ 43 lines read
+
+● Read packages/storage-driver-cloudinary/package.json
+  └ 44 lines read
+
+● Read packages/storage-driver-local/package.json
+  └ 42 lines read
+
+● Edit packages/storage-driver-local/package.json (+4 -4)
+
+● Edit packages/storage-driver-local/package.json (+2 -2)
+
+● Edit packages/storage-driver-azure/package.json (+4 -4)
+
+● Edit packages/storage-driver-gcs/package.json (+4 -4)
+
+● Edit packages/storage-driver-cloudinary/package.json (+4 -4)
+
+● Edit packages/storage-driver-azure/package.json (+2 -2)
+
+● Edit packages/storage-driver-gcs/package.json (+2 -2)
+
+● Edit packages/storage-driver-cloudinary/package.json (+2 -2)
+
+Now let me update the remaining packages:
+
+● Read packages/types/package.json
+  └ 44 lines read
+
+● Read packages/storage-driver-s3/package.json
+  └ 45 lines read
+
+● Read packages/update-check/package.json
+  └ 43 lines read
+
+● Read packages/utils/package.json
+  └ 66 lines read
+
+● Edit packages/update-check/package.json (+3 -3)
+
+● Edit packages/utils/package.json (+4 -4)
+
+● Edit packages/storage-driver-s3/package.json (+4 -4)
+
+● Edit packages/types/package.json (+4 -4)
+
+● Edit packages/storage-driver-s3/package.json (+2 -2)
+
+● Edit packages/types/package.json (+2 -2)
+
+● Edit packages/utils/package.json (+2 -2)
+
+● Edit packages/utils/package.json (+1 -1)
+
+Now let me update the tests/blackbox package.json:
+
+● Read tests/blackbox/package.json
+  └ 32 lines read
+
+● Edit tests/blackbox/package.json (+1 -1)
+
+Now let me verify the changes by looking at a summary:
+
+● Verify package renames
+  $ cd /www/Brio/brio && echo "=== Root package.json ===" && grep -A 1 '"name"' package.json | head
+  -2 && echo -e "\n=== Brio package.json ===" && grep -A 1 '"name"' brio/package.json | head -2 &&
+  echo -e "\n=== API package.json ===" && grep -A 1 '"name"' api/package.json | head -2 && echo -e
+  "\n=== App package.json ===" && grep -A 1 '"name"' app/package.json | head -2
+  └ 16 lines...
+
+● Verify all package names
+  $ cd /www/Brio/brio && echo "=== Package names ===" && for pkg in packages/*/package.json; do echo
+   "$pkg: $(grep '"name"' $pkg | head -1)"; done
+  └ 18 lines...
+
+Perfect! Now let me verify that the workspace configuration was updated and check if there are any remaining @directus/* references that need to be updated:
+
+● Verify workspace yaml
+  $ cd /www/Brio/brio && cat pnpm-workspace.yaml
+  └ 8 lines...
+
+● Check for remaining @directus references
+  $ cd /www/Brio/brio && grep -r "@directus/" --include="package.json" . | grep -v
+  "@directus/tsconfig" | grep -v "@directus/format-title" | grep -v "node_modules" | head -20
+  └ 1 line...
+
+Excellent! All @directus/* workspace dependencies have been renamed to @brio/*. Let me create a summary document:
+
+● Create completion summary
+  $ cd /www/Brio/brio && cat > /tmp/phase-1a-summary.txt << 'EOF'
+  Phase 1A - Package Identity Rebranding - COMPLETED
+  ===================================================
+
+  SUMMARY OF CHANGES:...
+  └ 156 lines...
+
+Perfect! Let me verify the directory structure is correct:
+
+● List directories
+  $ cd /www/Brio/brio && ls -la | grep -E "^d" | grep -v "^\." | awk '{print $NF}' | sort
+  └ 16 lines...
+
+Excellent! The `directus` directory has been successfully renamed to `brio`. Now let me create a final verification report:
+
+● Final verification
+  $ cd /www/Brio/brio && echo "=== FINAL VERIFICATION REPORT ===" && echo && echo "1. Directory
+  structure:" && ls -d */ 2>/dev/null | head -10 && echo && echo "2. Brio main package exists:"
+  && ls -la brio/package.json && echo && echo "3. Sample package.json verifications:" && echo "
+    Root:" && jq -r '.name' package.json && echo "   Brio:" && jq -r '.name' brio/package.json
+  && echo "   API:" && jq -r '.name' api/package.json && echo "   Composables:" && jq -r '.name'...
+  └ 28 lines...
+
+Perfect! All package.json files have been successfully updated. Let me do one final check to ensure the bin entries are correct:
+
+● Verify bin entries
+  $ cd /www/Brio/brio && echo "=== BIN ENTRIES VERIFICATION ===" && echo && echo "1. Brio main
+  package:" && jq -r '.bin' brio/package.json && echo && echo "2. Extensions SDK:" && jq -r '.bin'
+  packages/extensions-sdk/package.json && echo && echo "3. Create extension:" && jq -r '.bin'
+  packages/create-directus-extension/package.json
+  └ 18 lines...
+
+Perfect! All the binary entries have been correctly updated. Now let me create a comprehensive completion report:
+
+● Create completion report
+  $ cat > /tmp/phase-1a-completion.md << 'EOF'
+  # Phase 1A - Package Identity Rebranding - COMPLETION REPORT
+
+  **Task ID:** phase-1a-package-identity
+  **Date:** 2026-02-13...
+  └ 420 lines...
+
+Perfect! Phase 1A is now complete. Let me create a summary of what was accomplished:
+
+## Phase 1A - Package Identity Rebranding - COMPLETE ✅
+
+I have successfully completed Phase 1A of the Brio rebranding project. Here's what was accomplished:
+
+### Summary of Changes:
+
+1. **Directory Renamed:** `/www/Brio/brio/directus/` → `/www/Brio/brio/brio/`
+
+2. **22 Files Modified:**
+   - Root package.json (brio-monorepo)
+   - pnpm-workspace.yaml
+   - Main brio package
+   - API and App packages
+   - All 16 packages/* subdirectories
+   - Tests/blackbox package
+
+3. **All Package Names Updated:**
+   - @directus/* → @brio/* (for all workspace packages)
+   - Binary commands updated (directus → brio, directus-extension → brio-extension, create-directus-extension → create-brio-extension)
+
+4. **All Metadata Updated:**
+   - Repository URLs: github.com/directus/directus → github.com/nicobrio/brio
+   - Homepage: directus.io → brio.io
+   - Funding: github.com/directus → github.com/nicobrio
+   - Keywords: "directus" → "brio"
+   - Descriptions: "Directus" → "Brio"
+
+5. **External Dependencies Preserved:**
+   - @directus/tsconfig (build tool)
+   - @directus/format-title (npm package)
+
+### Verification:
+✅ All package.json files updated correctly  
+✅ All internal dependencies (@directus/* → @brio/*) updated  
+✅ No remaining workspace @directus/* references  
+✅ Directory structure verified  
+✅ Binary entries verified  
+
+The monorepo is now ready for the next phases of the rebranding project.
+
+[stderr] 
+[stderr] Total usage est:        1 Premium request
+[stderr] API time spent:         4m 27.052s
+[stderr] Total session time:     4m 51.281s
+[stderr] Total code changes:     +142 -142
+[stderr] Breakdown by AI model:
+[stderr]  claude-sonnet-4.5       1.5m in, 20.2k out, 1.4m cached (Est. 1 Premium request)

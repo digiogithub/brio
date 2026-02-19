@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
-const feedbackUrl = process.env.DIRECTUS_URL + '/items/docs_feedback';
-const token = process.env.DIRECTUS_TOKEN;
+const feedbackUrl = process.env.BRIO_URL + '/items/docs_feedback';
+const token = process.env.BRIO_TOKEN;
 
 const headers = {
 	'Content-Type': 'application/json',

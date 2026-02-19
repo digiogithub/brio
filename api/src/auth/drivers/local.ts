@@ -1,5 +1,4 @@
-import type { Accountability } from '@directus/types';
-import argon2 from 'argon2';
+import type { Accountability } from '@brio/types';
 import { Router } from 'express';
 import Joi from 'joi';
 import { performance } from 'perf_hooks';
@@ -34,7 +33,7 @@ export class LocalAuthDriver extends AuthDriver {
 	}
 
 	async verify(user: User, password?: string): Promise<void> {
-		if (!user.password || !(await argon2.verify(user.password, password as string))) {
+		if (!user.password || !(await Bun.password.verify(password as string, user.password))) {
 			throw new InvalidCredentialsException();
 		}
 	}

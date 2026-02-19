@@ -4,7 +4,7 @@ import prettyMS from 'pretty-ms';
 import { computed, ComputedRef, ref, Ref } from 'vue';
 
 type ServerInfo = {
-	directus: {
+	brio: {
 		version: string;
 	};
 	node: {
@@ -22,7 +22,7 @@ type ServerInfo = {
 type UsableProjectInfo = {
 	info: Ref<ServerInfo | undefined>;
 	parsedInfo: ComputedRef<{
-		directus: {
+		brio: {
 			version: string;
 		};
 		node: {
@@ -49,8 +49,8 @@ export function useProjectInfo(): UsableProjectInfo {
 		if (!info.value) return null;
 
 		return {
-			directus: {
-				version: info.value.directus.version,
+			brio: {
+				version: info.value.brio.version,
 			},
 			node: {
 				version: info.value.node.version,

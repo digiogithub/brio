@@ -1,0 +1,155 @@
+I'll complete Phase 1B by updating all import statements from @directus/* to @brio/*. Let me start by executing the replacement steps.
+
+● Verify working directory
+  $ cd /www/Brio/brio && pwd
+  └ 2 lines...
+
+● Replace @directus/* imports with @brio/* in source files (Step 1)
+  $ cd /www/Brio/brio
+
+  # Step 1: Replace all @directus/ imports with @brio/ in source files
+  # Process in order: longest names first to avoid partial replacements...
+  └ 28 lines...
+
+● Update CLI entry point (Step 2)
+  $ cd /www/Brio/brio
+
+  # Step 2: Update the CLI entry point
+  sed -i "s|'@directus/api/cli/run.js'|'@brio/api/cli/run.js'|g" brio/cli.js
+  sed -i 's|"@directus/api/cli/run.js"|"@brio/api/cli/run.js"|g' brio/cli.js...
+  └ 3 lines...
+
+● Update vite.config.js (Step 3)
+  $ cd /www/Brio/brio
+
+  # Step 3: Update vite.config.js - replace all @directus/* imports
+  # Also update directusExtensions function name and virtual module references
+  if [ -f app/vite.config.js ]; then...
+  └ 12 lines...
+
+● Update tsconfig.json files (Step 4)
+  $ cd /www/Brio/brio
+
+  # Step 4: Update tsconfig.json files that extend @directus/*
+  find . -name "tsconfig.json" -not -path "*/node_modules/*" \
+    -exec sed -i "s|@directus/tsconfig|@brio/tsconfig|g" {} +...
+  └ 3 lines...
+
+● Update YAML files (Step 5)
+  $ cd /www/Brio/brio
+
+  # Step 5: Update references in YAML files (but exclude @directus/format-title)
+  find . -type f \( -name "*.yml" -o -name "*.yaml" \) -not -path "*/node_modules/*" -not -path
+  "*/.git/*" | while read file; do...
+  └ 22 lines...
+
+● Update markdown files (Step 6)
+  $ cd /www/Brio/brio
+
+  # Step 6: Update references in markdown files
+  find . -type f -name "*.md" -not -path "*/node_modules/*" -not -path "*/.git/*" \
+    -exec sed -i "s|@directus/composables|@brio/composables|g" {} + \...
+  └ 13 lines...
+
+● Verify no remaining @directus/ references (Step 7)
+  $ cd /www/Brio/brio
+
+  # Step 7: Verify no remaining @directus/ references (except @directus/format-title)
+  echo "=== Verification Report ==="
+  echo ""...
+  └ 40 lines...
+
+I see there are remaining references to `@directus/tsconfig` in package.json files and pnpm-lock.yaml. These need to be updated as well since we're renaming the tsconfig package. Let me update those:
+
+● Update remaining @directus/tsconfig references
+  $ cd /www/Brio/brio
+
+  # Update @directus/tsconfig references in package.json files
+  find . -name "package.json" -not -path "*/node_modules/*" \
+    -exec sed -i 's|"@directus/tsconfig"|"@brio/tsconfig"|g' {} +...
+  └ 11 lines...
+
+● Final verification of replacements
+  $ cd /www/Brio/brio
+
+  # Final verification
+  echo "=== Final Verification Report ==="
+  echo ""...
+  └ 48 lines...
+
+Now let me fix the remaining references. I need to update the SDK references and the shared types import:
+
+● Fix remaining SDK, CLI, and shared references
+  $ cd /www/Brio/brio
+
+  # Fix the @directus/shared import in use-relation-permissions.ts
+  sed -i "s|@directus/shared|@brio/shared|g" ./app/src/composables/use-relation-permissions.ts...
+  └ 12 lines...
+
+● Final comprehensive verification
+  $ cd /www/Brio/brio
+
+  # Final comprehensive verification
+  echo "=== FINAL VERIFICATION REPORT ==="
+  echo ""...
+  └ 54 lines...
+
+Perfect! Let me create a summary document and verify a few key files to confirm the changes:
+
+● Spot check key files
+  $ cd /www/Brio/brio
+
+  # Quick spot check of key files
+  echo "=== SPOT CHECK OF KEY FILES ==="
+  echo ""...
+  └ 37 lines...
+
+Excellent! Now let me create a completion summary document:
+
+● Create completion summary
+  $ cat > /tmp/phase-1b-completion.md << 'EOF'
+  # Phase 1B - Import Statement Updates - COMPLETION REPORT
+
+  **Date:** 2026-02-13
+  **Task ID:** task-32f58da7  ...
+  └ 165 lines...
+
+Perfect! Let me create one final statistics report to show the scope of changes:
+
+● Generate final statistics
+  $ cd /www/Brio/brio
+
+  echo "=== PHASE 1B - FINAL STATISTICS ==="
+  echo ""
+  echo "Files containing @brio/* imports:"...
+  └ 60 lines...
+
+## ✅ Phase 1B Complete
+
+I have successfully updated **all import statements** across the Brio codebase from `@directus/*` to `@brio/*`.
+
+### Summary:
+- **643 files** modified with updated imports
+- **859 total** `@brio/*` import occurrences
+- **0 remaining** `@directus/*` references (except the preserved `@directus/format-title`)
+- **@directus/format-title** correctly preserved (4 occurrences) as it's an external npm package
+
+### Key Updates:
+✅ All source files (.ts, .js, .vue, .mjs, .cjs)  
+✅ CLI entry point (brio/cli.js)  
+✅ Vite configuration (vite.config.js + brioExtensions function)  
+✅ All tsconfig.json files  
+✅ YAML configuration files  
+✅ Markdown documentation  
+✅ package.json files and pnpm-lock.yaml  
+✅ SDK, CLI, and shared type references  
+
+**Phase 1B is complete and the codebase is ready for Phase 1C (Content/Documentation Updates).**
+
+[stderr] 
+[stderr] Total usage est:        1 Premium request
+[stderr] API time spent:         2m 7.339s
+[stderr] Total session time:     2m 35.429s
+[stderr] Total code changes:     +0 -0
+[stderr] Breakdown by AI model:
+[stderr]  claude-sonnet-4.5       505.1k in, 6.9k out, 463.6k cached (Est. 1 Premium request)

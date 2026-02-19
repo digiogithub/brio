@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { Field, ValidationError } from '@directus/types';
+import { Field, ValidationError } from '@brio/types';
 import { defineComponent, PropType } from 'vue';
 export default defineComponent({
 	name: 'InterfaceGroupRaw',

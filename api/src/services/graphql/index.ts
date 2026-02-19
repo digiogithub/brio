@@ -1,8 +1,7 @@
-import { Action, FUNCTIONS } from '@directus/constants';
-import type { BaseException } from '@directus/exceptions';
-import type { Accountability, Aggregate, Filter, PrimaryKey, Query, SchemaOverview } from '@directus/types';
-import { parseFilterFunctionPath } from '@directus/utils';
-import argon2 from 'argon2';
+import { Action, FUNCTIONS } from '@brio/constants';
+import type { BaseException } from '@brio/exceptions';
+import type { Accountability, Aggregate, Filter, PrimaryKey, Query, SchemaOverview } from '@brio/types';
+import { parseFilterFunctionPath } from '@brio/utils';
 import type {
 	ArgumentNode,
 	ExecutionResult,
@@ -985,8 +984,8 @@ export class GraphQLService {
 					type: collection.singleton
 						? ReadCollectionTypes[collection.collection]!
 						: new GraphQLNonNull(
-								new GraphQLList(new GraphQLNonNull(ReadCollectionTypes[collection.collection]!.getType()))
-						  ),
+							new GraphQLList(new GraphQLNonNull(ReadCollectionTypes[collection.collection]!.getType()))
+						),
 					resolve: async ({ info, context }: { info: GraphQLResolveInfo; context: Record<string, any> }) => {
 						const result = await self.resolveQuery(info);
 						context['data'] = result;
@@ -1149,8 +1148,8 @@ export class GraphQLService {
 						name: `create_${collection.collection}_items`,
 						type: collectionIsReadable
 							? new GraphQLNonNull(
-									new GraphQLList(new GraphQLNonNull(ReadCollectionTypes[collection.collection]!.getType()))
-							  )
+								new GraphQLList(new GraphQLNonNull(ReadCollectionTypes[collection.collection]!.getType()))
+							)
 							: GraphQLBoolean,
 						resolve: async ({ args, info }: { args: Record<string, any>; info: GraphQLResolveInfo }) =>
 							await self.resolveMutation(args, info),
@@ -1220,8 +1219,8 @@ export class GraphQLService {
 							name: `update_${collection.collection}_batch`,
 							type: collectionIsReadable
 								? new GraphQLNonNull(
-										new GraphQLList(new GraphQLNonNull(ReadCollectionTypes[collection.collection]!.getType()))
-								  )
+									new GraphQLList(new GraphQLNonNull(ReadCollectionTypes[collection.collection]!.getType()))
+								)
 								: GraphQLBoolean,
 							args: {
 								...(collectionIsReadable
@@ -1241,8 +1240,8 @@ export class GraphQLService {
 							name: `update_${collection.collection}_items`,
 							type: collectionIsReadable
 								? new GraphQLNonNull(
-										new GraphQLList(new GraphQLNonNull(ReadCollectionTypes[collection.collection]!.getType()))
-								  )
+									new GraphQLList(new GraphQLNonNull(ReadCollectionTypes[collection.collection]!.getType()))
+								)
 								: GraphQLBoolean,
 							args: {
 								...(collectionIsReadable
@@ -1315,7 +1314,7 @@ export class GraphQLService {
 
 	/**
 	 * Generic resolver that's used for every "regular" items/system query. Converts the incoming GraphQL AST / fragments into
-	 * Directus' query structure which is then executed by the services.
+	 * Brio' query structure which is then executed by the services.
 	 */
 	async resolveQuery(info: GraphQLResolveInfo): Promise<Partial<Item> | null> {
 		let collection = info.fieldName;
@@ -1498,8 +1497,8 @@ export class GraphQLService {
 
 	/**
 	 * GraphQL's regular resolver `args` variable only contains the "top-level" arguments. Seeing that we convert the
-	 * whole nested tree into one big query using Directus' own query resolver, we want to have a nested structure of
-	 * arguments for the whole resolving tree, which can later be transformed into Directus' AST using `deep`.
+	 * whole nested tree into one big query using Brio' own query resolver, we want to have a nested structure of
+	 * arguments for the whole resolving tree, which can later be transformed into Brio' AST using `deep`.
 	 * In order to do that, we'll parse over all ArgumentNodes and ObjectFieldNodes to manually recreate an object structure
 	 * of arguments
 	 */
@@ -1535,8 +1534,8 @@ export class GraphQLService {
 	}
 
 	/**
-	 * Get a Directus Query object from the parsed arguments (rawQuery) and GraphQL AST selectionSet. Converts SelectionSet into
-	 * Directus' `fields` query for use in the resolver. Also applies variables where appropriate.
+	 * Get a Brio Query object from the parsed arguments (rawQuery) and GraphQL AST selectionSet. Converts SelectionSet into
+	 * Brio' `fields` query for use in the resolver. Also applies variables where appropriate.
 	 */
 	getQuery(
 		rawQuery: Query,
@@ -1699,7 +1698,7 @@ export class GraphQLService {
 	}
 
 	/**
-	 * Replace functions from GraphQL format to Directus-Filter format
+	 * Replace functions from GraphQL format to Brio-Filter format
 	 */
 	replaceFuncs(filter: Filter): Filter {
 		return replaceFuncDeep(filter);
@@ -1722,7 +1721,7 @@ export class GraphQLService {
 	}
 
 	/**
-	 * Convert Directus-Exception into a GraphQL format, so it can be returned by GraphQL properly.
+	 * Convert Brio-Exception into a GraphQL format, so it can be returned by GraphQL properly.
 	 */
 	formatError(error: BaseException | BaseException[]): GraphQLError {
 		if (Array.isArray(error)) {
@@ -1874,25 +1873,25 @@ export class GraphQLService {
 			ServerInfo.addFields({
 				rateLimit: env['RATE_LIMITER_ENABLED']
 					? {
-							type: new GraphQLObjectType({
-								name: 'server_info_rate_limit',
-								fields: {
-									points: { type: GraphQLInt },
-									duration: { type: GraphQLInt },
-								},
-							}),
-					  }
+						type: new GraphQLObjectType({
+							name: 'server_info_rate_limit',
+							fields: {
+								points: { type: GraphQLInt },
+								duration: { type: GraphQLInt },
+							},
+						}),
+					}
 					: GraphQLBoolean,
 				rateLimitGlobal: env['RATE_LIMITER_GLOBAL_ENABLED']
 					? {
-							type: new GraphQLObjectType({
-								name: 'server_info_rate_limit_global',
-								fields: {
-									points: { type: GraphQLInt },
-									duration: { type: GraphQLInt },
-								},
-							}),
-					  }
+						type: new GraphQLObjectType({
+							name: 'server_info_rate_limit_global',
+							fields: {
+								points: { type: GraphQLInt },
+								duration: { type: GraphQLInt },
+							},
+						}),
+					}
 					: GraphQLBoolean,
 				flows: {
 					type: new GraphQLObjectType({
@@ -1909,9 +1908,9 @@ export class GraphQLService {
 
 		if (this.accountability?.admin === true) {
 			ServerInfo.addFields({
-				directus: {
+				brio: {
 					type: new GraphQLObjectType({
-						name: 'server_info_directus',
+						name: 'server_info_brio',
 						fields: {
 							version: {
 								type: GraphQLString,
@@ -2322,7 +2321,7 @@ export class GraphQLService {
 					hash: new GraphQLNonNull(GraphQLString),
 				},
 				resolve: async (_, args) => {
-					return await argon2.verify(args['hash'], args['string']);
+					return await Bun.password.verify(args['string'], args['hash']);
 				},
 			},
 			utils_sort: {

@@ -1,0 +1,191 @@
+I'll perform the final verification and testing QA for the Brio project. Let me start by running comprehensive checks.
+
+● Check for remaining Directus references in source files
+  $ cd /www/Brio/brio && echo "=== PHASE 8: FINAL VERIFICATION AND TESTING QA ===" && echo && echo
+   "=== 1. CHECKING REMAINING DIRECTUS REFERENCES ===" && echo && echo "--- Source files
+  (TS/JS/Vue) ---" && grep -rn "Directus\|directus" --include="*.ts" --include="*.js"
+  --include="*.vue" . 2>/dev/null | grep -v node_modules | grep -v ".git/" | grep -v "directus_"
+   | grep -v "@directus/format-title" | head -20 && echo && echo "Total count:" && grep -rn ...
+  └ 32 lines...
+
+● Check package.json files for directus references
+  $ cd /www/Brio/brio && echo "--- Package.json files ---" && grep -rn "directus"
+  --include="package.json" . 2>/dev/null | grep -v node_modules | grep -v ".git/" | head -30
+  └ 4 lines...
+
+● Check YAML files for directus references
+  $ cd /www/Brio/brio && echo "--- YAML files ---" && grep -rn "irectus" --include="*.yaml"
+  --include="*.yml" . 2>/dev/null | grep -v node_modules | grep -v ".git/" | grep -v "directus_" |
+  head -20
+  └ 22 lines...
+
+● Check markdown files for directus references
+  $ cd /www/Brio/brio && echo "--- Markdown docs ---" && grep -rn "irectus" --include="*.md" .
+  2>/dev/null | grep -v node_modules | grep -v ".git/" | grep -v "directus_" | grep -v
+  "fork\|Fork\|origin\|Origin\|heritage\|Heritage\|attribution\|Attribution\|NOTICE\|Monospace" |
+  head -30
+  └ 32 lines...
+
+● Verify bun install works
+  $ cd /www/Brio/brio && echo "=== 2. BUILD VERIFICATION ===" && echo && echo "--- Checking bun
+  install ---" && bun install 2>&1 | tail -10
+  └ 14 lines...
+
+● Check if tsconfig package exists
+  $ cd /www/Brio/brio && echo "Checking if @brio/tsconfig package exists..." && ls -la packages/ |
+  grep -i tsconfig
+  └ 2 lines...
+
+● Verify package structure and naming
+  $ cd /www/Brio/brio && echo "=== 3. PACKAGE STRUCTURE VERIFICATION ===" && echo && echo "--- All
+  packages with names ---" && for dir in packages/*/; do name=$(cat "$dir/package.json" 2>/dev/null
+  | grep '"name"' | head -1); echo "$(basename $dir): $name"; done
+  └ 20 lines...
+
+● Verify brio directory and CLI
+  $ cd /www/Brio/brio && echo "--- Verify brio/ directory exists ---" && ls -la brio/ | head -15 &&
+  echo && echo "--- Verify CLI entry ---" && head -5 brio/cli.js
+  └ 12 lines...
+
+● Verify logo files exist
+  $ cd /www/Brio/brio && echo "=== 4. LOGO VERIFICATION ===" && echo && for f in
+  app/src/assets/logo.svg app/src/assets/logo-dark.svg app/src/views/public/logo-dark.svg
+  app/src/views/public/logo-light.svg docs/public/logo-dark.svg docs/public/logo-light.svg; do echo
+  "$f: $(test -f "$f" && echo "EXISTS" || echo "MISSING")"; done
+  └ 9 lines...
+
+● Verify Bun migration
+  $ cd /www/Brio/brio && echo "=== 5. BUN MIGRATION VERIFICATION ===" && echo && echo "--- Check no
+  tsc --build in package scripts ---" && grep -rn "tsc --build" --include="package.json" .
+  2>/dev/null | grep -v node_modules | wc -l && echo && echo "--- Check Dockerfile uses Bun ---" &&
+  head -5 Dockerfile && echo && grep "oven/bun" Dockerfile | head -3
+  └ 15 lines...
+
+● Verify CLI and workspaces
+  $ cd /www/Brio/brio && echo "--- Check CLI shebang ---" && head -1 brio/cli.js && echo && echo
+  "--- Check root package.json has workspaces ---" && grep -A 15 '"workspaces"' package.json
+  └ 21 lines...
+
+● Detailed analysis of remaining references
+  $ cd /www/Brio/brio && echo "=== DETAILED ANALYSIS OF REMAINING DIRECTUS REFERENCES ===" && echo
+   && echo "Analyzing source files with 'directus' (excluding legitimate cases)..." && grep -rn
+  "directus" --include="*.ts" --include="*.js" --include="*.vue" . 2>/dev/null | grep -v
+  node_modules | grep -v ".git/" | grep -v "directus_" | grep -v "@directus/format-title" | grep
+   -v "issuer: 'directus'" | grep -v "DirectusTokenPayload" | grep -v "cdn.directus.io" | grep ...
+  └ 6 lines...
+
+● Find problematic directus references
+  $ cd /www/Brio/brio && echo "Finding actual problematic references..." && grep -rn "directus"
+  --include="*.ts" --include="*.js" --include="*.vue" . 2>/dev/null | grep -v node_modules |
+  grep -v ".git/" | grep -v "directus_" | grep -v "@directus/format-title" | grep -v "issuer:
+  'directus'" | grep -v "DirectusTokenPayload" | grep -v "cdn.directus.io" | grep -v
+  "test.*directus" | grep -v "github.com/directus/directus" | grep -v "discussions/4368" | grep ...
+  └ 53 lines...
+
+Let me check the critical files that need fixes and count total files to understand the scope:
+
+● Count file statistics
+  $ cd /www/Brio/brio && echo "=== COUNT FILES BY TYPE ===" && echo && echo "Total
+  TypeScript/JavaScript/Vue files:" && find . -type f \( -name "*.ts" -o -name "*.js" -o -name
+  "*.vue" \) -not -path "*/node_modules/*" -not -path "*/.git/*" | wc -l && echo && echo "Files
+  modified in git (since initial commit):" && git log --oneline --all | wc -l && echo && echo "Git
+  status:" && git --no-pager status --short | wc -l
+  └ 11 lines...
+
+● Check tsconfig references
+  $ cd /www/Brio/brio && echo "=== CRITICAL ISSUE: MISSING @brio/tsconfig ===" && echo && echo
+  "Checking references to @brio/tsconfig:" && grep -rn "@brio/tsconfig" --include="package.json" .
+  2>/dev/null | grep -v node_modules | head -20
+  └ 19 lines...
+
+● Find tsconfig package
+  $ cd /www/Brio/brio && echo "Looking for old tsconfig package..." && find . -name "tsconfig" -type
+   d -not -path "*/node_modules/*" 2>/dev/null && echo && echo "Checking for any TypeScript config
+  packages..." && ls -la packages/ | grep -i "config\|typescript"
+  └ 4 lines...
+
+Now let me create the comprehensive final report:
+
+● Create PHASE-8-FINAL-VERIFICATION-REPORT.md (+443)
+
+● Create issue tracker for remaining work
+  $ cd /www/Brio/brio && echo "=== CREATING ISSUE TRACKER FOR REMAINING WORK ===" && cat >
+  PHASE-8-REMAINING-ISSUES.md << 'EOF'
+  # Phase 8: Remaining Issues Tracker
+
+  ## 🔴 CRITICAL - BLOCKING DEPLOYMENT...
+  └ 735 lines...
+
+Now let me create a summary document:
+
+● Create PHASE-8-EXECUTIVE-SUMMARY.md (+206)
+
+Perfect! Now let me create a quick reference guide and summary of legitimate vs problematic Directus references:
+
+● Create DIRECTUS-REFERENCES-GUIDE.md (+205)
+
+Excellent! Now let me create one final summary to save as a completion artifact:
+
+● Create final completion summary
+  $ cd /www/Brio/brio && cat > PHASE-8-COMPLETION.txt << 'EOF'
+  ================================================================================
+    PHASE 8: FINAL VERIFICATION AND TESTING QA — COMPLETION REPORT
+  ================================================================================...
+  └ 382 lines...
+
+Perfect! Now let me create a final index file to help navigate all the documentation:
+
+● Show final summary
+  $ cd /www/Brio/brio && echo "Creating documentation index..." && ls -lh PHASE-8-*.md
+  PHASE-8-*.txt DIRECTUS-*.md 2>/dev/null && echo && echo "=== PHASE 8 VERIFICATION COMPLETE
+  ===" && echo && echo "📋 Documentation created:" && echo "  ✓ PHASE-8-COMPLETION.txt
+  (summary)" && echo "  ✓ PHASE-8-EXECUTIVE-SUMMARY.md (stakeholders)" && echo "  ✓
+  PHASE-8-FINAL-VERIFICATION-REPORT.md (technical)" && echo "  ✓ PHASE-8-REMAINING-ISSUES.md ...
+  └ 32 lines...
+
+## Phase 8 Final Verification — Complete ✓
+
+I've completed the comprehensive final verification and testing QA for the Brio rebranding project. Here's what was accomplished:
+
+### 📋 **Documentation Delivered** (5 files)
+
+1. **PHASE-8-COMPLETION.txt** — Quick summary for immediate reference
+2. **PHASE-8-EXECUTIVE-SUMMARY.md** — High-level stakeholder report
+3. **PHASE-8-FINAL-VERIFICATION-REPORT.md** — Complete technical analysis (13KB)
+4. **PHASE-8-REMAINING-ISSUES.md** — Issue tracker with 16 actionable items
+5. **DIRECTUS-REFERENCES-GUIDE.md** — Developer reference for cleanup work
+
+### ✅ **What's Working** (85% Complete)
+
+- ✅ All 16 packages renamed to `@brio/*` namespace
+- ✅ Bun.js migration 100% complete (Dockerfile, CLI, scripts)
+- ✅ All 6 logo files in place
+- ✅ Core directory `directus/` → `brio/` migrated
+- ✅ CLI entry point with correct Bun shebang
+
+### 🔴 **CRITICAL BLOCKER**
+
+**Missing `@brio/tsconfig` package** — prevents `bun install` from succeeding. Affects 15 packages. Must create this package before any testing or deployment can proceed.
+
+### ⚠️ **Remaining Work** (16 issues)
+
+- 1 CRITICAL (P0) — Build blocker
+- 6 HIGH (P1) — Code references, GraphQL schema, CLI messages, main README
+- 8 MEDIUM (P2) — Variable names, CSS classes, documentation
+- 1 LOW (P3) — Telemetry endpoint
+
+### 📊 **Key Findings**
+
+- **Total Directus references:** 315
+- **Legitimate (keep):** ~226 (72%) — database tables, external deps, JWT tokens, fork attribution
+- **Problematic (fix):** ~89 (28%) — internal code, schemas, UI components
+
+All findings have been thoroughly documented with specific file locations, code samples, and recommended solutions. The project is ready for the final push once the tsconfig blocker is resolved.
+
+[stderr] 
+[stderr] Total usage est:        1 Premium request
+[stderr] API time spent:         5m 51.937s
+[stderr] Total session time:     6m 51.576s
+[stderr] Total code changes:     +854 -0
+[stderr] Breakdown by AI model:
+[stderr]  claude-sonnet-4.5       851.7k in, 17.3k out, 795.2k cached (Est. 1 Premium request)

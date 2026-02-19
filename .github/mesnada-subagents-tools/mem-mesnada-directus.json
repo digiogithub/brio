@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "remembrances": {
+      "type": "http",
+      "url": "http://127.0.0.1:3288/mcp",
+      "tools": [
+        "*"
+      ]
+    },
+    "mesnada": {
+      "type": "http",
+      "url": "http://127.0.0.1:8265/mcp",
+      "tools": [
+        "*"
+      ]
+    }
+  }
+}

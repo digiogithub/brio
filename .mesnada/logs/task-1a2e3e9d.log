@@ -1,0 +1,93 @@
+I'll complete Phase 6 - Dockerfile and Docker Compose adaptation for Bun.js. Let me start by examining the current files and then make the necessary changes.
+
+● Read Dockerfile
+  └ 45 lines read
+
+● Read docker-compose.yml
+  └ 168 lines read
+
+● Check if .dockerignore exists
+  $ ls -la /www/Brio/brio/.dockerignore 2>&1 || echo "File does not exist"
+  └ 2 lines...
+
+Now I'll update all the Docker files as specified:
+
+● Read .dockerignore
+  └ 9 lines read
+
+● Edit docker-compose.yml (+1 -1)
+
+● Edit Dockerfile (+41 -18)
+
+● Edit docker-compose.yml (+1 -1)
+
+● Edit docker-compose.yml (+1 -1)
+
+● Edit docker-compose.yml (+1 -1)
+
+● Edit docker-compose.yml (+1 -1)
+
+● Edit docker-compose.yml (+1 -1)
+
+Now I'll update the .dockerignore file and create the production docker-compose file:
+
+● Create docker-compose.prod.yml (+38)
+
+● Edit .dockerignore (+13 -9)
+
+Now let me verify the changes and create a summary document:
+
+● View changes made to Docker files
+  $ cd /www/Brio/brio && git --no-pager diff Dockerfile docker-compose.yml .dockerignore | head -100
+  └ 100 lines...
+
+● Verify production compose file
+  $ cd /www/Brio/brio && ls -lh docker-compose.prod.yml && cat docker-compose.prod.yml
+  └ 39 lines...
+
+Perfect! Let me verify the Dockerfile changes are complete:
+
+● Read Dockerfile
+  └ 68 lines read
+
+Excellent! Now let me create a completion summary:
+
+● Create completion summary
+  $ cat > /tmp/phase6-completion.md << 'EOF'
+  # Phase 6 — Dockerfile and Docker Compose Adaptation for Bun.js
+
+  **Status:** ✅ COMPLETED
+  **Date:** 2026-02-13  ...
+  └ 188 lines...
+
+Perfect! Let me verify all changes one final time:
+
+● Final verification of all changes
+  $ cd /www/Brio/brio && git --no-pager status --short && echo -e "\n=== Files Summary ===" && ls
+  -lh Dockerfile docker-compose.yml docker-compose.prod.yml .dockerignore
+  └ 9 lines...
+
+● Show change statistics
+  $ cd /www/Brio/brio && git --no-pager diff --stat Dockerfile docker-compose.yml .dockerignore &&
+  ls -lh docker-compose.prod.yml
+  └ 6 lines...
+
+## ✅ Phase 6 Complete — Dockerfile and Docker Compose Adaptation
+
+All Docker configuration files have been successfully migrated to Bun.js:
+
+**Completed Tasks:**
+1. ✅ **Dockerfile** - Complete rewrite using `oven/bun:latest` with optimized build stages, health checks, and native TypeScript support
+2. ✅ **docker-compose.yml** - Updated all database names from `directus` to `brio` and documentation URLs to `docs.brio.io`
+3. ✅ **.dockerignore** - Updated with Bun-specific exclusions and improved patterns
+4. ✅ **docker-compose.prod.yml** - New production-ready configuration with PostgreSQL 16, volumes, and security best practices
+
+**Statistics:** 3 files modified, 1 file created, 70 insertions, 52 deletions
+
+[stderr] 
+[stderr] Total usage est:        1 Premium request
+[stderr] API time spent:         1m 34.878s
+[stderr] Total session time:     1m 45.572s
+[stderr] Total code changes:     +98 -33
+[stderr] Breakdown by AI model:
+[stderr]  claude-sonnet-4.5       312.0k in, 5.4k out, 270.9k cached (Est. 1 Premium request)

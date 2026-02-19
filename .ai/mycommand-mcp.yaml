@@ -1,0 +1,15 @@
+# prompts:
+#   - name: "debug-remembrances-mcp"
+#     description: "Send tasks to opencode agent connected to remembrances last build for testing tools and logic"
+#     content: |
+#       perfecto, usa la herramienta de enviar tareas al agente de opencode
+#       para probar enviar a la knowledge base de remembrances la información
+#       que obtengas con la tool `initial-context
+
+tools:
+  - name: "initial-context"
+    description: "Get initial context information for tasks"
+    command: ".ai/scripts/initial-context.sh"
+    path: "/www/Brio/brio/"
+    accepts_args: true
+    accept_input: false

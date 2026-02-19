@@ -1,13 +1,10 @@
 import { randNumber, randSemver, randSentence, randWord } from '@ngneat/falso';
 import { URL } from 'node:url';
 import { gte } from 'semver';
-import type { Response } from 'undici';
-import { fetch } from 'undici';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { isUpToDate } from './index.js';
 
 vi.mock('semver');
-vi.mock('undici');
 vi.mock('node:url');
 
 let sample: {
@@ -16,7 +13,7 @@ let sample: {
 	latest: string;
 };
 
-let mockResponse: { -readonly [P in keyof Response]: Response[P] };
+let mockResponse: Response;
 let mockResponseJson: { 'dist-tags': { latest: string } };
 
 beforeEach(() => {

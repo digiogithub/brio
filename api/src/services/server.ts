@@ -1,5 +1,5 @@
-import type { Accountability, SchemaOverview } from '@directus/types';
-import { toArray } from '@directus/utils';
+import type { Accountability, SchemaOverview } from '@brio/types';
+import { toArray } from '@brio/utils';
 import type { Knex } from 'knex';
 import { merge } from 'lodash-es';
 import { Readable } from 'node:stream';
@@ -78,7 +78,7 @@ export class ServerService {
 		if (this.accountability?.admin === true) {
 			const { osType, osVersion } = getOSInfo();
 
-			info['directus'] = {
+			info['brio'] = {
 				version,
 			};
 
@@ -202,7 +202,7 @@ export class ServerService {
 
 			if (
 				Number(checks[`${client}:responseTime`]![0]!.observedValue!) >
-					checks[`${client}:responseTime`]![0]!.threshold! &&
+				checks[`${client}:responseTime`]![0]!.threshold! &&
 				checks[`${client}:responseTime`]![0]!.status !== 'error'
 			) {
 				checks[`${client}:responseTime`]![0]!.status = 'warn';
@@ -342,7 +342,7 @@ export class ServerService {
 
 				if (
 					checks['rateLimiterGlobal:responseTime']![0]!.observedValue >
-						checks['rateLimiterGlobal:responseTime']![0]!.threshold! &&
+					checks['rateLimiterGlobal:responseTime']![0]!.threshold! &&
 					checks['rateLimiterGlobal:responseTime']![0]!.status !== 'error'
 				) {
 					checks['rateLimiterGlobal:responseTime']![0]!.status = 'warn';
@@ -390,7 +390,7 @@ export class ServerService {
 
 					if (
 						Number(checks[`storage:${location}:responseTime`]![0]!.observedValue!) >
-							checks[`storage:${location}:responseTime`]![0]!.threshold! &&
+						checks[`storage:${location}:responseTime`]![0]!.threshold! &&
 						checks[`storage:${location}:responseTime`]![0]!.status !== 'error'
 					) {
 						checks[`storage:${location}:responseTime`]![0]!.status = 'warn';

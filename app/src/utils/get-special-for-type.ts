@@ -1,4 +1,4 @@
-import { Type } from '@directus/types';
+import { Type } from '@brio/types';
 
 export function getSpecialForType(type: Type): string[] | null {
 	switch (type) {

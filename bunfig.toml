@@ -1,0 +1,13 @@
+# Brio BaaS & CMS — Bun Configuration
+
+[install]
+# Save the exact versions in the lockfile
+exact = true
+
+[run]
+# Enable sourcemaps for better stack traces
+sourcemap = "external"
+
+[test]
+# Test configuration
+coverage = true

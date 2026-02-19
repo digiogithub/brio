@@ -1,5 +1,5 @@
 ---
-description: Learn how to migrate your data model to a new Directus project using Node.js.
+description: Learn how to migrate your data model to a new Brio project using Node.js.
 tags: []
 skill_level:
 directus_version: 9.23.0
@@ -13,17 +13,17 @@ author: Kevin Lewis
 
 :::tip Author: {{$frontmatter.author}}
 
-**Directus Version:** {{$frontmatter.directus_version}}
+**Brio Version:** {{$frontmatter.directus_version}}
 
 :::
 
 ## Explanation
 
-Directus' schema migration endpoints allow users to retrieve a project's data model and apply changes to another
+Brio' schema migration endpoints allow users to retrieve a project's data model and apply changes to another
 project.
 
 This is useful if you make changes to a data model in a development project and need to apply them to a production
-project, or to move from a self-hosted project to Directus Cloud.
+project, or to move from a self-hosted project to Brio Cloud.
 
 ## How-To Guide
 
@@ -33,7 +33,7 @@ You must be an admin user to use these endpoints and follow this guide.
 
 :::
 
-You should have two Directus projects - this guide will refer to them as the "base" and the "target". Before starting,
+You should have two Brio projects - this guide will refer to them as the "base" and the "target". Before starting,
 make sure you have a static access token for both projects.
 
 ### Set Up Project
@@ -46,10 +46,10 @@ Create a new `index.js` file and set it up:
 ```js
 const fetch = require('cross-fetch');
 
-const BASE_DIRECTUS_URL = 'https://your-base-project.directus.app';
+const BASE_DIRECTUS_URL = 'https://your-base-project.brio.app';
 const BASE_ACCESS_TOKEN = 'your-access-token';
 
-const TARGET_DIRECTUS_URL = 'https://your-target-project.directus.app';
+const TARGET_DIRECTUS_URL = 'https://your-target-project.brio.app';
 const TARGET_ACCESS_TOKEN = 'your-access-token';
 
 async function main() {}
@@ -146,7 +146,7 @@ Apply the diff by running `node index.js`.
 
 ## Final Tips
 
-The diff endpoint does not allow different Directus versions and database vendors by default. This is to avoid any
+The diff endpoint does not allow different Brio versions and database vendors by default. This is to avoid any
 unintentional diffs from being generated. You can opt in to bypass these checks by adding a second query parameter
 called `force` with the value of `true`.
 
@@ -160,10 +160,10 @@ The complete and final code is available below.
 ```js
 const fetch = require('cross-fetch');
 
-const BASE_DIRECTUS_URL = 'https://your-base-project.directus.app';
+const BASE_DIRECTUS_URL = 'https://your-base-project.brio.app';
 const BASE_ACCESS_TOKEN = 'your-access-token';
 
-const TARGET_DIRECTUS_URL = 'https://your-target-project.directus.app';
+const TARGET_DIRECTUS_URL = 'https://your-target-project.brio.app';
 const TARGET_ACCESS_TOKEN = 'your-access-token';
 
 async function main() {

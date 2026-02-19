@@ -1,4 +1,4 @@
-import { defineInterface } from '@directus/utils';
+import { defineInterface } from '@brio/utils';
 import InterfaceSelectRadio from './select-radio.vue';
 import PreviewSVG from './preview.svg?raw';
 

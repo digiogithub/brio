@@ -1,4 +1,4 @@
-import type { SchemaOverview } from '@directus/types';
+import type { SchemaOverview } from '@brio/types';
 import type { Knex } from 'knex';
 import getDatabase, {
 	hasDatabaseConnection,
@@ -23,7 +23,7 @@ export default async function bootstrap({ skipAdminInit }: { skipAdminInit?: boo
 	await waitForDatabase(database);
 
 	if ((await isInstalled()) === false) {
-		logger.info('Installing Directus system tables...');
+		logger.info('Installing Brio system tables...');
 
 		await installDatabase(database);
 

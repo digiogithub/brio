@@ -3,10 +3,10 @@
 
 [build]
 	publish = ".vitepress/dist"
-	command = "pnpm run build"
+	command = "bun run build"
 
 [dev]
-	command = "pnpm run dev"
+	command = "bun run dev"
 	targetPort = 5173
 	autoLaunch = false
 	framework = "#custom"
