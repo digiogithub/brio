@@ -1,4 +1,4 @@
-import { defineOperationApp } from '@directus/extensions-sdk';
+import { defineOperationApp } from '@brio/extensions-sdk';
 
 export default defineOperationApp({
 	id: 'custom',

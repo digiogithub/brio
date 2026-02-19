@@ -3,7 +3,7 @@
 		<dl v-if="parsedInfo">
 			<div>
 				<dt>{{ t('directus_version') }}</dt>
-				<dd>{{ parsedInfo.directus.version }}</dd>
+				<dd>{{ parsedInfo.brio.version }}</dd>
 			</div>
 			<div>
 				<dt>{{ t('node_version') }}</dt>

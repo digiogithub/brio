@@ -1,3 +1,3 @@
-# `@directus/storage`
+# `@brio/storage`
 
-Storage abstraction for Directus
+Storage abstraction for Brio

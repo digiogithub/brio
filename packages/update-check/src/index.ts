@@ -1,6 +1,5 @@
 import { URL } from 'node:url';
 import { gte } from 'semver';
-import { fetch } from 'undici';
 
 /**
  * Check if a given package version is the most up to date release of that package. Returns the

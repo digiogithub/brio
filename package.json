@@ -1,12 +1,20 @@
 {
-	"name": "directus-monorepo",
+	"name": "brio-monorepo",
 	"private": true,
+	"workspaces": [
+		"brio",
+		"app",
+		"api",
+		"docs",
+		"packages/*",
+		"tests/*"
+	],
 	"scripts": {
-		"build": "pnpm --recursive --filter '!docs' run build",
+		"build": "bun run --filter '!docs' build",
 		"format": "prettier --write \"**/*.{md,y?(a)ml,json}\"",
 		"lint": "eslint .",
-		"test": "pnpm --recursive --filter '!tests-blackbox' test",
-		"test:blackbox": "pnpm --filter directus deploy --prod dist && pnpm --filter tests-blackbox test"
+		"test": "bun test",
+		"test:blackbox": "bun run --filter tests-blackbox test"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "5.59.0",
@@ -18,9 +26,7 @@
 		"eslint-plugin-vue": "9.11.0",
 		"prettier": "2.8.7"
 	},
-	"packageManager": "pnpm@8.3.1",
 	"engines": {
-		"node": ">=18.0.0",
-		"pnpm": ">=8.1.0"
+		"bun": ">=1.1.0"
 	}
 }

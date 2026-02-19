@@ -1701,7 +1701,7 @@ interfaces:
     recursive_only: A interface de exibição em árvore só funciona para relações recursivas.
   user:
     user: Usuário
-    description: Selecione um usuário Directus existente
+    description: Selecione um usuário Brio existente
     select_mode: Selecionar modo
     modes:
       auto: Automático
@@ -1859,7 +1859,7 @@ displays:
     display_template_configure_notice: Você pode configurar o modelo de exibição após criar este campo.
   user:
     user: Usuário
-    description: Exibe um usuário do Directus
+    description: Exibe um usuário do Brio
     avatar: Imagem de Perfil
     name: Nome
     both: Ambos

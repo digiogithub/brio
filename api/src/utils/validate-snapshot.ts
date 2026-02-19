@@ -1,15 +1,15 @@
-import { TYPES } from '@directus/constants';
+import { TYPES } from '@brio/constants';
 import Joi from 'joi';
 import { ALIAS_TYPES } from '../constants.js';
 import { getDatabaseClient } from '../database/index.js';
 import { InvalidPayloadException } from '../exceptions/invalid-payload.js';
 import type { Snapshot } from '../types/index.js';
 import { DatabaseClients } from '../types/index.js';
-import { version as currentDirectusVersion } from './package.js';
+import { version as currentBrioVersion } from './package.js';
 
 const snapshotJoiSchema = Joi.object({
 	version: Joi.number().valid(1).required(),
-	directus: Joi.string().required(),
+	brio: Joi.string().required(),
 	vendor: Joi.string()
 		.valid(...DatabaseClients)
 		.optional(),
@@ -60,9 +60,9 @@ export function validateSnapshot(snapshot: Snapshot, force = false) {
 	// Bypass checks when "force" option is enabled
 	if (force) return;
 
-	if (snapshot.directus !== currentDirectusVersion) {
+	if (snapshot.brio !== currentBrioVersion) {
 		throw new InvalidPayloadException(
-			`Provided snapshot's directus version ${snapshot.directus} does not match the current instance's version ${currentDirectusVersion}. You can bypass this check by passing the "force" query parameter.`
+			`Provided snapshot's brio version ${snapshot.brio} does not match the current instance's version ${currentBrioVersion}. You can bypass this check by passing the "force" query parameter.`
 		);
 	}
 

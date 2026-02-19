@@ -1,37 +1,38 @@
 {
-	"name": "@directus/utils",
+	"name": "@brio/utils",
 	"version": "9.26.0",
 	"type": "module",
 	"scripts": {
-		"build": "tsc --project browser/tsconfig.json && tsc --project node/tsconfig.json && tsc --project shared/tsconfig.json",
-		"dev": "concurrently \"tsc --watch --project browser/tsconfig.json\" \"tsc --watch --project node/tsconfig.json\" \"tsc --watch --project shared/tsconfig.json\"",
+		"build": "echo 'No build needed - Bun runs TypeScript natively'",
+		"dev": "echo 'No dev build needed - Bun runs TypeScript natively'",
 		"test": "vitest --watch=false"
 	},
-	"description": "Utilities shared between the Directus packages",
+	"description": "Utilities shared between the Brio packages",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/directus/directus.git",
+		"url": "https://github.com/nicobrio/brio.git",
 		"directory": "packages/utils"
 	},
-	"funding": "https://github.com/directus/directus?sponsor=1",
+	"funding": "https://github.com/nicobrio/brio?sponsor=1",
 	"license": "GPL-3.0",
 	"author": "Rijk van Zanten <rijkvanzanten@me.com>",
 	"exports": {
 		".": {
-			"types": "./dist/shared/index.d.ts",
-			"import": "./dist/shared/index.js"
+			"types": "./shared/index.ts",
+			"import": "./shared/index.ts"
 		},
 		"./node": {
-			"types": "./dist/node/index.d.ts",
-			"import": "./dist/node/index.js"
+			"types": "./node/index.ts",
+			"import": "./node/index.ts"
 		},
 		"./browser": {
-			"types": "./dist/browser/index.d.ts",
-			"import": "./dist/browser/index.js"
+			"types": "./browser/index.ts",
+			"import": "./browser/index.ts"
 		},
 		"./package.json": "./package.json"
 	},
-	"main": "dist/shared/index.js",
+	"main": "shared/index.ts",
+	"types": "shared/index.ts",
 	"files": [
 		"dist",
 		"!**/*.test.{js,d.ts}"
@@ -40,8 +41,8 @@
 		"access": "public"
 	},
 	"dependencies": {
-		"@directus/constants": "workspace:*",
-		"@directus/storage": "workspace:*",
+		"@brio/constants": "workspace:*",
+		"@brio/storage": "workspace:*",
 		"date-fns": "2.29.3",
 		"fs-extra": "11.1.1",
 		"joi": "17.9.1",
@@ -51,8 +52,8 @@
 		"vue": "3.2.47"
 	},
 	"devDependencies": {
-		"@directus/tsconfig": "0.0.7",
-		"@directus/types": "workspace:*",
+		"@brio/tsconfig": "0.0.7",
+		"@brio/types": "workspace:*",
 		"@ngneat/falso": "6.4.0",
 		"@types/fs-extra": "11.0.1",
 		"@types/lodash-es": "4.17.7",

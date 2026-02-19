@@ -1,5 +1,5 @@
 packages:
-  - directus
+  - brio
   - app
   - api
   - docs

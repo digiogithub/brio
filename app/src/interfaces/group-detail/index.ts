@@ -1,4 +1,4 @@
-import { defineInterface } from '@directus/utils';
+import { defineInterface } from '@brio/utils';
 import InterfaceGroupDetail from './group-detail.vue';
 import PreviewSVG from './preview.svg?raw';
 

@@ -1,6 +1,7 @@
 {
-	"name": "docs",
+	"name": "@brio/docs",
 	"private": true,
+	"description": "Brio documentation site",
 	"scripts": {
 		"spellcheck": "spellchecker -p spell indefinite-article repeated-words syntax-mentions syntax-urls frontmatter",
 		"dev": "vitepress dev",

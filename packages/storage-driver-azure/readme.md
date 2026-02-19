@@ -1,3 +1,3 @@
-# `@directus/storage-driver-azure`
+# `@brio/storage-driver-azure`
 
-Azure file storage driver for `@directus/storage`
+Azure file storage driver for `@brio/storage`

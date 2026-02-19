@@ -32,4 +32,4 @@ jobs:
           build: false
 
       - name: Lint
-        run: pnpm --filter docs spellcheck
+        run: bun --filter docs spellcheck

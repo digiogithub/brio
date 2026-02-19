@@ -1,5 +1,5 @@
 ---
-description: REST and GraphQL API documentation on the Settings collection in Directus.
+description: REST and GraphQL API documentation on the Settings collection in Brio.
 readTime: 3 min read
 pageClass: page-reference
 ---
@@ -78,7 +78,7 @@ Custom aspect ratios in the [image editor](/app/file-library#edit-an-image).
 {
 	"data": {
 		"id": 1,
-		"project_name": "Directus",
+		"project_name": "Brio",
 		"project_descriptor": "Application",
 		"project_url": null,
 		"project_color": null,

@@ -1,4 +1,4 @@
-import type { KNEX_TYPES } from '@directus/constants';
+import type { KNEX_TYPES } from '@brio/constants';
 import type { Options } from '../types.js';
 import { SchemaHelper } from '../types.js';
 

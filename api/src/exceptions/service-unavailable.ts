@@ -1,4 +1,4 @@
-import { BaseException } from '@directus/exceptions';
+import { BaseException } from '@brio/exceptions';
 
 type Extensions = {
 	service: string;

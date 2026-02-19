@@ -1,5 +1,5 @@
-import type { Accountability, SchemaOverview } from '@directus/types';
-import { Action } from '@directus/constants';
+import type { Accountability, SchemaOverview } from '@brio/types';
+import { Action } from '@brio/constants';
 import jwt from 'jsonwebtoken';
 import type { Knex } from 'knex';
 import { clone, cloneDeep } from 'lodash-es';
@@ -16,7 +16,7 @@ import {
 	UserSuspendedException,
 } from '../exceptions/index.js';
 import { createRateLimiter } from '../rate-limiter.js';
-import type { AbstractServiceOptions, DirectusTokenPayload, LoginResult, Session, User } from '../types/index.js';
+import type { AbstractServiceOptions, BrioTokenPayload, LoginResult, Session, User } from '../types/index.js';
 import { getMilliseconds } from '../utils/get-milliseconds.js';
 import { stall } from '../utils/stall.js';
 import { ActivityService } from './activity.js';
@@ -206,7 +206,7 @@ export class AuthenticationService {
 
 		const accessToken = jwt.sign(customClaims, env['SECRET'] as string, {
 			expiresIn: env['ACCESS_TOKEN_TTL'],
-			issuer: 'directus',
+			issuer: 'brio',
 		});
 
 		const refreshToken = nanoid(64);
@@ -337,7 +337,7 @@ export class AuthenticationService {
 			});
 		}
 
-		const tokenPayload: DirectusTokenPayload = {
+		const tokenPayload: BrioTokenPayload = {
 			id: record.user_id,
 			role: record.role_id,
 			app_access: record.role_app_access,
@@ -377,7 +377,7 @@ export class AuthenticationService {
 
 		const accessToken = jwt.sign(customClaims, env['SECRET'] as string, {
 			expiresIn: env['ACCESS_TOKEN_TTL'],
-			issuer: 'directus',
+			issuer: 'brio',
 		});
 
 		const newRefreshToken = nanoid(64);

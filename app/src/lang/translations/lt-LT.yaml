@@ -885,7 +885,7 @@ interfaces:
     no_collection: Nėra kolekcijos
   user:
     user: Vartotojas
-    description: Pasirinkti egzistuojantį Directus vartotoją
+    description: Pasirinkti egzistuojantį Brio vartotoją
     select_mode: Pasirinkti režimą
     modes:
       auto: Automatiškai

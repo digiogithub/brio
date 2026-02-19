@@ -1,10 +1,10 @@
 {
-	"name": "directus",
+	"name": "brio",
 	"version": "9.26.0",
-	"description": "Directus is a real-time API and App dashboard for managing SQL database content",
+	"description": "Brio is a real-time API and App dashboard for managing SQL database content",
 	"type": "module",
 	"keywords": [
-		"directus",
+		"brio",
 		"realtime",
 		"database",
 		"content",
@@ -22,15 +22,15 @@
 		"framework",
 		"vue"
 	],
-	"homepage": "https://directus.io",
+	"homepage": "https://brio.io",
 	"bugs": {
-		"url": "https://github.com/directus/directus/issues"
+		"url": "https://github.com/nicobrio/brio/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/directus/directus.git"
+		"url": "https://github.com/nicobrio/brio.git"
 	},
-	"funding": "https://github.com/directus/directus?sponsor=1",
+	"funding": "https://github.com/nicobrio/brio?sponsor=1",
 	"license": "GPL-3.0-only",
 	"author": {
 		"name": "Monospace Inc",
@@ -53,10 +53,10 @@
 		"./package.json": "./package.json"
 	},
 	"bin": {
-		"directus": "cli.js"
+		"brio": "cli.js"
 	},
 	"dependencies": {
-		"@directus/api": "workspace:*"
+		"@brio/api": "workspace:*"
 	},
 	"engines": {
 		"node": ">=18.0.0"

@@ -1701,7 +1701,7 @@ interfaces:
     recursive_only: La interfaz de vista en árbol sólo funciona para relaciones recursivas.
   user:
     user: Usuario
-    description: Seleccionar un usuario existente de Directus
+    description: Seleccionar un usuario existente de Brio
     select_mode: Seleccionar Modo
     modes:
       auto: Automático
@@ -1865,7 +1865,7 @@ displays:
     display_template_configure_notice: Puede configurar la plantilla de pantalla después de crear este campo.
   user:
     user: Usuario
-    description: Presentar un usuario de Directus
+    description: Presentar un usuario de Brio
     avatar: Avatar
     name: Nombre
     both: Ambos

@@ -1,4 +1,4 @@
-import { defineModule } from '@directus/extensions-sdk';
+import { defineModule } from '@brio/extensions-sdk';
 import ModuleComponent from './module.vue';
 
 export default defineModule({

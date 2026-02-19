@@ -3,21 +3,21 @@ import {
 	APP_OR_HYBRID_EXTENSION_TYPES,
 	APP_SHARED_DEPS,
 	NESTED_EXTENSION_TYPES,
-} from '@directus/constants';
+} from '@brio/constants';
 import {
 	ensureExtensionDirs,
 	generateExtensionsEntrypoint,
 	getLocalExtensions,
 	getPackageExtensions,
 	resolvePackageExtensions,
-} from '@directus/utils/node';
+} from '@brio/utils/node';
 import yaml from '@rollup/plugin-yaml';
 import vue from '@vitejs/plugin-vue';
 import fs from 'node:fs';
 import path from 'node:path';
 import { searchForWorkspaceRoot } from 'vite';
 import { defineConfig } from 'vitest/config';
-import { version } from '../directus/package.json';
+import { version } from '../brio/package.json';
 
 const API_PATH = path.join('..', 'api');
 const EXTENSIONS_PATH = path.join(API_PATH, 'extensions');
@@ -25,10 +25,10 @@ const EXTENSIONS_PATH = path.join(API_PATH, 'extensions');
 // https://vitejs.dev/config/
 export default defineConfig({
 	define: {
-		__DIRECTUS_VERSION__: JSON.stringify(version),
+		__BRIO_VERSION__: JSON.stringify(version),
 	},
 	plugins: [
-		directusExtensions(),
+		brioExtensions(),
 		vue(),
 		yaml({
 			transform(data) {
@@ -64,24 +64,24 @@ export default defineConfig({
 function getExtensionsRealPaths() {
 	return fs.existsSync(EXTENSIONS_PATH)
 		? fs
-				.readdirSync(EXTENSIONS_PATH)
-				.flatMap((typeDir) => {
-					const extensionTypeDir = path.join(EXTENSIONS_PATH, typeDir);
-					if (!fs.lstatSync(extensionTypeDir).isDirectory()) return;
-					return fs.readdirSync(extensionTypeDir).map((dir) => fs.realpathSync(path.join(extensionTypeDir, dir)));
-				})
-				.filter((v) => v)
+			.readdirSync(EXTENSIONS_PATH)
+			.flatMap((typeDir) => {
+				const extensionTypeDir = path.join(EXTENSIONS_PATH, typeDir);
+				if (!fs.lstatSync(extensionTypeDir).isDirectory()) return;
+				return fs.readdirSync(extensionTypeDir).map((dir) => fs.realpathSync(path.join(extensionTypeDir, dir)));
+			})
+			.filter((v) => v)
 		: [];
 }
 
-function directusExtensions() {
-	const virtualExtensionsId = '@directus-extensions';
+function brioExtensions() {
+	const virtualExtensionsId = '@brio-extensions';
 
 	let extensionsEntrypoint = null;
 
 	return [
 		{
-			name: 'directus-extensions-serve',
+			name: 'brio-extensions-serve',
 			apply: 'serve',
 			config: () => ({
 				optimizeDeps: {
@@ -103,7 +103,7 @@ function directusExtensions() {
 			},
 		},
 		{
-			name: 'directus-extensions-build',
+			name: 'brio-extensions-build',
 			apply: 'build',
 			config: () => ({
 				build: {

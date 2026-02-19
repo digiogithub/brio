@@ -20,7 +20,7 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "$GITHUB_REF_NAME" --notes "Directus $GITHUB_REF_NAME"
+        run: gh release create "$GITHUB_REF_NAME" --notes "Brio $GITHUB_REF_NAME"
 
   publish-npm:
     name: Publish to NPM
@@ -37,7 +37,7 @@ jobs:
       - name: Publish packages to NPM
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm --recursive publish --access=public --no-git-checks
+        run: bun --recursive publish --access=public --no-git-checks
 
   build-images:
     name: Build Images

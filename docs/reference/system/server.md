@@ -1,5 +1,5 @@
 ---
-description: REST and GraphQL API documentation on the Server collection in Directus.
+description: REST and GraphQL API documentation on the Server collection in Brio.
 readTime: 4 min read
 pageClass: page-reference
 ---
@@ -183,8 +183,8 @@ If rate-limiter is enabled, duration in seconds in which points are counted
 
 Admin users also get the following information:
 
-`directus.version` **string**\
-Current version of Directus used.
+`brio.version` **string**\
+Current version of Brio used.
 
 `node.version` **string**\
 Current version of Node used.
@@ -227,7 +227,7 @@ type Query {
 ```graphql
 query {
 	server_info {
-		directus {
+		brio {
 			version
 		}
 	}
@@ -314,10 +314,10 @@ One of `ok`, `warn`, `error`.
 Authenticated admin users also get the following information:
 
 `releaseId` **string**\
-Directus version in use.
+Brio version in use.
 
 `serviceId` **string**\
-UUID of the current Directus instance.
+UUID of the current Brio instance.
 
 `checks` **array**\
 Array with the status of all individually connected services.

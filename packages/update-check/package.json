@@ -1,26 +1,27 @@
 {
-	"name": "@directus/update-check",
+	"name": "@brio/update-check",
 	"version": "9.26.0",
 	"type": "module",
 	"scripts": {
-		"build": "tsc --build",
-		"dev": "tsc --watch",
+		"build": "echo 'No build needed - Bun runs TypeScript natively'",
+		"dev": "echo 'No dev build needed - Bun runs TypeScript natively'",
 		"test": "vitest --watch=false"
 	},
 	"description": "Check if an update is available for a given package",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/directus/directus.git",
+		"url": "https://github.com/nicobrio/brio.git",
 		"directory": "packages/update-check"
 	},
-	"funding": "https://github.com/directus/directus?sponsor=1",
+	"funding": "https://github.com/nicobrio/brio?sponsor=1",
 	"license": "GPL-3.0",
 	"author": "Rijk van Zanten <rijkvanzanten@me.com>",
 	"exports": {
-		".": "./dist/index.js",
+		".": "./src/index.ts",
 		"./package.json": "./package.json"
 	},
-	"main": "dist/index.js",
+	"main": "src/index.ts",
+	"types": "src/index.ts",
 	"files": [
 		"dist",
 		"!**/*.d.ts?(.map)"
@@ -29,11 +30,10 @@
 		"access": "public"
 	},
 	"dependencies": {
-		"semver": "7.5.0",
-		"undici": "5.22.0"
+		"semver": "7.5.0"
 	},
 	"devDependencies": {
-		"@directus/tsconfig": "0.0.7",
+		"@brio/tsconfig": "0.0.7",
 		"@ngneat/falso": "6.4.0",
 		"@types/semver": "7.3.13",
 		"@vitest/coverage-c8": "0.30.1",

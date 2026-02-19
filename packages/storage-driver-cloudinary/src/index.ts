@@ -1,12 +1,10 @@
-import type { Driver, Range } from '@directus/storage';
-import { normalizePath } from '@directus/utils';
+import type { Driver, Range } from '@brio/storage';
+import { normalizePath } from '@brio/utils';
 import { Blob, Buffer } from 'node:buffer';
 import { createHash } from 'node:crypto';
 import { extname, join, parse } from 'node:path';
 import { Readable } from 'node:stream';
 import PQueue from 'p-queue';
-import type { RequestInit } from 'undici';
-import { fetch, FormData } from 'undici';
 import { IMAGE_EXTENSIONS, VIDEO_EXTENSIONS } from './constants.js';
 
 export type DriverCloudinaryConfig = {

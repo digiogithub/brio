@@ -1,5 +1,5 @@
-import type { Filter, LogicalFilterAND } from '@directus/types';
-import { parseJSON } from '@directus/utils';
+import type { Filter, LogicalFilterAND } from '@brio/types';
+import { parseJSON } from '@brio/utils';
 import type { Knex } from 'knex';
 
 type OldFilter = {

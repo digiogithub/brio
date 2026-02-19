@@ -1,4 +1,4 @@
-import type { FieldFunction, Type } from '@directus/types';
+import type { FieldFunction, Type } from '@brio/types';
 
 export function getOutputTypeForFunction(fn: FieldFunction): Type {
 	const typeMap: Record<FieldFunction, Type> = {

@@ -1,5 +1,5 @@
-import { defineDisplay } from '@directus/utils';
-import { TYPES, LOCAL_TYPES } from '@directus/constants';
+import { defineDisplay } from '@brio/utils';
+import { TYPES, LOCAL_TYPES } from '@brio/constants';
 
 export default defineDisplay({
 	id: 'raw',

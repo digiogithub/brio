@@ -1,10 +1,9 @@
-import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import env from '../env.js';
 import { ForbiddenException, InvalidCredentialsException } from '../exceptions/index.js';
 import type {
 	AbstractServiceOptions,
-	DirectusTokenPayload,
+	BrioTokenPayload,
 	Item,
 	LoginResult,
 	MutationOptions,
@@ -70,7 +69,7 @@ export class SharesService extends ItemsService {
 			throw new InvalidCredentialsException();
 		}
 
-		if (record.share_password && !(await argon2.verify(record.share_password, payload['password']))) {
+		if (record.share_password && !(await Bun.password.verify(payload['password'], record.share_password))) {
 			throw new InvalidCredentialsException();
 		}
 
@@ -78,7 +77,7 @@ export class SharesService extends ItemsService {
 			.update({ times_used: record.share_times_used + 1 })
 			.where('id', record.share_id);
 
-		const tokenPayload: DirectusTokenPayload = {
+		const tokenPayload: BrioTokenPayload = {
 			app_access: false,
 			admin_access: false,
 			role: record.share_role,
@@ -91,7 +90,7 @@ export class SharesService extends ItemsService {
 
 		const accessToken = jwt.sign(tokenPayload, env['SECRET'] as string, {
 			expiresIn: env['ACCESS_TOKEN_TTL'],
-			issuer: 'directus',
+			issuer: 'brio',
 		});
 
 		const refreshToken = nanoid(64);

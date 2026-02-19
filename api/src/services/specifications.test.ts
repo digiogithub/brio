@@ -6,7 +6,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 import { CollectionsService, FieldsService, RelationsService, SpecificationService } from '../../src/services/index.js';
 import type { Collection } from '../types/index.js';
 
-class Client_PG extends MockClient {}
+class Client_PG extends MockClient { }
 
 describe('Integration Tests', () => {
 	let db: MockedFunction<Knex>;
@@ -311,7 +311,7 @@ describe('Integration Tests', () => {
 							        },
 							        "type": "array",
 							      },
-							      "directus": {
+							      "brio": {
 							        "type": "string",
 							      },
 							      "fields": {

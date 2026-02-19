@@ -1,7 +1,7 @@
-import type { SchemaInspector } from '@directus/schema';
-import { createInspector } from '@directus/schema';
-import type { Filter, SchemaOverview } from '@directus/types';
-import { parseJSON, toArray } from '@directus/utils';
+import type { SchemaInspector } from '@brio/schema';
+import { createInspector } from '@brio/schema';
+import type { Filter, SchemaOverview } from '@brio/types';
+import { parseJSON, toArray } from '@brio/utils';
 import type { Knex } from 'knex';
 import { mapValues } from 'lodash-es';
 import { getSchemaCache, setSchemaCache } from '../cache.js';

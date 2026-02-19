@@ -1,6 +1,6 @@
-import { BaseException } from '@directus/exceptions';
-import type { Accountability } from '@directus/types';
-import { parseJSON } from '@directus/utils';
+import { BaseException } from '@brio/exceptions';
+import type { Accountability } from '@brio/types';
+import { parseJSON } from '@brio/utils';
 import express, { Router } from 'express';
 import flatten from 'flat';
 import jwt from 'jsonwebtoken';
@@ -307,7 +307,7 @@ export function createOpenIDAuthRouter(providerName: string): Router {
 				env['SECRET'] as string,
 				{
 					expiresIn: '5m',
-					issuer: 'directus',
+					issuer: 'brio',
 				}
 			);
 
@@ -337,7 +337,7 @@ export function createOpenIDAuthRouter(providerName: string): Router {
 
 			try {
 				tokenData = jwt.verify(req.cookies[`openid.${providerName}`], env['SECRET'] as string, {
-					issuer: 'directus',
+					issuer: 'brio',
 				}) as {
 					verifier: string;
 					redirect?: string;

@@ -9,15 +9,12 @@ on:
       - tests/blackbox/**
       - packages/**
       - package.json
-      - pnpm-lock.yaml
+      - bun.lockb
       - .github/workflows/blackbox-pr.yml
 
 concurrency:
   group: blackbox-pr-${{ github.ref }}
   cancel-in-progress: true
-
-env:
-  NODE_OPTIONS: --max_old_space_size=6144
 
 jobs:
   test:
@@ -35,4 +32,4 @@ jobs:
           docker compose -f tests/blackbox/docker-compose.yml up auth-saml redis minio minio-mc -d --quiet-pull --wait
 
       - name: Run tests
-        run: TEST_DB=sqlite3 pnpm run test:blackbox
+        run: TEST_DB=sqlite3 bun run test:blackbox

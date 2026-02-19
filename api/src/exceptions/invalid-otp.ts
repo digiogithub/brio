@@ -1,4 +1,4 @@
-import { BaseException } from '@directus/exceptions';
+import { BaseException } from '@brio/exceptions';
 
 export class InvalidOTPException extends BaseException {
 	constructor(message = 'Invalid user OTP.') {

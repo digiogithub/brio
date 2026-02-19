@@ -2,14 +2,14 @@
 'use strict';
 
 import inquirer from 'inquirer';
-import { EXTENSION_LANGUAGES, EXTENSION_TYPES, BUNDLE_EXTENSION_TYPES } from '@directus/constants';
-import { create } from '@directus/extensions-sdk/cli';
+import { EXTENSION_LANGUAGES, EXTENSION_TYPES, BUNDLE_EXTENSION_TYPES } from '@brio/constants';
+import { create } from '@brio/extensions-sdk/cli';
 
 run();
 
 async function run() {
 	// eslint-disable-next-line no-console
-	console.log('This utility will walk you through creating a Directus extension.\n');
+	console.log('This utility will walk you through creating a Brio extension.\n');
 
 	const { type, name, language } = await inquirer.prompt([
 		{

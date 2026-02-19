@@ -1,5 +1,5 @@
-import { BaseException } from '@directus/exceptions';
-import type { Accountability } from '@directus/types';
+import { BaseException } from '@brio/exceptions';
+import type { Accountability } from '@brio/types';
 import type { GraphQLError, GraphQLFormattedError } from 'graphql';
 import logger from '../../../logger.js';
 

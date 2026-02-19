@@ -1,5 +1,5 @@
-import type { StorageManager } from '@directus/storage';
-import { toArray } from '@directus/utils';
+import type { StorageManager } from '@brio/storage';
+import { toArray } from '@brio/utils';
 import { getEnv } from '../env.js';
 import { getConfigFromEnv } from '../utils/get-config-from-env.js';
 

@@ -5,9 +5,6 @@ on:
   schedule:
     - cron: '42 23 * * 5'
 
-env:
-  NODE_OPTIONS: --max_old_space_size=6144
-
 jobs:
   analyze:
     name: Analyze

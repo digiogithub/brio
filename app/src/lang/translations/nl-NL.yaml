@@ -1529,7 +1529,7 @@ interfaces:
     default_language: Standaardtaal
   user:
     user: Gebruiker
-    description: Selecteer een bestaande Directus gebruiker
+    description: Selecteer een bestaande Brio gebruiker
     select_mode: Selecteer modus
     modes:
       auto: Automatisch

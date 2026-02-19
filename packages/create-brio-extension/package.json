@@ -1,19 +1,19 @@
 {
-	"name": "create-directus-extension",
+	"name": "create-brio-extension",
 	"version": "9.26.0",
-	"description": "A small util that will scaffold a Directus extension",
+	"description": "A small util that will scaffold a Brio extension",
 	"keywords": [
-		"directus",
+		"brio",
 		"extensions"
 	],
 	"type": "module",
-	"homepage": "https://directus.io",
+	"homepage": "https://brio.io",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/directus/directus.git",
-		"directory": "packages/create-directus-extension"
+		"url": "https://github.com/nicobrio/brio.git",
+		"directory": "packages/create-brio-extension"
 	},
-	"funding": "https://github.com/directus/directus?sponsor=1",
+	"funding": "https://github.com/nicobrio/brio?sponsor=1",
 	"license": "GPL-3.0-only",
 	"author": "Nicola Krumschmidt",
 	"contributors": [
@@ -27,14 +27,14 @@
 	"main": "lib/index.js",
 	"bin": {
 		"cde": "./lib/index.js",
-		"create-directus-extension": "./lib/index.js"
+		"create-brio-extension": "./lib/index.js"
 	},
 	"files": [
 		"lib/index.js"
 	],
 	"dependencies": {
-		"@directus/constants": "workspace:*",
-		"@directus/extensions-sdk": "workspace:*",
+		"@brio/constants": "workspace:*",
+		"@brio/extensions-sdk": "workspace:*",
 		"inquirer": "9.1.5"
 	}
 }

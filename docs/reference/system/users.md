@@ -1,12 +1,12 @@
 ---
-description: REST and GraphQL API documentation on the Users collection in Directus.
+description: REST and GraphQL API documentation on the Users collection in Brio.
 readTime: 9 min read
 pageClass: page-reference
 ---
 
 # Users
 
-> Directus Users are the individual accounts that let you authenticate into the API and App. Each user belongs to a Role
+> Brio Users are the individual accounts that let you authenticate into the API and App. Each user belongs to a Role
 > which defines its granular Permissions. [Learn more about Users](/getting-started/glossary#users).
 
 ---
@@ -44,7 +44,7 @@ Tags for the user.
 Avatar file. Many-to-one to [files](/reference/files).
 
 `language` **string**\
-Language the Admin App is rendered in. See [our Crowdin page](https://locales.directus.io) for all available languages and
+Language the Admin App is rendered in. See [our Crowdin page](https://locales.brio.io) for all available languages and
 translations.
 
 `theme` **string**\
@@ -107,7 +107,7 @@ When this is enabled, the user will receive emails for notifications.
 
 ## List Users
 
-List all users that exist in Directus.
+List all users that exist in Brio.
 
 ### Query Parameters
 

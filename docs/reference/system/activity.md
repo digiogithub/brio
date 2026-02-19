@@ -1,12 +1,12 @@
 ---
-description: REST and GraphQL API documentation on the Activity collection in Directus.
+description: REST and GraphQL API documentation on the Activity collection in Brio.
 readTime: 4 min read
 pageClass: page-reference
 ---
 
 # Activity
 
-> All events within Directus are tracked and stored in the activities collection. This gives you full accountability
+> All events within Brio are tracked and stored in the activities collection. This gives you full accountability
 > over everything that happens. [Learn more about Activity](/getting-started/glossary#activity).
 
 ---

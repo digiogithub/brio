@@ -14,9 +14,6 @@ concurrency:
   group: check-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  NODE_OPTIONS: --max_old_space_size=6144
-
 jobs:
   lint:
     name: Lint
@@ -29,7 +26,7 @@ jobs:
         uses: ./.github/actions/prepare
 
       - name: Run Linter
-        run: pnpm lint
+        run: bun lint
 
   unit:
     name: Unit Tests
@@ -42,7 +39,7 @@ jobs:
         uses: ./.github/actions/prepare
 
       - name: Run Tests
-        run: pnpm test
+        run: bun test
 
   analyze:
     name: CodeQL Analysis

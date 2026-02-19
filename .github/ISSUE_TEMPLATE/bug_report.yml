@@ -6,11 +6,10 @@ body:
       value: |
         Hi, thank you for taking the time to create an issue! Before you get started, please ensure the following are correct:
 
-        - I'm using the [latest version of Directus](https://github.com/directus/directus/releases)
-        - I've completed all [Troubleshooting Steps](https://docs.directus.io/getting-started/support/#troubleshooting-steps).
-        - There's [no other issue](https://github.com/directus/directus/issues?q=is%3Aissue) that already describes the problem.
+        - I'm using the latest version of Brio
+        - I've completed all Troubleshooting Steps.
+        - There's no other issue that already describes the problem.
 
-        _For issues specific to Directus Cloud projects, please reach out through the Live Chat in our Cloud Dashboard._
   - type: textarea
     attributes:
       label: Describe the Bug
@@ -27,7 +26,7 @@ body:
       required: true
   - type: input
     attributes:
-      label: Directus Version
+      label: Brio Version
       placeholder: v9.x.x
     validations:
       required: true
@@ -38,6 +37,5 @@ body:
       options:
         - Self-Hosted (Docker Image)
         - Self-Hosted (Custom)
-        - Directus Cloud
     validations:
       required: true

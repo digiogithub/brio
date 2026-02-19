@@ -1,31 +1,31 @@
 openapi: 3.0.1
 info:
-  title: Directus
+  title: Brio
   description: A real-time API and App dashboard for managing SQL database content.
   contact:
-    email: contact@directus.io
+    email: contact@brio.io
   license:
     name: GPL-3.0
     url: 'https://www.gnu.org/licenses/gpl-3.0.html'
   version: 9.0.0
 externalDocs:
-  description: Directus Docs
-  url: 'https://docs.directus.io'
+  description: Brio Docs
+  url: 'https://docs.brio.io'
 tags:
   - name: Activity
     description:
-      All events that happen within Directus are tracked and stored in the activities collection. This gives you full
+      All events that happen within Brio are tracked and stored in the activities collection. This gives you full
       accountability over everything that happens.
     x-collection: directus_activity
   - name: Assets
     description: Image typed files can be dynamically resized and transformed to fit any need.
   - name: Authentication
     description:
-      All events that happen within Directus are tracked and stored in the activities collection. This gives you full
+      All events that happen within Brio are tracked and stored in the activities collection. This gives you full
       accountability over everything that happens.
   - name: Presets
     description:
-      Presets hold the preferences of individual users of the platform. This allows Directus to show and maintain custom
+      Presets hold the preferences of individual users of the platform. This allows Brio to show and maintain custom
       item listings for users of the app.
     x-collection: directus_presets
   - name: Collections
@@ -35,14 +35,14 @@ tags:
     x-collection: directus_collections
   - name: Extensions
     description:
-      Directus can easily be extended through the addition of several types of extensions, including layouts,
+      Brio can easily be extended through the addition of several types of extensions, including layouts,
       interfaces, and modules.
   - name: Fields
     description: Fields are individual pieces of content within an item. They are mapped to columns in the database.
     x-collection: directus_fields
   - name: Files
     description:
-      Files can be saved in any given location. Directus has a powerful assets endpoint that can be used to generate
+      Files can be saved in any given location. Brio has a powerful assets endpoint that can be used to generate
       thumbnails for images on the fly.
     x-collection: directus_files
   - name: Flows
@@ -67,7 +67,7 @@ tags:
     x-collection: directus_relations
   - name: Revisions
     description:
-      Revisions are individual changes to items made. Directus keeps track of changes made, so you're able to revert to
+      Revisions are individual changes to items made. Brio keeps track of changes made, so you're able to revert to
       a previous state at will.
     x-collection: directus_revisions
   - name: Roles
@@ -77,7 +77,7 @@ tags:
     description: Retrieve and update the schema of an instance.
   - name: Server
     description:
-      Access to where Directus runs. Allows you to make sure your server has everything needed to run the platform, and
+      Access to where Brio runs. Allows you to make sure your server has everything needed to run the platform, and
       check what kind of latency we're dealing with.
   - name: Settings
     description: Settings control the way the platform works and acts.
@@ -86,7 +86,7 @@ tags:
     description: Users are what gives you access to the data.
     x-collection: directus_users
   - name: Utilities
-    description: Directus comes with various utility endpoints you can use to simplify your development flow.
+    description: Brio comes with various utility endpoints you can use to simplify your development flow.
   - name: Webhooks
     description: Webhooks.
     x-collection: directus_webhooks

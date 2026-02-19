@@ -1,4 +1,4 @@
-import { defineDisplay } from '@directus/utils';
+import { defineDisplay } from '@brio/utils';
 import DisplayImage from './image.vue';
 
 export default defineDisplay({

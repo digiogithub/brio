@@ -1,7 +1,7 @@
-import type { SchemaInspector, Table } from '@directus/schema';
-import { createInspector } from '@directus/schema';
-import type { Accountability, FieldMeta, RawField, SchemaOverview } from '@directus/types';
-import { addFieldFlag } from '@directus/utils';
+import type { SchemaInspector, Table } from '@brio/schema';
+import { createInspector } from '@brio/schema';
+import type { Accountability, FieldMeta, RawField, SchemaOverview } from '@brio/types';
+import { addFieldFlag } from '@brio/utils';
 import type Keyv from 'keyv';
 import type { Knex } from 'knex';
 import { chunk, omit } from 'lodash-es';
@@ -85,7 +85,7 @@ export class CollectionsService {
 			// transactions.
 			await this.knex.transaction(async (trx) => {
 				if (payload.schema) {
-					// Directus heavily relies on the primary key of a collection, so we have to make sure that
+					// Brio heavily relies on the primary key of a collection, so we have to make sure that
 					// every collection that is created has a primary key. If no primary key field is created
 					// while making the collection, we default to an auto incremented id named `id`
 					if (!payload.fields)

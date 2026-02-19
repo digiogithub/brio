@@ -8,8 +8,8 @@ import type {
 	Relation,
 	SchemaOverview,
 	Type,
-} from '@directus/types';
-import { getFilterOperatorsForType, getOutputTypeForFunction } from '@directus/utils';
+} from '@brio/types';
+import { getFilterOperatorsForType, getOutputTypeForFunction } from '@brio/utils';
 import type { Knex } from 'knex';
 import { clone, isPlainObject } from 'lodash-es';
 import validate from 'uuid-validate';

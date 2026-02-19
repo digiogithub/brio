@@ -1,6 +1,6 @@
 import api from '@/api';
-import { Permission } from '@directus/types';
-import { deepMap } from '@directus/utils';
+import { Permission } from '@brio/types';
+import { deepMap } from '@brio/utils';
 import { parseFilter } from '@/utils/parse-filter';
 import { parsePreset } from '@/utils/parse-preset';
 import { defineStore } from 'pinia';
