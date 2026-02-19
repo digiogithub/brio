@@ -1,0 +1,21 @@
+{
+	"name": "brio-age-encryption-hook",
+	"version": "0.1.0",
+	"brio:extension": {
+		"type": "hook",
+		"path": "./dist/index.js",
+		"source": "./src/index.ts",
+		"host": "^9.0.0"
+	},
+	"scripts": {
+		"build": "bun run ../../../packages/extensions-sdk/src/cli/run.ts build",
+		"dev": "bun run ../../../packages/extensions-sdk/src/cli/run.ts build -w --no-minify"
+	},
+	"dependencies": {
+		"age-encryption": "^0.2.4"
+	},
+	"devDependencies": {
+		"@brio/extensions-sdk": "workspace:*",
+		"typescript": "^5.7.3"
+	}
+}
