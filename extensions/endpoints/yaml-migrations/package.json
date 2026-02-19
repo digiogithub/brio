@@ -1,0 +1,22 @@
+{
+	"name": "brio-yaml-migrations-endpoint",
+	"version": "0.1.0",
+	"brio:extension": {
+		"type": "endpoint",
+		"path": "./dist/index.js",
+		"source": "./src/index.ts",
+		"host": "^9.0.0"
+	},
+	"scripts": {
+		"build": "bun run ../../../packages/extensions-sdk/src/cli/run.ts build",
+		"dev": "bun run ../../../packages/extensions-sdk/src/cli/run.ts build -w --no-minify"
+	},
+	"dependencies": {
+		"yaml": "^2.7.0"
+	},
+	"devDependencies": {
+		"@brio/extensions-sdk": "workspace:*",
+		"@types/express": "^4.17.21",
+		"typescript": "^5.7.3"
+	}
+}

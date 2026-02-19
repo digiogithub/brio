@@ -65,8 +65,8 @@
 	],
 	"scripts": {
 		"build": "echo 'No build needed - Bun runs TypeScript natively' && copyfiles \"src/**/*.{yaml,liquid}\" -u 1 dist",
-		"cli": "NODE_ENV=development SERVE_APP=false tsx src/cli/run.ts",
-		"dev": "NODE_ENV=development SERVE_APP=false tsx watch --clear-screen=false src/start.ts",
+		"cli": "NODE_ENV=development SERVE_APP=false bun run src/cli/run.ts",
+		"dev": "NODE_ENV=development SERVE_APP=false bun --watch src/start.ts",
 		"test": "vitest --watch=false"
 	},
 	"dependencies": {
