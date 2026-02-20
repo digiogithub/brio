@@ -20,9 +20,9 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "vite build",
+		"build": "bunx --bun vite build",
 		"build-storybook": "storybook build",
-		"dev": "vite --clearScreen false",
+		"dev": "bunx --bun vite --clearScreen false",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest --watch=false"
 	},

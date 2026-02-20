@@ -280,7 +280,7 @@ router.delete(
 );
 
 const inviteSchema = Joi.object({
-	email: Joi.alternatives(Joi.string().email(), Joi.array().items(Joi.string().email())).required(),
+	email: Joi.alternatives(Joi.string().email({ tlds: false }), Joi.array().items(Joi.string().email({ tlds: false }))).required(),
 	role: Joi.string().uuid({ version: 'uuidv4' }).required(),
 	invite_url: Joi.string().uri(),
 });

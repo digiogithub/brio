@@ -50,3 +50,4 @@ TODO
 /tests/blackbox/server-log-*
 /packages/extensions-sdk/temp-extension-*
 *.db
+database/*
