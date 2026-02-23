@@ -86,28 +86,36 @@ export default defineHook(({ filter }, { services, database, getSchema, env, log
 			return cached.fields;
 		}
 
-		// Brio 9 (Directus 9) uses the meta JSON column in directus_fields
-		const rows = await knex('directus_fields').select(['field', 'meta']).where({ collection });
+		// Cross-version compatibility:
+		// - Brio/Directus v9 stores UI config in dedicated columns like `interface`
+		// - Newer versions may store config in a `meta` JSON object
+		// Selecting all columns avoids SQL errors on engines/schemas where one of those columns doesn't exist.
+		const rows = await knex('directus_fields').select('*').where({ collection });
 		const fields: string[] = [];
-		for (const row of rows as Array<{ field: string; meta?: any }>) {
-			const meta = row.meta ?? {};
-			const iface =
-				typeof meta === 'string'
-					? (() => {
-						try {
-							return JSON.parse(meta)?.interface;
-						} catch {
-							return undefined;
-						}
-					})()
-					: meta.interface;
+		for (const row of rows as Array<{ field: string; interface?: string; meta?: any }>) {
+			let iface: string | undefined = row.interface;
+
+			if (!iface && row.meta !== undefined) {
+				const meta = row.meta ?? {};
+				iface =
+					typeof meta === 'string'
+						? (() => {
+							try {
+								return JSON.parse(meta)?.interface;
+							} catch {
+								return undefined;
+							}
+						})()
+						: meta.interface;
+			}
+
 			if (iface === 'age-encrypted') fields.push(row.field);
 		}
 
-				encryptedFieldsCache.set(collection, {
-					expiresAt: now + ENCRYPTED_FIELDS_CACHE_TTL_MS,
-					fields,
-				});
+		encryptedFieldsCache.set(collection, {
+			expiresAt: now + ENCRYPTED_FIELDS_CACHE_TTL_MS,
+			fields,
+		});
 
 		return fields;
 	}
