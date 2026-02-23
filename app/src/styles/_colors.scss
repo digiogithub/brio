@@ -9,9 +9,15 @@ $yellow: #fbc54f;
 $orange: #ffa439;
 $red: #e35169;
 
+// Brand palette
+$brand-mint: #a8ffd9;
+$brand-dark-gray: #1a1f22;
+$brand-stone-gray: #d9d4d0;
+$brand-white: #ffffff;
+
 // Mixing colors
-$light-theme-tint: #fff;
-$light-theme-shade: #2e3c43;
+$light-theme-tint: $brand-mint; // Brand: mix light variants with Mint
+$light-theme-shade: $brand-dark-gray; // Brand: Dark Gray for dark variants
 $dark-theme-tint: #fff;
 $dark-theme-shade: #16151a;
 
@@ -24,7 +30,7 @@ $color-mapping: (
 	'yellow': $yellow,
 	'orange': $orange,
 	'red': $red,
-	'primary': $purple,
+	'primary': $brand-dark-gray,
 	'secondary': $pink,
 	'success': $green,
 	'warning': $orange,
