@@ -1,6 +1,6 @@
 <template>
 	<!-- Reference external SVG file instead of embedding paths inline -->
-	<img class="brio-custom-icon" src="/admin/img/brio-logo.svg" aria-hidden="true" />
+	<img class="brio-custom-icon" src="/img/brio-logo.svg" aria-hidden="true" />
 </template>
 
 <script lang="ts">

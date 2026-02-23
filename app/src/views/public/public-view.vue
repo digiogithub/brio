@@ -45,7 +45,7 @@
 					:fill="colors.shades[4]"
 				/>
 			</svg>
-		<img src="/admin/img/brio-full-logo.svg" class="brio-bg-logo" aria-hidden="true" />
+		<img src="/img/brio-full-logo.svg" class="brio-bg-logo" aria-hidden="true" />
 			<transition name="scale">
 				<v-image v-if="foregroundURL" class="foreground" :src="foregroundURL" :alt="info?.project?.project_name" />
 			</transition>
