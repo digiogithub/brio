@@ -32,7 +32,8 @@ COPY packages/utils/package.json ./packages/utils/
 COPY tests/blackbox/package.json ./tests/blackbox/
 
 # Install all dependencies
-RUN bun install --frozen-lockfile
+ARG BUN_INSTALL_FLAGS=""
+RUN bun install ${BUN_INSTALL_FLAGS}
 
 # Copy source code
 COPY . .
