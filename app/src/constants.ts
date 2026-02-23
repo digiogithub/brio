@@ -51,14 +51,6 @@ export const MODULE_BAR_DEFAULT = [
 		enabled: true,
 	},
 	{
-		type: 'link',
-		id: 'docs',
-		enabled: true,
-		name: '$t:documentation',
-		icon: 'help',
-		url: 'https://docs.brio.io',
-	},
-	{
 		type: 'module',
 		id: 'settings',
 		enabled: true,
