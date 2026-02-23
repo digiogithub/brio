@@ -43,7 +43,7 @@
 		"dev": "echo 'No dev build needed - Bun runs TypeScript natively'"
 	},
 	"dependencies": {
-		"knex": "2.4.2"
+		"knex": "2.5.1"
 	},
 	"devDependencies": {
 		"@brio/tsconfig": "0.0.7",

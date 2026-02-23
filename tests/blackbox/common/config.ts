@@ -1,6 +1,5 @@
 import { Knex } from 'knex';
 import path from 'node:path';
-import { promisify } from 'util';
 import { allVendors } from './get-dbs-to-test';
 
 type Vendor = (typeof allVendors)[number];
@@ -174,11 +173,15 @@ const config: Config = {
 				port: 6107,
 			},
 			pool: {
-				afterCreate: async (conn: any, callback: any) => {
-					const run = promisify(conn.query.bind(conn));
-					await run('SET serial_normalization = "sql_sequence"');
-					await run('SET default_int_size = 4');
-					callback(null, conn);
+				afterCreate: (conn: any, callback: any) => {
+					conn.query('SET serial_normalization = "sql_sequence"', (error: any) => {
+						if (error) return callback(error, conn);
+
+						conn.query('SET default_int_size = 4', (nextError: any) => {
+							if (nextError) return callback(nextError, conn);
+							callback(null, conn);
+						});
+					});
 				},
 			},
 			...knexConfig,
@@ -190,10 +193,11 @@ const config: Config = {
 			},
 			useNullAsDefault: true,
 			pool: {
-				afterCreate: async (conn: any, callback: any) => {
-					const run = promisify(conn.run.bind(conn));
-					await run('PRAGMA foreign_keys = ON');
-					callback(null, conn);
+				afterCreate: (conn: any, callback: any) => {
+					conn.run('PRAGMA foreign_keys = ON', (error: any) => {
+						if (error) return callback(error, conn);
+						callback(null, conn);
+					});
 				},
 			},
 			...knexConfig,
