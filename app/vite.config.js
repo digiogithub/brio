@@ -72,6 +72,13 @@ export default defineConfig(async () => {
 		base: process.env.NODE_ENV === 'production' ? '' : '/admin/',
 		server: {
 			port: 8080,
+			strictPort: true,
+			hmr: {
+				protocol: 'ws',
+				host: 'localhost',
+				clientPort: 8080,
+				path: '/admin/@vite-hmr',
+			},
 			proxy: {
 				'^/(?!admin)': {
 					target: process.env.API_URL ? process.env.API_URL : 'http://127.0.0.1:8055/',
