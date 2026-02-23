@@ -10,17 +10,17 @@
 	// Brand: Dark Gray text, White inverted
 	--foreground-normal: #{$brand-dark-gray}; // Primary text color
 	--foreground-normal-alt: #{$brand-dark-gray}; // Titles and labels
-	--foreground-subdued: #{$brand-stone-gray};
+	--foreground-subdued: #6b6560; // Darker stone gray for sufficient contrast on white/mint
 	--foreground-inverted: #{$brand-white};
 
-	// Brand: Mint main background, White inputs
-	--background-normal: #88efc8; // Darker mint for hover/panel areas
-	--background-normal-alt: #72dfb8; // Even darker mint for alt areas
-	--background-subdued: #c4ffe9; // Lighter mint for subdued areas
-	--background-highlight: #dfffef; // Very light mint for highlights
-	--background-page: #{$brand-mint};
+	// Brand: White main panel, Mint accents for sidebars/hover
+	--background-normal: #{$brand-mint}; // Mint for sidebar/panel backgrounds
+	--background-normal-alt: #88efc8; // Slightly deeper mint for alt areas
+	--background-subdued: #e8fff4; // Very light mint for subdued areas
+	--background-highlight: #f5fff9; // Near-white mint tint for highlights
+	--background-page: #{$brand-white}; // White for main content panels
 	--background-input: #{$brand-white};
-	--background-page-rgb: 168, 255, 217;
+	--background-page-rgb: 255, 255, 255;
 	--background-inverted: #{$brand-dark-gray};
 
 	--card-face-color: #c4ffe9;

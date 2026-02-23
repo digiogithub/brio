@@ -45,7 +45,7 @@
 					:fill="colors.shades[4]"
 				/>
 			</svg>
-
+		<img src="/admin/img/brio-full-logo.svg" class="brio-bg-logo" aria-hidden="true" />
 			<transition name="scale">
 				<v-image v-if="foregroundURL" class="foreground" :src="foregroundURL" :alt="info?.project?.project_name" />
 			</transition>
@@ -233,6 +233,19 @@ const logoURL = computed<string | null>(() => {
 		.foreground {
 			width: 80%;
 			max-width: 400px;
+		}
+
+		.brio-bg-logo {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: clamp(180px, 40%, 320px);
+			max-width: 80%;
+			opacity: 0.15;
+			filter: brightness(0) invert(1);
+			pointer-events: none;
+			user-select: none;
 		}
 
 		.note-container {

@@ -14,7 +14,12 @@
 			</transition>
 			<img class="custom-logo" :src="customLogoPath" alt="Project Logo" />
 		</template>
-		<div v-else class="logo" :class="{ running: showLoader }" @animationiteration="stopSpinnerIfQueueIsEmpty" />
+		<template v-else>
+			<transition name="fade">
+				<v-progress-linear v-if="showLoader" indeterminate rounded @animationiteration="stopSpinnerIfQueueIsEmpty" />
+			</transition>
+			<img class="default-logo" src="/admin/img/brio-logo.svg" alt="Brio" />
+		</template>
 	</component>
 </template>
 
@@ -95,25 +100,27 @@ export default defineComponent({
 
 	.custom-logo {
 		display: block;
-		width: 40px;
-		height: 40px;
+		width: 36px;
+		height: 36px;
 		object-fit: contain;
 	}
 
-	.logo {
-		position: absolute;
-		top: 18px;
-		left: 10px;
-		width: 40px;
-		height: 32px;
-		margin: 0 auto;
-		background-image: url('../../../assets/sprite.svg');
-		background-position: 0% 0%;
-		background-size: 600px 32px;
-	}
+	/* Original SVG uses black fill; invert it to white for the dark sidebar */
+	.default-logo {
+		display: block;
+		width: 36px;
+		height: 36px;
+		object-fit: contain;
+		filter: brightness(0) invert(1);
 
-	.running {
-		animation: 560ms run steps(14) infinite;
+		/* Color variants — apply via a wrapper class or v-bind */
+		&.dark {
+			filter: brightness(0); /* keep black on light backgrounds */
+		}
+
+		&.brand {
+			filter: brightness(0) saturate(1) invert(0.5) sepia(1) saturate(4) hue-rotate(120deg);
+		}
 	}
 }
 
@@ -128,11 +135,5 @@ export default defineComponent({
 .fade-enter-from,
 .fade-leave-to {
 	opacity: 0;
-}
-
-@keyframes run {
-	100% {
-		background-position: 100%;
-	}
 }
 </style>
