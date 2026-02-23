@@ -1,10 +1,19 @@
 <template>
 	<!-- Reference external SVG file instead of embedding paths inline -->
-	<img class="brio-custom-icon" src="/img/brio-logo.svg" aria-hidden="true" />
+	<img class="brio-custom-icon" :src="brioLogoSrc" aria-hidden="true" />
 </template>
 
 <script lang="ts">
-export default {};
+import { defineComponent } from 'vue';
+import { getRootPath } from '@/utils/get-root-path';
+
+export default defineComponent({
+	setup() {
+		return {
+			brioLogoSrc: `${getRootPath()}admin/img/brio-logo.svg`,
+		};
+	},
+});
 </script>
 
 <style scoped>

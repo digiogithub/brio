@@ -45,7 +45,7 @@
 					:fill="colors.shades[4]"
 				/>
 			</svg>
-		<img src="/img/brio-full-logo.svg" class="brio-bg-logo" aria-hidden="true" />
+		<img :src="backgroundLogoSrc" class="brio-bg-logo" aria-hidden="true" />
 			<transition name="scale">
 				<v-image v-if="foregroundURL" class="foreground" :src="foregroundURL" :alt="info?.project?.project_name" />
 			</transition>
@@ -143,6 +143,10 @@ const artStyles = computed(() => {
 const foregroundURL = computed(() => {
 	if (!info.value?.project?.public_foreground) return null;
 	return '/assets/' + info.value.project?.public_foreground;
+});
+
+const backgroundLogoSrc = computed(() => {
+	return `${getRootPath()}admin/img/brio-full-logo.svg`;
 });
 
 const logoURL = computed<string | null>(() => {

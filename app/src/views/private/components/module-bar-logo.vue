@@ -18,7 +18,7 @@
 			<transition name="fade">
 				<v-progress-linear v-if="showLoader" indeterminate rounded @animationiteration="stopSpinnerIfQueueIsEmpty" />
 			</transition>
-			<img class="default-logo" src="/img/brio-logo.svg" alt="Brio" />
+			<img class="default-logo" :src="defaultLogoPath" alt="Brio" />
 		</template>
 	</component>
 </template>
@@ -60,8 +60,11 @@ export default defineComponent({
 			return settingsStore.settings?.project_url ? t('view_project') : false;
 		});
 
+		const defaultLogoPath = computed(() => `${getRootPath()}admin/img/brio-logo.svg`);
+
 		return {
 			customLogoPath,
+			defaultLogoPath,
 			showLoader,
 			stopSpinnerIfQueueIsEmpty,
 			url,
