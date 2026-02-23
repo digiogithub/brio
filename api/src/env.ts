@@ -191,6 +191,9 @@ const allowedEnvironmentVars = [
 	// flows
 	'FLOWS_EXEC_ALLOWED_MODULES',
 	'FLOWS_ENV_ALLOW_LIST',
+	// ai / mcp
+	'AI_ENABLED',
+	'MCP_ENABLED',
 ].map((name) => new RegExp(`^${name}$`));
 
 const acceptedEnvTypes = ['string', 'number', 'regex', 'array', 'json'];
@@ -291,6 +294,9 @@ const defaults: Record<string, any> = {
 
 	FLOWS_EXEC_ALLOWED_MODULES: false,
 	FLOWS_ENV_ALLOW_LIST: false,
+
+	AI_ENABLED: true,
+	MCP_ENABLED: true,
 };
 
 // Allows us to force certain environment variable into a type, instead of relying

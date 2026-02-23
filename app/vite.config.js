@@ -21,7 +21,7 @@ import { defineConfig } from 'vitest/config';
 import { version as packageVersion } from '../brio/package.json';
 
 const API_PATH = path.join('..', 'api');
-const EXTENSIONS_PATH = path.join(API_PATH, 'extensions');
+const EXTENSIONS_PATH = resolveExtensionsPath();
 
 async function resolveLatestTag(fallback) {
 	try {
@@ -100,6 +100,18 @@ function getExtensionsRealPaths() {
 			})
 			.filter((v) => v)
 		: [];
+}
+
+function resolveExtensionsPath() {
+	if (process.env.EXTENSIONS_PATH) {
+		return path.resolve(__dirname, process.env.EXTENSIONS_PATH);
+	}
+
+	const monorepoRootExtensions = path.resolve(__dirname, '..', 'extensions');
+	const apiLocalExtensions = path.resolve(__dirname, '..', 'api', 'extensions');
+
+	if (fs.existsSync(monorepoRootExtensions)) return monorepoRootExtensions;
+	return apiLocalExtensions;
 }
 
 function brioExtensions() {

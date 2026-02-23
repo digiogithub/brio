@@ -48,6 +48,8 @@ export type Info = {
 	flows?: {
 		execAllowedModules: string[];
 	};
+	ai_enabled?: boolean;
+	mcp_enabled?: boolean;
 };
 
 export type Auth = {
@@ -63,6 +65,8 @@ export const useServerStore = defineStore('serverStore', () => {
 		os: undefined,
 		rateLimit: undefined,
 		flows: undefined,
+		ai_enabled: false,
+		mcp_enabled: false,
 	});
 
 	const auth = reactive<Auth>({
@@ -97,6 +101,8 @@ export const useServerStore = defineStore('serverStore', () => {
 		info.node = serverInfoResponse.data.data?.node;
 		info.os = serverInfoResponse.data.data?.os;
 		info.flows = serverInfoResponse.data.data?.flows;
+		info.ai_enabled = serverInfoResponse.data.data?.ai_enabled;
+		info.mcp_enabled = serverInfoResponse.data.data?.mcp_enabled;
 
 		auth.providers = authResponse.data.data;
 		auth.disableDefault = authResponse.data.disableDefault;
@@ -124,6 +130,8 @@ export const useServerStore = defineStore('serverStore', () => {
 		info.brio = undefined;
 		info.node = undefined;
 		info.os = undefined;
+		info.ai_enabled = false;
+		info.mcp_enabled = false;
 
 		auth.providers = [];
 		auth.disableDefault = false;

@@ -9,7 +9,9 @@
 		"packages/*",
 		"tests/*",
 		"extensions/hooks/*",
-		"extensions/endpoints/*"
+		"extensions/endpoints/*",
+		"extensions/interfaces/*",
+		"extensions/modules/*"
 	],
 	"scripts": {
 		"build": "bun run --filter '!docs' build",
@@ -20,9 +22,9 @@
 		"lint": "eslint .",
 		"test": "bun test",
 		"test:blackbox": "bun run --filter tests-blackbox test",
-		"ext:install": "for dir in extensions/hooks/* extensions/endpoints/*; do [ -f \"$dir/package.json\" ] && (cd \"$dir\" && bun install); done",
-		"ext:build": "for dir in extensions/hooks/* extensions/endpoints/*; do [ -f \"$dir/package.json\" ] && (echo \"Building $dir...\" && cd \"$dir\" && bun run build && cd - > /dev/null); done",
-		"ext:dev": "for dir in extensions/hooks/* extensions/endpoints/*; do [ -f \"$dir/package.json\" ] && (cd \"$dir\" && bun run dev &); done"
+		"ext:install": "for dir in extensions/hooks/* extensions/endpoints/* extensions/interfaces/* extensions/modules/*; do [ -f \"$dir/package.json\" ] && (cd \"$dir\" && bun install); done",
+		"ext:build": "for dir in extensions/hooks/* extensions/endpoints/* extensions/interfaces/* extensions/modules/*; do [ -f \"$dir/package.json\" ] && (echo \"Building $dir...\" && cd \"$dir\" && bun run build && cd - > /dev/null); done",
+		"ext:dev": "for dir in extensions/hooks/* extensions/endpoints/* extensions/interfaces/* extensions/modules/*; do [ -f \"$dir/package.json\" ] && (cd \"$dir\" && bun run dev &); done"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "5.59.0",

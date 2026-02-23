@@ -19,6 +19,17 @@ import { getOSInfo } from '../utils/get-os-info.js';
 import { version } from '../utils/package.js';
 import { SettingsService } from './settings.js';
 
+function parseBoolean(value: unknown, fallback: boolean) {
+	if (typeof value === 'boolean') return value;
+	if (typeof value === 'string') {
+		const normalized = value.trim().toLowerCase();
+		if (['true', '1', 'yes', 'on'].includes(normalized)) return true;
+		if (['false', '0', 'no', 'off'].includes(normalized)) return false;
+	}
+	if (typeof value === 'number') return value !== 0;
+	return fallback;
+}
+
 export class ServerService {
 	knex: Knex;
 	accountability: Accountability | null;
@@ -52,6 +63,9 @@ export class ServerService {
 		info['project'] = projectInfo;
 
 		if (this.accountability?.user) {
+			info['mcp_enabled'] = parseBoolean(env['MCP_ENABLED'], true);
+			info['ai_enabled'] = parseBoolean(env['AI_ENABLED'], true);
+
 			if (env['RATE_LIMITER_ENABLED']) {
 				info['rateLimit'] = {
 					points: env['RATE_LIMITER_POINTS'],

@@ -24,6 +24,7 @@ import FlowsDetail from './routes/flows/flow.vue';
 import FlowOperationDetail from './routes/flows/components/operation-detail.vue';
 import TranslationStringsCollection from './routes/translation-strings/collection.vue';
 import ExtensionsOverview from './routes/extensions/extensions.vue';
+import AIOverview from './routes/ai/overview.vue';
 
 export default defineModule({
 	id: 'settings',
@@ -234,6 +235,11 @@ export default defineModule({
 			name: 'settings-extensions',
 			path: 'extensions',
 			component: ExtensionsOverview,
+		},
+		{
+			name: 'settings-ai',
+			path: 'ai',
+			component: AIOverview,
 		},
 		{
 			name: 'settings-not-found',

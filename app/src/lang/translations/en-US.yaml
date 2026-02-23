@@ -973,6 +973,7 @@ no_options_available: No options available
 settings_data_model: Data Model
 settings_permissions: Roles & Permissions
 settings_project: Project Settings
+settings_ai: AI & MCP
 settings_webhooks: Webhooks
 settings_flows: Flows
 settings_extensions: Extensions
@@ -999,6 +1000,8 @@ discard_changes_copy: Are you sure you want to discard all the changes made?
 show_x_axis: Show X Axis
 show_y_axis: Show Y Axis
 keep_editing: Keep Editing
+ai_disabled_by_env: AI is disabled by environment configuration.
+mcp_disabled_by_env: MCP is disabled by environment configuration.
 page_help_collections_overview: '**Collections Overview** — List of all collections you have access to.'
 page_help_collections_collection: >-
   **Browse Items** — Lists all {collection} items you have access to. Customize layout, filters, and sorting to tailor
@@ -1203,6 +1206,12 @@ fields:
     transformations_presets: Limit transformations to presets below
     image_editor: Image Editor
     custom_aspect_ratios: Custom Aspect Ratios
+    mcp_configuration: MCP Configuration
+    mcp_enabled: MCP Server
+    mcp_allow_deletes: Allow Deletes
+    mcp_prompts_collection: AI Prompts Collection
+    mcp_system_prompt_enabled: Use System Prompt
+    mcp_system_prompt: Custom System Prompt
   directus_shares:
     name: Name
     role: Role
@@ -1272,6 +1281,12 @@ field_options:
     basemaps_style: Mapbox Style
     files_divider_title: Files & Thumbnails
     overrides_divider_title: App Overrides
+    mcp_enabled_note: Enable Model Context Protocol server for this project.
+    mcp_allow_deletes_note: Allow MCP tools to execute delete actions.
+    mcp_prompts_collection_placeholder: ai_prompts
+    mcp_prompts_collection_note: Collection used to store reusable MCP prompt templates.
+    mcp_system_prompt_enabled_note: Use default system prompt for MCP tool sessions.
+    mcp_system_prompt_note: Optional custom system prompt override for MCP sessions.
   directus_activity:
     login: Login
     create: Create

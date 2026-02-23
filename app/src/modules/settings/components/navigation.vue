@@ -28,14 +28,17 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useServerStore } from '@/stores/server';
 
 export default defineComponent({
 	setup() {
 		const version = __BRIO_VERSION__;
+		const serverStore = useServerStore();
 
 		const { t } = useI18n();
 
-		const navItems = [
+		const navItems = computed(() => {
+			const base = [
 			{
 				icon: 'public',
 				name: t('settings_project'),
@@ -76,7 +79,18 @@ export default defineComponent({
 				name: t('settings_extensions'),
 				to: `/settings/extensions`,
 			},
-		];
+			];
+
+			if (serverStore.info.ai_enabled || serverStore.info.mcp_enabled) {
+				base.splice(7, 0, {
+					icon: 'smart_toy',
+					name: t('settings_ai'),
+					to: `/settings/ai`,
+				});
+			}
+
+			return base;
+		});
 
 		const externalItems = computed(() => {
 			return [

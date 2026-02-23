@@ -35,6 +35,9 @@ function parseAllowRoles(envValue: string | undefined): Set<string> {
 export default defineHook(({ filter }, { services, database, getSchema, env, logger }) => {
 	const allowRoles = parseAllowRoles(env.AGE_DECRYPT_ALLOW_ROLES);
 
+	const encryptedFieldsCache = new Map<string, { expiresAt: number; fields: string[] }>();
+	const ENCRYPTED_FIELDS_CACHE_TTL_MS = 30_000;
+
 	async function scrubLeakedMarkersFromPublicSettings(): Promise<void> {
 		try {
 			const schema = await getSchema();
@@ -75,9 +78,16 @@ export default defineHook(({ filter }, { services, database, getSchema, env, log
 		return null;
 	}
 
-	async function getEncryptedFields(collection: string): Promise<string[]> {
+	async function getEncryptedFields(collection: string, knex: any): Promise<string[]> {
+		const now = Date.now();
+		const cached = encryptedFieldsCache.get(collection);
+
+		if (cached && cached.expiresAt > now) {
+			return cached.fields;
+		}
+
 		// Brio 9 (Directus 9) uses the meta JSON column in directus_fields
-		const rows = await database('directus_fields').select(['field', 'meta']).where({ collection });
+		const rows = await knex('directus_fields').select(['field', 'meta']).where({ collection });
 		const fields: string[] = [];
 		for (const row of rows as Array<{ field: string; meta?: any }>) {
 			const meta = row.meta ?? {};
@@ -93,6 +103,12 @@ export default defineHook(({ filter }, { services, database, getSchema, env, log
 					: meta.interface;
 			if (iface === 'age-encrypted') fields.push(row.field);
 		}
+
+				encryptedFieldsCache.set(collection, {
+					expiresAt: now + ENCRYPTED_FIELDS_CACHE_TTL_MS,
+					fields,
+				});
+
 		return fields;
 	}
 
@@ -120,9 +136,10 @@ export default defineHook(({ filter }, { services, database, getSchema, env, log
 	// SECURITY: ensure no AGE key material is leaked through the login screen.
 	void scrubLeakedMarkersFromPublicSettings();
 
-	filter('items.create', async (payload: any, meta: any) => {
+	filter('items.create', async (payload: any, meta: any, context: any) => {
 		if (!payload || !meta?.collection) return payload;
-		const encryptedFields = await getEncryptedFields(meta.collection);
+		const knex = context?.database ?? database;
+		const encryptedFields = await getEncryptedFields(meta.collection, knex);
 		if (encryptedFields.length === 0) return payload;
 
 		const fieldsToEncrypt = encryptedFields.filter((field) => {
@@ -154,9 +171,10 @@ export default defineHook(({ filter }, { services, database, getSchema, env, log
 		return payload;
 	});
 
-	filter('items.update', async (payload: any, meta: any) => {
+	filter('items.update', async (payload: any, meta: any, context: any) => {
 		if (!payload || !meta?.collection) return payload;
-		const encryptedFields = await getEncryptedFields(meta.collection);
+		const knex = context?.database ?? database;
+		const encryptedFields = await getEncryptedFields(meta.collection, knex);
 		if (encryptedFields.length === 0) return payload;
 
 		const fieldsToEncrypt = encryptedFields.filter((field) => {
@@ -196,7 +214,8 @@ export default defineHook(({ filter }, { services, database, getSchema, env, log
 		const identity = await getIdentity();
 		if (!identity) return items;
 
-		const encryptedFields = await getEncryptedFields(meta.collection);
+		const knex = context?.database ?? database;
+		const encryptedFields = await getEncryptedFields(meta.collection, knex);
 		if (encryptedFields.length === 0) return items;
 
 		const d = new age.Decrypter();

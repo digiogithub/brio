@@ -375,6 +375,52 @@ fields:
             options:
               placeholder: $t:fields.directus_settings.attribution_placeholder
 
+  - field: mcp_group
+    interface: presentation-divider
+    options:
+      icon: smart_toy
+      title: $t:fields.directus_settings.mcp_configuration
+    special:
+      - alias
+      - no-data
+    width: full
+
+  - field: mcp_enabled
+    interface: boolean
+    special:
+      - cast-boolean
+    note: $t:field_options.directus_settings.mcp_enabled_note
+    width: half
+
+  - field: mcp_allow_deletes
+    interface: boolean
+    special:
+      - cast-boolean
+    note: $t:field_options.directus_settings.mcp_allow_deletes_note
+    width: half
+
+  - field: mcp_prompts_collection
+    interface: input
+    options:
+      iconRight: table_chart
+      placeholder: $t:field_options.directus_settings.mcp_prompts_collection_placeholder
+    note: $t:field_options.directus_settings.mcp_prompts_collection_note
+    width: full
+
+  - field: mcp_system_prompt_enabled
+    interface: boolean
+    special:
+      - cast-boolean
+    note: $t:field_options.directus_settings.mcp_system_prompt_enabled_note
+    width: half
+
+  - field: mcp_system_prompt
+    interface: input-multiline
+    options:
+      font: monospace
+    note: $t:field_options.directus_settings.mcp_system_prompt_note
+    width: full
+
   - field: translation_strings
     special:
       - cast-json

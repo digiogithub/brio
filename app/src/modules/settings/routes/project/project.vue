@@ -53,6 +53,15 @@ import { useShortcut } from '@/composables/use-shortcut';
 import { useEditsGuard } from '@/composables/use-edits-guard';
 import { useRouter } from 'vue-router';
 
+const EXCLUDED_FIELDS = [
+	'mcp_group',
+	'mcp_enabled',
+	'mcp_allow_deletes',
+	'mcp_prompts_collection',
+	'mcp_system_prompt_enabled',
+	'mcp_system_prompt',
+];
+
 export default defineComponent({
 	components: { SettingsNavigation, ProjectInfoSidebarDetail },
 	setup() {
@@ -63,7 +72,8 @@ export default defineComponent({
 		const settingsStore = useSettingsStore();
 		const serverStore = useServerStore();
 
-		const { fields } = useCollection('directus_settings');
+		const { fields: allFields } = useCollection('directus_settings');
+		const fields = computed(() => allFields.value.filter((field) => EXCLUDED_FIELDS.includes(field.field) === false));
 
 		const initialValues = ref(clone(settingsStore.settings));
 
