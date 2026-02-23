@@ -1,3 +1,5 @@
 procs:
   mesnada: "mesnada -config .ai/mesnada.yaml"
   remembrances: "remembrances-mcp-beta --config .ai/remembrances.config.yaml"
+  brio-front: "bun run dev:app"
+  brio-back: "bun run dev:api"

@@ -51,3 +51,8 @@ TODO
 /packages/extensions-sdk/temp-extension-*
 *.db
 database/*
+
+# AI
+.kb/*
+.ai/*
+.mesnada/*
