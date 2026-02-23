@@ -25,8 +25,10 @@ export async function createCli(): Promise<Command> {
 
 	await emitter.emitInit('cli.before', { program });
 
+	const cliVersion = await pkg.getLatestTag();
+
 	program.name('brio').usage('[command] [options]');
-	program.version(pkg.version, '-v, --version');
+	program.version(cliVersion, '-v, --version');
 
 	program.command('start').description('Start the Brio API').action(startServer);
 	program.command('init').description('Create a new Brio Project').action(init);

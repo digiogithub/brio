@@ -17,13 +17,35 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { searchForWorkspaceRoot } from 'vite';
 import { defineConfig } from 'vitest/config';
-import { version } from '../brio/package.json';
+import { version as packageVersion } from '../brio/package.json';
 
 const API_PATH = path.join('..', 'api');
 const EXTENSIONS_PATH = path.join(API_PATH, 'extensions');
 
+async function resolveLatestTag(fallback) {
+	try {
+		const res = await fetch('https://api.github.com/repos/digiogithub/brio/tags', {
+			headers: { accept: 'application/vnd.github+json' },
+			signal: AbortSignal.timeout(5000),
+		});
+
+		if (!res.ok) return fallback;
+		const tags = await res.json();
+		if (Array.isArray(tags) && tags.length > 0 && tags[0].name) {
+			// Strip leading 'v' to match semver convention
+			return tags[0].name.replace(/^v/, '');
+		}
+	} catch {
+		// Network unavailable or timeout – fall back silently
+	}
+
+	return fallback;
+}
+
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(async () => {
+	const version = await resolveLatestTag(packageVersion);
+	return {
 	define: {
 		__BRIO_VERSION__: JSON.stringify(version),
 	},
@@ -59,6 +81,7 @@ export default defineConfig({
 		environment: 'happy-dom',
 		setupFiles: ['src/__setup__/mock-globals.ts'],
 	},
+	};
 });
 
 function getExtensionsRealPaths() {

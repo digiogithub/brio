@@ -16,7 +16,7 @@
 			</v-list-item-content>
 		</v-list-item>
 
-		<v-list-item href="https://github.com/brio-cms/brio/releases" class="version">
+		<v-list-item href="https://github.com/digiogithub/brio/releases" class="version">
 			<v-list-item-icon><v-icon name="brio" /></v-list-item-icon>
 			<v-list-item-content>
 				<v-text-overflow class="version" :text="`Brio ${version}`" />
@@ -78,12 +78,12 @@ export default defineComponent({
 				{
 					icon: 'bug_report',
 					name: t('report_bug'),
-					href: 'https://github.com/brio-cms/brio/issues/new?template=bug_report.yml',
+					href: 'https://github.com/digiogithub/brio/issues/new?template=bug_report.yml',
 				},
 				{
 					icon: 'new_releases',
 					name: t('request_feature'),
-					href: 'https://github.com/brio-cms/brio/discussions/new?category=feature-requests',
+					href: 'https://github.com/digiogithub/brio/discussions/new?category=feature-requests',
 				},
 			];
 		});
