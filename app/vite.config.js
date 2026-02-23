@@ -13,6 +13,7 @@ import {
 } from '@brio/utils/node';
 import yaml from '@rollup/plugin-yaml';
 import vue from '@vitejs/plugin-vue';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { searchForWorkspaceRoot } from 'vite';
@@ -24,19 +25,23 @@ const EXTENSIONS_PATH = path.join(API_PATH, 'extensions');
 
 async function resolveLatestTag(fallback) {
 	try {
-		const res = await fetch('https://api.github.com/repos/digiogithub/brio/tags', {
-			headers: { accept: 'application/vnd.github+json' },
-			signal: AbortSignal.timeout(5000),
+		const repoRoot = path.resolve(__dirname, '..');
+		const output = execFileSync('git', ['tag', '--list', 'brio-*', '--sort=-v:refname'], {
+			cwd: repoRoot,
+			encoding: 'utf8',
+			stdio: ['ignore', 'pipe', 'ignore'],
 		});
 
-		if (!res.ok) return fallback;
-		const tags = await res.json();
-		if (Array.isArray(tags) && tags.length > 0 && tags[0].name) {
-			// Strip leading 'v' to match semver convention
-			return tags[0].name.replace(/^v/, '');
+		const latestBrioTag = output
+			.split('\n')
+			.map((line) => line.trim())
+			.find((tag) => tag.length > 0);
+
+		if (latestBrioTag) {
+			return latestBrioTag.replace(/^brio-/, '');
 		}
 	} catch {
-		// Network unavailable or timeout – fall back silently
+		// Git unavailable or not a git repository – fall back silently
 	}
 
 	return fallback;
@@ -46,41 +51,41 @@ async function resolveLatestTag(fallback) {
 export default defineConfig(async () => {
 	const version = await resolveLatestTag(packageVersion);
 	return {
-	define: {
-		__BRIO_VERSION__: JSON.stringify(version),
-	},
-	plugins: [
-		brioExtensions(),
-		vue(),
-		yaml({
-			transform(data) {
-				return data === null ? {} : undefined;
-			},
-		}),
-	],
-	resolve: {
-		alias: [
-			{ find: '@', replacement: path.resolve(__dirname, 'src') },
-			{ find: 'json2csv', replacement: 'json2csv/dist/json2csv.umd.js' },
+		define: {
+			__BRIO_VERSION__: JSON.stringify(version),
+		},
+		plugins: [
+			brioExtensions(),
+			vue(),
+			yaml({
+				transform(data) {
+					return data === null ? {} : undefined;
+				},
+			}),
 		],
-	},
-	base: process.env.NODE_ENV === 'production' ? '' : '/admin/',
-	server: {
-		port: 8080,
-		proxy: {
-			'^/(?!admin)': {
-				target: process.env.API_URL ? process.env.API_URL : 'http://127.0.0.1:8055/',
-				changeOrigin: true,
+		resolve: {
+			alias: [
+				{ find: '@', replacement: path.resolve(__dirname, 'src') },
+				{ find: 'json2csv', replacement: 'json2csv/dist/json2csv.umd.js' },
+			],
+		},
+		base: process.env.NODE_ENV === 'production' ? '' : '/admin/',
+		server: {
+			port: 8080,
+			proxy: {
+				'^/(?!admin)': {
+					target: process.env.API_URL ? process.env.API_URL : 'http://127.0.0.1:8055/',
+					changeOrigin: true,
+				},
+			},
+			fs: {
+				allow: [searchForWorkspaceRoot(process.cwd()), ...getExtensionsRealPaths()],
 			},
 		},
-		fs: {
-			allow: [searchForWorkspaceRoot(process.cwd()), ...getExtensionsRealPaths()],
+		test: {
+			environment: 'happy-dom',
+			setupFiles: ['src/__setup__/mock-globals.ts'],
 		},
-	},
-	test: {
-		environment: 'happy-dom',
-		setupFiles: ['src/__setup__/mock-globals.ts'],
-	},
 	};
 });
 
