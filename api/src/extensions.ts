@@ -436,9 +436,10 @@ class ExtensionManager {
 
 				this.registerHook(config);
 
+				logger.debug(`Registered hook extension: ${hook.name} (${hookPath})`);
 				this.apiExtensions.push({ path: hookPath });
 			} catch (error: any) {
-				logger.warn(`Couldn't register hook "${hook.name}"`);
+				logger.warn(`Couldn't register hook "${hook.name}" — entrypoint: ${path.resolve(hook.path, hook.entrypoint)}`);
 				logger.warn(error);
 			}
 		}
@@ -459,9 +460,10 @@ class ExtensionManager {
 
 				this.registerEndpoint(config, endpoint.name);
 
+				logger.debug(`Registered endpoint extension: ${endpoint.name} (${endpointPath})`);
 				this.apiExtensions.push({ path: endpointPath });
 			} catch (error: any) {
-				logger.warn(`Couldn't register endpoint "${endpoint.name}"`);
+				logger.warn(`Couldn't register endpoint "${endpoint.name}" — entrypoint: ${path.resolve(endpoint.path, endpoint.entrypoint)}`);
 				logger.warn(error);
 			}
 		}

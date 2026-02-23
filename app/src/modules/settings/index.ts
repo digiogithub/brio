@@ -23,6 +23,7 @@ import FlowsOverview from './routes/flows/overview.vue';
 import FlowsDetail from './routes/flows/flow.vue';
 import FlowOperationDetail from './routes/flows/components/operation-detail.vue';
 import TranslationStringsCollection from './routes/translation-strings/collection.vue';
+import ExtensionsOverview from './routes/extensions/extensions.vue';
 
 export default defineModule({
 	id: 'settings',
@@ -228,6 +229,11 @@ export default defineModule({
 					component: TranslationStringsCollection,
 				},
 			],
+		},
+		{
+			name: 'settings-extensions',
+			path: 'extensions',
+			component: ExtensionsOverview,
 		},
 		{
 			name: 'settings-not-found',

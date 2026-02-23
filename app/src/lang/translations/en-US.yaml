@@ -528,6 +528,10 @@ user_count: 'No Users | One User | {count} Users'
 no_users_copy: There are no users in this role yet.
 webhooks_count: 'No Webhooks | One Webhook | {count} Webhooks'
 no_webhooks_copy: No webhooks have been configured yet. Get started by creating one below.
+extensions_count: 'No Extensions | One Extension | {count} Extensions'
+no_extensions_copy: No extensions are currently installed.
+extension_local: Local
+extension_version: Version
 no_notifications: No Notifications
 no_notifications_copy: You're all caught up!
 activity_log: Activity Log
@@ -971,6 +975,7 @@ settings_permissions: Roles & Permissions
 settings_project: Project Settings
 settings_webhooks: Webhooks
 settings_flows: Flows
+settings_extensions: Extensions
 settings_presets: Presets & Bookmarks
 settings_translation_strings: Translation Strings
 one_or_more_options_are_missing: One or more options are missing

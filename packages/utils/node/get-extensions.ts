@@ -113,23 +113,58 @@ export async function getLocalExtensions(root: string): Promise<Extension[]> {
 			for (const extensionName of extensionNames) {
 				const extensionPath = path.join(typePath, extensionName);
 
+				// When a package.json with brio:extension is present, use the declared
+				// build output path instead of assuming index.js at the folder root.
+				const pkgFilePath = path.join(extensionPath, 'package.json');
+				let pkgMeta: { name?: string; version?: string; [key: string]: any } | null = null;
+
+				if (await fse.exists(pkgFilePath)) {
+					try {
+						const raw = await fse.readJSON(pkgFilePath);
+						const parsed = ExtensionManifest.safeParse(raw);
+						if (parsed.success) pkgMeta = parsed.data;
+					} catch {
+						// ignore malformed package.json — fall back to index.js
+					}
+				}
+
 				if (isIn(extensionType, HYBRID_EXTENSION_TYPES)) {
+					let appEntry: string;
+					let apiEntry: string;
+
+					if (pkgMeta && typeof pkgMeta[EXTENSION_PKG_KEY]?.path === 'object') {
+						appEntry = pkgMeta[EXTENSION_PKG_KEY].path.app;
+						apiEntry = pkgMeta[EXTENSION_PKG_KEY].path.api;
+					} else {
+						appEntry = await findExtension(extensionPath, 'app');
+						apiEntry = await findExtension(extensionPath, 'api');
+					}
+
 					extensions.push({
 						path: extensionPath,
-						name: extensionName,
+						name: pkgMeta?.name ?? extensionName,
 						type: extensionType,
-						entrypoint: {
-							app: await findExtension(extensionPath, 'app'),
-							api: await findExtension(extensionPath, 'api'),
-						},
+						entrypoint: { app: appEntry, api: apiEntry },
+						host: pkgMeta?.[EXTENSION_PKG_KEY]?.host,
+						version: pkgMeta?.version,
 						local: true,
 					});
 				} else {
+					let entrypoint: string;
+
+					if (pkgMeta && typeof pkgMeta[EXTENSION_PKG_KEY]?.path === 'string') {
+						entrypoint = pkgMeta[EXTENSION_PKG_KEY].path;
+					} else {
+						entrypoint = await findExtension(extensionPath, 'index');
+					}
+
 					extensions.push({
 						path: extensionPath,
-						name: extensionName,
+						name: pkgMeta?.name ?? extensionName,
 						type: extensionType as AppExtensionType | ApiExtensionType,
-						entrypoint: await findExtension(extensionPath, 'index'),
+						entrypoint,
+						host: pkgMeta?.[EXTENSION_PKG_KEY]?.host,
+						version: pkgMeta?.version,
 						local: true,
 					});
 				}
