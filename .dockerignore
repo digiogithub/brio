@@ -14,3 +14,10 @@ dist
 .bun
 bun.lockb
 !bun.lockb
+*.db
+.kb
+.ai
+.mesnada
+.vscode
+.idea
+database

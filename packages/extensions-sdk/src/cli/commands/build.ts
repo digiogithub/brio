@@ -591,7 +591,10 @@ function getRollupOptions({
 			languages.includes('typescript') ? esbuild({ include: /\.tsx?$/, sourceMap: sourcemap }) : null,
 			mode === 'browser' ? styles() : null,
 			...plugins,
-			nodeResolve({ browser: mode === 'browser' }),
+			nodeResolve({
+				browser: mode === 'browser',
+				extensions: ['.mjs', '.js', '.json', '.node', '.ts', '.tsx'],
+			}),
 			commonjs({ esmExternals: mode === 'browser', sourceMap: sourcemap }),
 			json(),
 			replace({
@@ -626,9 +629,8 @@ function getRollupOutputOptions({
 function formatRollupError(error: RollupError): string {
 	let message = '';
 
-	message += `${chalk.bold.red(`[${error.name}]`)} ${error.message}${
-		error.plugin ? ` (plugin ${error.plugin})` : ''
-	}\n`;
+	message += `${chalk.bold.red(`[${error.name}]`)} ${error.message}${error.plugin ? ` (plugin ${error.plugin})` : ''
+		}\n`;
 
 	if (error.url) {
 		message += '\n' + chalk.green(error.url);

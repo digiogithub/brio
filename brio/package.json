@@ -28,25 +28,20 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/nicobrio/brio.git"
+		"url": "https://github.com/digiogithub/brio.git"
 	},
 	"funding": "https://github.com/nicobrio/brio?sponsor=1",
 	"license": "GPL-3.0-only",
 	"author": {
-		"name": "Monospace Inc",
-		"email": "info@monospace.io",
-		"url": "https://monospace.io"
+		"name": "Digio",
+		"email": "info@digio.es",
+		"url": "https://digio.es"
 	},
 	"maintainers": [
 		{
-			"name": "Rijk van Zanten",
-			"email": "rijkvanzanten@me.com",
-			"url": "https://github.com/rijkvanzanten"
-		},
-		{
-			"name": "Ben Haynes",
-			"email": "ben@rngr.org",
-			"url": "https://github.com/benhaynes"
+			"name": "Jose F. Rives",
+			"email": "jose+github@digio.es",
+			"url": "https://github.com/digiogithub"
 		}
 	],
 	"exports": {
