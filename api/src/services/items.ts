@@ -47,7 +47,7 @@ export class ItemsService<Item extends AnyItem = AnyItem> implements AbstractSer
 		this.collection = collection;
 		this.knex = options.knex || getDatabase();
 		this.accountability = options.accountability || null;
-		this.eventScope = this.collection.startsWith('directus_') ? this.collection.substring(9) : 'items';
+		this.eventScope = this.collection.startsWith('brio_') ? this.collection.substring(5) : 'items';
 		this.schema = options.schema;
 		this.cache = getCache().cache;
 

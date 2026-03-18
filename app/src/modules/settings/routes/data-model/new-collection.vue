@@ -491,7 +491,7 @@ export default defineComponent({
 				relations.push({
 					collection: collectionName.value!,
 					field: systemFields.userCreated.name,
-					related_collection: 'directus_users',
+					related_collection: 'brio_users',
 					schema: {},
 				});
 			}
@@ -500,7 +500,7 @@ export default defineComponent({
 				relations.push({
 					collection: collectionName.value!,
 					field: systemFields.userUpdated.name,
-					related_collection: 'directus_users',
+					related_collection: 'brio_users',
 					schema: {},
 				});
 			}

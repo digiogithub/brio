@@ -1,5 +1,5 @@
 type: object
-x-collection: directus_settings
+x-collection: brio_settings
 properties:
   id:
     description: Unique identifier for the setting.

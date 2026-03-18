@@ -107,7 +107,7 @@ const usedTrigger = computed(() => {
 });
 
 const { revisionsByDate, revisionsCount, loading } = useRevisions(
-	ref('directus_flows'),
+	ref('brio_flows'),
 	computed(() => unref(flow).id),
 	{
 		action: Action.RUN,

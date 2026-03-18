@@ -1,4 +1,4 @@
-table: directus_flows
+table: brio_flows
 
 fields:
   - field: id

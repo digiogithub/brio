@@ -2,108 +2,108 @@ import { Permission } from '@brio/types';
 
 export const appRecommendedPermissions: Partial<Permission>[] = [
 	{
-		collection: 'directus_files',
+		collection: 'brio_files',
 		action: 'create',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_files',
+		collection: 'brio_files',
 		action: 'read',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_files',
+		collection: 'brio_files',
 		action: 'update',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_files',
+		collection: 'brio_files',
 		action: 'delete',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_dashboards',
+		collection: 'brio_dashboards',
 		action: 'create',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_dashboards',
+		collection: 'brio_dashboards',
 		action: 'read',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_dashboards',
+		collection: 'brio_dashboards',
 		action: 'update',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_dashboards',
+		collection: 'brio_dashboards',
 		action: 'delete',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_panels',
+		collection: 'brio_panels',
 		action: 'create',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_panels',
+		collection: 'brio_panels',
 		action: 'read',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_panels',
+		collection: 'brio_panels',
 		action: 'update',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_panels',
+		collection: 'brio_panels',
 		action: 'delete',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_folders',
+		collection: 'brio_folders',
 		action: 'create',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_folders',
+		collection: 'brio_folders',
 		action: 'read',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_folders',
+		collection: 'brio_folders',
 		action: 'update',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_folders',
+		collection: 'brio_folders',
 		action: 'delete',
 		permissions: {},
 	},
 	{
-		collection: 'directus_users',
+		collection: 'brio_users',
 		action: 'read',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_users',
+		collection: 'brio_users',
 		action: 'update',
 		permissions: {
 			id: {
@@ -125,13 +125,13 @@ export const appRecommendedPermissions: Partial<Permission>[] = [
 		],
 	},
 	{
-		collection: 'directus_roles',
+		collection: 'brio_roles',
 		action: 'read',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_shares',
+		collection: 'brio_shares',
 		action: 'read',
 		permissions: {
 			_or: [
@@ -150,13 +150,13 @@ export const appRecommendedPermissions: Partial<Permission>[] = [
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_shares',
+		collection: 'brio_shares',
 		action: 'create',
 		permissions: {},
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_shares',
+		collection: 'brio_shares',
 		action: 'update',
 		permissions: {
 			user_created: {
@@ -166,7 +166,7 @@ export const appRecommendedPermissions: Partial<Permission>[] = [
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_shares',
+		collection: 'brio_shares',
 		action: 'delete',
 		permissions: {
 			user_created: {
@@ -176,7 +176,7 @@ export const appRecommendedPermissions: Partial<Permission>[] = [
 		fields: ['*'],
 	},
 	{
-		collection: 'directus_flows',
+		collection: 'brio_flows',
 		action: 'read',
 		permissions: {
 			trigger: {
@@ -189,7 +189,7 @@ export const appRecommendedPermissions: Partial<Permission>[] = [
 
 export const appMinimalPermissions: Partial<Permission>[] = [
 	{
-		collection: 'directus_activity',
+		collection: 'brio_activity',
 		action: 'read',
 		permissions: {
 			user: {
@@ -198,7 +198,7 @@ export const appMinimalPermissions: Partial<Permission>[] = [
 		},
 	},
 	{
-		collection: 'directus_activity',
+		collection: 'brio_activity',
 		action: 'create',
 		validation: {
 			comment: {
@@ -207,15 +207,15 @@ export const appMinimalPermissions: Partial<Permission>[] = [
 		},
 	},
 	{
-		collection: 'directus_collections',
+		collection: 'brio_collections',
 		action: 'read',
 	},
 	{
-		collection: 'directus_fields',
+		collection: 'brio_fields',
 		action: 'read',
 	},
 	{
-		collection: 'directus_permissions',
+		collection: 'brio_permissions',
 		action: 'read',
 		permissions: {
 			role: {
@@ -224,7 +224,7 @@ export const appMinimalPermissions: Partial<Permission>[] = [
 		},
 	},
 	{
-		collection: 'directus_presets',
+		collection: 'brio_presets',
 		action: 'read',
 		permissions: {
 			_or: [
@@ -265,7 +265,7 @@ export const appMinimalPermissions: Partial<Permission>[] = [
 		},
 	},
 	{
-		collection: 'directus_presets',
+		collection: 'brio_presets',
 		action: 'create',
 		validation: {
 			user: {
@@ -274,7 +274,7 @@ export const appMinimalPermissions: Partial<Permission>[] = [
 		},
 	},
 	{
-		collection: 'directus_presets',
+		collection: 'brio_presets',
 		action: 'update',
 		permissions: {
 			user: {
@@ -283,7 +283,7 @@ export const appMinimalPermissions: Partial<Permission>[] = [
 		},
 	},
 	{
-		collection: 'directus_presets',
+		collection: 'brio_presets',
 		action: 'delete',
 		permissions: {
 			user: {
@@ -292,11 +292,11 @@ export const appMinimalPermissions: Partial<Permission>[] = [
 		},
 	},
 	{
-		collection: 'directus_relations',
+		collection: 'brio_relations',
 		action: 'read',
 	},
 	{
-		collection: 'directus_roles',
+		collection: 'brio_roles',
 		action: 'read',
 		permissions: {
 			id: {
@@ -305,11 +305,11 @@ export const appMinimalPermissions: Partial<Permission>[] = [
 		},
 	},
 	{
-		collection: 'directus_settings',
+		collection: 'brio_settings',
 		action: 'read',
 	},
 	{
-		collection: 'directus_shares',
+		collection: 'brio_shares',
 		action: 'read',
 		permissions: {
 			user_created: {
@@ -318,7 +318,7 @@ export const appMinimalPermissions: Partial<Permission>[] = [
 		},
 	},
 	{
-		collection: 'directus_users',
+		collection: 'brio_users',
 		action: 'read',
 		permissions: {
 			id: {

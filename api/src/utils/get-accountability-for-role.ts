@@ -33,7 +33,7 @@ export async function getAccountabilityForRole(
 	} else {
 		const roleInfo = await context.database
 			.select(['app_access', 'admin_access'])
-			.from('directus_roles')
+			.from('brio_roles')
 			.where({ id: role })
 			.first();
 

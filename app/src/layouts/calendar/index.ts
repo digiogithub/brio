@@ -172,8 +172,8 @@ export default defineLayout<LayoutOptions>({
 					} else {
 						const primaryKey = info.event.id;
 
-						const route = collection.value.startsWith('directus_')
-							? collection.value.substring(9)
+						const route = collection.value.startsWith('brio_')
+							? collection.value.substring(5)
 							: `content/${collection.value}`;
 
 						router.push(`/${route}/${primaryKey}`);

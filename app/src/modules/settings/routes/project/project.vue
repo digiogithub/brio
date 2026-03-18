@@ -72,7 +72,7 @@ export default defineComponent({
 		const settingsStore = useSettingsStore();
 		const serverStore = useServerStore();
 
-		const { fields: allFields } = useCollection('directus_settings');
+		const { fields: allFields } = useCollection('brio_settings');
 		const fields = computed(() => allFields.value.filter((field) => EXCLUDED_FIELDS.includes(field.field) === false));
 
 		const initialValues = ref(clone(settingsStore.settings));

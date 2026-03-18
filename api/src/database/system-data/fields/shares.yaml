@@ -1,4 +1,4 @@
-table: directus_shares
+table: brio_shares
 
 fields:
   - field: id

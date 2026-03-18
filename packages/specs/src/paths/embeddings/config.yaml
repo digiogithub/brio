@@ -1,0 +1,28 @@
+get:
+  summary: List Embeddings Config
+  description: List embeddings configuration records.
+  operationId: listEmbeddingsConfig
+  parameters:
+    - in: query
+      name: collection
+      required: false
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/UnauthorizedError'
+    '404':
+      $ref: '../../openapi.yaml#/components/responses/NotFoundError'
+  tags:
+    - Embeddings

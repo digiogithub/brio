@@ -81,7 +81,7 @@ export default defineComponent({
 			},
 			];
 
-			if (serverStore.info.ai_enabled || serverStore.info.mcp_enabled) {
+			if (serverStore.info.ai_enabled || serverStore.info.embeddings_enabled || serverStore.info.mcp_enabled) {
 				base.splice(7, 0, {
 					icon: 'smart_toy',
 					name: t('settings_ai'),

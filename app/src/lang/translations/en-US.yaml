@@ -1002,6 +1002,20 @@ show_y_axis: Show Y Axis
 keep_editing: Keep Editing
 ai_disabled_by_env: AI is disabled by environment configuration.
 mcp_disabled_by_env: MCP is disabled by environment configuration.
+embeddings_disabled_by_env: Embeddings are disabled by environment configuration.
+vector_capability_ready: Vector database capabilities are available.
+vector_capability_ready_with_backend: Vector database capabilities are available on {backend}.
+vector_capability_missing: Vector database capabilities are not available.
+vector_capability_missing_with_backend: Vector database capabilities are not available on {backend}.
+vector_capability_unknown: Unable to detect vector database capabilities from server info.
+vector_capability_unknown_with_backend: Vector database backend detected ({backend}), but capability status is unavailable.
+vector_capability_setup_link: View setup guide
+embeddings_provider_guidance_title: Provider guidance — {provider}
+embeddings_provider_guidance_body: Suggested defaults are available for this provider. Existing values are never overwritten automatically.
+embeddings_provider_default_model: "Recommended model: {model}"
+embeddings_provider_default_base_url: "Recommended base URL: {baseUrl}"
+embeddings_provider_docs_link: Provider docs
+embeddings_apply_provider_defaults: Apply missing defaults
 page_help_collections_overview: '**Collections Overview** — List of all collections you have access to.'
 page_help_collections_collection: >-
   **Browse Items** — Lists all {collection} items you have access to. Customize layout, filters, and sorting to tailor
@@ -1212,6 +1226,21 @@ fields:
     mcp_prompts_collection: AI Prompts Collection
     mcp_system_prompt_enabled: Use System Prompt
     mcp_system_prompt: Custom System Prompt
+    embeddings_configuration: Embeddings Configuration
+    embeddings_provider: Embeddings Provider
+    embeddings_model: Embedding Model
+    embeddings_api_key: API Key
+    embeddings_base_url: Base URL
+    embeddings_dimensions: Vector Dimensions
+    embeddings_batch_size: Batch Size
+  brio_settings:
+    embeddings_configuration: Embeddings Configuration
+    embeddings_provider: Embeddings Provider
+    embeddings_model: Embedding Model
+    embeddings_api_key: API Key
+    embeddings_base_url: Base URL
+    embeddings_dimensions: Vector Dimensions
+    embeddings_batch_size: Batch Size
   directus_shares:
     name: Name
     role: Role
@@ -1287,6 +1316,29 @@ field_options:
     mcp_prompts_collection_note: Collection used to store reusable MCP prompt templates.
     mcp_system_prompt_enabled_note: Use default system prompt for MCP tool sessions.
     mcp_system_prompt_note: Optional custom system prompt override for MCP sessions.
+    embeddings_provider_placeholder: Select a provider...
+    embeddings_provider_note: Select the AI provider for generating vector embeddings.
+    embeddings_model_placeholder: text-embedding-3-small
+    embeddings_model_note: Name of the embedding model to use. Each provider has different models available.
+    embeddings_api_key_placeholder: sk-...
+    embeddings_api_key_note: API key for authenticating with the embeddings provider.
+    embeddings_base_url_placeholder: https://api.openai.com/v1
+    embeddings_base_url_note: Base URL for the embeddings API. Auto-populated for known providers, required for custom.
+    embeddings_dimensions_placeholder: Auto-detect
+    embeddings_dimensions_note: Number of dimensions for embedding vectors. Leave empty to use the model default.
+    embeddings_batch_size_note: Number of texts to embed in a single API call (1-2048).
+  brio_settings:
+    embeddings_provider_placeholder: Select a provider...
+    embeddings_provider_note: Select the AI provider for generating vector embeddings.
+    embeddings_model_placeholder: text-embedding-3-small
+    embeddings_model_note: Name of the embedding model to use. Each provider has different models available.
+    embeddings_api_key_placeholder: sk-...
+    embeddings_api_key_note: API key for authenticating with the embeddings provider.
+    embeddings_base_url_placeholder: https://api.openai.com/v1
+    embeddings_base_url_note: Base URL for the embeddings API. Auto-populated for known providers, required for custom.
+    embeddings_dimensions_placeholder: Auto-detect
+    embeddings_dimensions_note: Number of dimensions for embedding vectors. Leave empty to use the model default.
+    embeddings_batch_size_note: Number of texts to embed in a single API call (1-2048).
   directus_activity:
     login: Login
     create: Create

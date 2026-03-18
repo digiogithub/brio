@@ -4,6 +4,7 @@ export * from './authentication.js';
 export * from './authorization.js';
 export * from './collections.js';
 export * from './dashboards.js';
+export * from './embeddings.js';
 export * from './fields.js';
 export * from './files.js';
 export * from './flows.js';

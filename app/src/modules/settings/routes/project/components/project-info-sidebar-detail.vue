@@ -2,7 +2,7 @@
 	<sidebar-detail icon="info" :title="t('information')" close>
 		<dl v-if="parsedInfo">
 			<div>
-				<dt>{{ t('directus_version') }}</dt>
+				<dt>{{ t('brio_version') }}</dt>
 				<dd>{{ parsedInfo.brio.version }}</dd>
 			</div>
 			<div>

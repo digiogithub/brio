@@ -2,11 +2,11 @@ import type { CollectionsOverview, Relation } from '@brio/types';
 
 export const systemSchema = {
 	collections: {
-		directus_users: {
-			collection: 'directus_users',
+		brio_users: {
+			collection: 'brio_users',
 			primary: 'id',
 			singleton: false,
-			note: '$t:directus_collection.directus_users',
+			note: '$t:brio_collection.brio_users',
 			sortField: null,
 			accountability: null,
 			fields: {
@@ -54,11 +54,11 @@ export const systemSchema = {
 				},
 			},
 		},
-		directus_files: {
-			collection: 'directus_files',
+		brio_files: {
+			collection: 'brio_files',
 			primary: 'id',
 			singleton: false,
-			note: '$t:directus_collection.directus_files',
+			note: '$t:brio_collection.brio_files',
 			sortField: null,
 			accountability: null,
 			fields: {
@@ -109,13 +109,13 @@ export const systemSchema = {
 	} as CollectionsOverview,
 	relations: [
 		{
-			collection: 'directus_files',
+			collection: 'brio_files',
 			field: 'uploaded_by',
-			related_collection: 'directus_users',
+			related_collection: 'brio_users',
 			schema: {
-				table: 'directus_files',
+				table: 'brio_files',
 				column: 'uploaded_by',
-				foreign_key_table: 'directus_users',
+				foreign_key_table: 'brio_users',
 				foreign_key_column: 'id',
 				on_update: 'NO ACTION',
 				on_delete: 'NO ACTION',
@@ -123,9 +123,9 @@ export const systemSchema = {
 			},
 			meta: {
 				system: true,
-				many_collection: 'directus_files',
+				many_collection: 'brio_files',
 				many_field: 'uploaded_by',
-				one_collection: 'directus_users',
+				one_collection: 'brio_users',
 				one_field: 'items',
 				one_allowed_collections: null,
 				one_collection_field: null,

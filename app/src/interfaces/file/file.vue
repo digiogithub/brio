@@ -82,7 +82,7 @@
 		<drawer-item
 			v-if="file"
 			v-model:active="editDrawerActive"
-			collection="directus_files"
+			collection="brio_files"
 			:primary-key="file.id"
 			:edits="edits"
 			:disabled="disabled || !updateAllowed"
@@ -113,7 +113,7 @@
 
 		<drawer-collection
 			v-if="activeDialog === 'choose'"
-			collection="directus_files"
+			collection="brio_files"
 			:active="activeDialog === 'choose'"
 			:filter="filterByFolder"
 			@update:active="activeDialog = null"

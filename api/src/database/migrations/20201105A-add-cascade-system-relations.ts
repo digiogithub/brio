@@ -2,107 +2,107 @@ import type { Knex } from 'knex';
 
 const updates = [
 	{
-		table: 'directus_fields',
+		table: 'brio_fields',
 		constraints: [
 			{
 				column: 'group',
-				references: 'directus_fields.id',
+				references: 'brio_fields.id',
 			},
 		],
 	},
 	{
-		table: 'directus_files',
+		table: 'brio_files',
 		constraints: [
 			{
 				column: 'folder',
-				references: 'directus_folders.id',
+				references: 'brio_folders.id',
 			},
 			{
 				column: 'uploaded_by',
-				references: 'directus_users.id',
+				references: 'brio_users.id',
 			},
 			{
 				column: 'modified_by',
-				references: 'directus_users.id',
+				references: 'brio_users.id',
 			},
 		],
 	},
 	{
-		table: 'directus_folders',
+		table: 'brio_folders',
 		constraints: [
 			{
 				column: 'parent',
-				references: 'directus_folders.id',
+				references: 'brio_folders.id',
 			},
 		],
 	},
 	{
-		table: 'directus_permissions',
+		table: 'brio_permissions',
 		constraints: [
 			{
 				column: 'role',
-				references: 'directus_roles.id',
+				references: 'brio_roles.id',
 			},
 		],
 	},
 	{
-		table: 'directus_presets',
+		table: 'brio_presets',
 		constraints: [
 			{
 				column: 'user',
-				references: 'directus_users.id',
+				references: 'brio_users.id',
 			},
 			{
 				column: 'role',
-				references: 'directus_roles.id',
+				references: 'brio_roles.id',
 			},
 		],
 	},
 	{
-		table: 'directus_revisions',
+		table: 'brio_revisions',
 		constraints: [
 			{
 				column: 'activity',
-				references: 'directus_activity.id',
+				references: 'brio_activity.id',
 			},
 			{
 				column: 'parent',
-				references: 'directus_revisions.id',
+				references: 'brio_revisions.id',
 			},
 		],
 	},
 	{
-		table: 'directus_sessions',
+		table: 'brio_sessions',
 		constraints: [
 			{
 				column: 'user',
-				references: 'directus_users.id',
+				references: 'brio_users.id',
 			},
 		],
 	},
 	{
-		table: 'directus_settings',
+		table: 'brio_settings',
 		constraints: [
 			{
 				column: 'project_logo',
-				references: 'directus_files.id',
+				references: 'brio_files.id',
 			},
 			{
 				column: 'public_foreground',
-				references: 'directus_files.id',
+				references: 'brio_files.id',
 			},
 			{
 				column: 'public_background',
-				references: 'directus_files.id',
+				references: 'brio_files.id',
 			},
 		],
 	},
 	{
-		table: 'directus_users',
+		table: 'brio_users',
 		constraints: [
 			{
 				column: 'role',
-				references: 'directus_roles.id',
+				references: 'brio_roles.id',
 			},
 		],
 	},

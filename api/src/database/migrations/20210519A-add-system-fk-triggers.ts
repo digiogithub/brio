@@ -14,66 +14,66 @@ import logger from '../../logger.js';
 
 const updates = [
 	{
-		table: 'directus_files',
+		table: 'brio_files',
 		constraints: [
 			{
 				column: 'folder',
-				references: 'directus_folders.id',
+				references: 'brio_folders.id',
 				on_delete: 'SET NULL',
 			},
 		],
 	},
 	{
-		table: 'directus_permissions',
+		table: 'brio_permissions',
 		constraints: [
 			{
 				column: 'role',
-				references: 'directus_roles.id',
+				references: 'brio_roles.id',
 				on_delete: 'CASCADE',
 			},
 		],
 	},
 	{
-		table: 'directus_presets',
+		table: 'brio_presets',
 		constraints: [
 			{
 				column: 'user',
-				references: 'directus_users.id',
+				references: 'brio_users.id',
 				on_delete: 'CASCADE',
 			},
 			{
 				column: 'role',
-				references: 'directus_roles.id',
+				references: 'brio_roles.id',
 				on_delete: 'CASCADE',
 			},
 		],
 	},
 	{
-		table: 'directus_revisions',
+		table: 'brio_revisions',
 		constraints: [
 			{
 				column: 'activity',
-				references: 'directus_activity.id',
+				references: 'brio_activity.id',
 				on_delete: 'CASCADE',
 			},
 		],
 	},
 	{
-		table: 'directus_sessions',
+		table: 'brio_sessions',
 		constraints: [
 			{
 				column: 'user',
-				references: 'directus_users.id',
+				references: 'brio_users.id',
 				on_delete: 'CASCADE',
 			},
 		],
 	},
 	{
-		table: 'directus_users',
+		table: 'brio_users',
 		constraints: [
 			{
 				column: 'role',
-				references: 'directus_roles.id',
+				references: 'brio_roles.id',
 				on_delete: 'SET NULL',
 			},
 		],

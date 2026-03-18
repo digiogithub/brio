@@ -57,7 +57,7 @@
 
 			<template v-if="fromUrl !== false || fromLibrary !== false">
 				<drawer-collection
-					collection="directus_files"
+					collection="brio_files"
 					:active="activeDialog === 'choose'"
 					:multiple="multiple"
 					:filter="filterByFolder"

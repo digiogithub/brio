@@ -32,7 +32,7 @@ type TableSeed = {
 
 export default async function runSeed(database: Knex): Promise<void> {
 	const helpers = getHelpers(database);
-	const exists = await database.schema.hasTable('directus_collections');
+	const exists = await database.schema.hasTable('brio_collections');
 
 	if (exists) {
 		throw new Error('Database is already installed');

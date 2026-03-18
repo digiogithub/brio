@@ -225,7 +225,7 @@ function buildManyToManyRelation(field: Field, snapshot: SchemaToolSnapshot) {
         (r) => r.collection === junctionRelation.collection && r.field === junctionRelation.meta?.junction_field,
     );
 
-    const targetCollection = targetRelation?.related_collection || 'directus_files';
+    const targetCollection = targetRelation?.related_collection || 'brio_files';
     const result: any = {
         type: 'm2m',
         collection: targetCollection,

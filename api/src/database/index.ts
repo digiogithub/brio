@@ -1,12 +1,8 @@
 import { createInspector } from '@brio/schema';
 import type { SchemaInspector } from '@brio/schema';
-import fse from 'fs-extra';
 import type { Knex } from 'knex';
 import knex from 'knex';
 import { merge } from 'lodash-es';
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import path from 'path';
 import { performance } from 'perf_hooks';
 import env from '../env.js';
 import logger from '../logger.js';
@@ -14,12 +10,15 @@ import type { DatabaseClient } from '../types/index.js';
 import { getConfigFromEnv } from '../utils/get-config-from-env.js';
 import { validateEnv } from '../utils/validate-env.js';
 import { getHelpers } from './helpers/index.js';
+import { buildMigrationPlan, getCompletedMigrations, resolveMigrationsTable } from './migrations/plan.js';
+import { Client_SQLite3 } from './sqlite/client.js';
+import { createSQLiteConnectionHook } from './sqlite/extensions.js';
 
 let database: Knex | null = null;
 let inspector: SchemaInspector | null = null;
 let databaseVersion: string | null = null;
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const SYSTEM_COLLECTIONS_TABLE = 'brio_collections';
+const LEGACY_SYSTEM_COLLECTIONS_TABLE = 'directus_collections';
 
 export default function getDatabase(): Knex {
 	if (database) {
@@ -73,7 +72,7 @@ export default function getDatabase(): Knex {
 	validateEnv(requiredEnvVars);
 
 	const knexConfig: Knex.Config = {
-		client,
+		client: client === 'sqlite3' ? Client_SQLite3 : client,
 		version,
 		searchPath,
 		connection: connectionString || connectionConfig,
@@ -97,14 +96,7 @@ export default function getDatabase(): Knex {
 
 	if (client === 'sqlite3') {
 		knexConfig.useNullAsDefault = true;
-
-		poolConfig.afterCreate = (conn: any, callback: any) => {
-			logger.trace('Enabling SQLite Foreign Keys support...');
-			conn.run('PRAGMA foreign_keys = ON', (error: any) => {
-				if (error) return callback(error, conn);
-				callback(null, conn);
-			});
-		};
+		poolConfig.afterCreate = createSQLiteConnectionHook();
 	}
 
 	if (client === 'cockroachdb') {
@@ -238,36 +230,24 @@ export function getDatabaseClient(database?: Knex): DatabaseClient {
 export async function isInstalled(): Promise<boolean> {
 	const inspector = getSchemaInspector();
 
-	// The existence of a directus_collections table alone isn't a "proper" check to see if everything
+	// The existence of a system collections table alone isn't a "proper" check to see if everything
 	// is installed correctly of course, but it's safe enough to assume that this collection only
 	// exists when Brio is properly installed.
-	return await inspector.hasTable('directus_collections');
+	return (await inspector.hasTable(SYSTEM_COLLECTIONS_TABLE)) || (await inspector.hasTable(LEGACY_SYSTEM_COLLECTIONS_TABLE));
 }
 
 export async function validateMigrations(): Promise<boolean> {
 	const database = getDatabase();
 
 	try {
-		let migrationFiles = await fse.readdir(path.join(__dirname, 'migrations'));
+		const migrationsTable = await resolveMigrationsTable(database);
 
-		const customMigrationsPath = path.resolve(env['EXTENSIONS_PATH'], 'migrations');
+		if (!migrationsTable) return false;
 
-		let customMigrationFiles =
-			((await fse.pathExists(customMigrationsPath)) && (await fse.readdir(customMigrationsPath))) || [];
-
-		migrationFiles = migrationFiles.filter(
-			(file: string) => file.startsWith('run') === false && file.endsWith('.d.ts') === false
-		);
-
-		customMigrationFiles = customMigrationFiles.filter((file: string) => file.endsWith('.js'));
-
-		migrationFiles.push(...customMigrationFiles);
-
-		const requiredVersions = migrationFiles.map((filePath) => filePath.split('-')[0]);
-
-		const completedVersions = (await database.select('version').from('directus_migrations')).map(
-			({ version }) => version
-		);
+		const completedMigrations = await getCompletedMigrations(database, migrationsTable);
+		const completedVersions = completedMigrations.map(({ version }) => version);
+		const migrationPlan = await buildMigrationPlan(database, completedVersions);
+		const requiredVersions = migrationPlan.filter((migration) => migration.required).map((migration) => migration.version);
 
 		return requiredVersions.every((version) => completedVersions.includes(version));
 	} catch (error: any) {
@@ -276,7 +256,6 @@ export async function validateMigrations(): Promise<boolean> {
 		throw process.exit(1);
 	}
 }
-
 /**
  * These database extensions should be optional, so we don't throw or return any problem states when they don't
  */
@@ -285,6 +264,7 @@ export async function validateDatabaseExtensions(): Promise<void> {
 	const client = getDatabaseClient(database);
 	const helpers = getHelpers(database);
 	const geometrySupport = await helpers.st.supported();
+	const vectorSupport = await helpers.vector.supported();
 
 	if (!geometrySupport) {
 		switch (client) {
@@ -296,6 +276,19 @@ export async function validateDatabaseExtensions(): Promise<void> {
 				break;
 			default:
 				logger.warn(`Geometry type not supported on ${client}`);
+		}
+	}
+
+	if (!vectorSupport) {
+		switch (client) {
+			case 'postgres':
+				logger.warn(`pgvector isn't installed. Vector search support will be limited.`);
+				break;
+			case 'sqlite':
+				logger.warn(`sqlite-vec isn't installed. Vector search support will be limited.`);
+				break;
+			default:
+				logger.warn(`Vector search not supported on ${client}`);
 		}
 	}
 }

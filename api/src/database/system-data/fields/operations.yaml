@@ -1,4 +1,4 @@
-table: directus_operations
+table: brio_operations
 
 fields:
   - field: id

@@ -202,6 +202,7 @@
 		"@types/object-hash": "3.0.2",
 		"@types/qs": "6.9.7",
 		"@types/sanitize-html": "2.9.0",
+		"@types/spatialite": "0.0.8",
 		"@types/stream-json": "1.7.3",
 		"@types/supertest": "2.0.12",
 		"@types/uuid": "9.0.1",
@@ -223,7 +224,9 @@
 		"nodemailer-mailgun-transport": "2.1.5",
 		"nodemailer-sendgrid": "1.0.3",
 		"pg": "8.10.0",
+		"spatialite": "0.1.0",
 		"sqlite3": "5.1.6",
+		"sqlite-vec": "0.1.7",
 		"tedious": "16.0.0"
 	},
 	"engines": {

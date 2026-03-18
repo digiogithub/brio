@@ -6,6 +6,7 @@ import * as dateHelpers from './date/index.js';
 import * as fnHelpers from './fn/index.js';
 import * as geometryHelpers from './geometry/index.js';
 import * as schemaHelpers from './schema/index.js';
+import * as vectorHelpers from './vector/index.js';
 
 export function getHelpers(database: Knex) {
 	const client = getDatabaseClient(database);
@@ -13,6 +14,7 @@ export function getHelpers(database: Knex) {
 	return {
 		date: new dateHelpers[client](database),
 		st: new geometryHelpers[client](database),
+		vector: new vectorHelpers[client](database),
 		schema: new schemaHelpers[client](database),
 	};
 }

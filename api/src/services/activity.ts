@@ -19,7 +19,7 @@ export class ActivityService extends ItemsService {
 	usersService: UsersService;
 
 	constructor(options: AbstractServiceOptions) {
-		super('directus_activity', options);
+		super('brio_activity', options);
 		this.notificationsService = new NotificationsService({ schema: this.schema });
 		this.usersService = new UsersService({ schema: this.schema });
 	}

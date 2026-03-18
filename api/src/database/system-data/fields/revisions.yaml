@@ -1,4 +1,4 @@
-table: directus_revisions
+table: brio_revisions
 
 fields:
   - field: id

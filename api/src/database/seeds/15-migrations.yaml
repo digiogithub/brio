@@ -1,4 +1,4 @@
-table: directus_migrations
+table: brio_migrations
 
 columns:
   version:

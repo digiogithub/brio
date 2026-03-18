@@ -1,57 +1,68 @@
-import formatTitle from '@directus/format-title';
-import fse from 'fs-extra';
 import type { Knex } from 'knex';
 import { orderBy } from 'lodash-es';
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import path from 'path';
 import { flushCaches } from '../../cache.js';
-import env from '../../env.js';
 import logger from '../../logger.js';
 import type { Migration } from '../../types/index.js';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import {
+	buildMigrationPlan,
+	DEFAULT_MIGRATIONS_TABLE,
+	getCompletedMigrations as getStoredMigrations,
+	resolveMigrationsTable,
+} from './plan.js';
 
 export default async function run(database: Knex, direction: 'up' | 'down' | 'latest', log = true): Promise<void> {
-	let migrationFiles = await fse.readdir(__dirname);
+	const initialMigrationsTable = (await getMigrationsTable()) ?? DEFAULT_MIGRATIONS_TABLE;
+	const completedMigrations = await getCompletedMigrations(initialMigrationsTable);
+	const completedVersions = completedMigrations.map((migration) => migration.version);
+	const migrations = await buildMigrationPlan(database, completedVersions);
+	const runnableMigrations = migrations.filter((migration) => migration.required || migration.completed);
 
-	const customMigrationsPath = path.resolve(env['EXTENSIONS_PATH'], 'migrations');
-
-	let customMigrationFiles =
-		((await fse.pathExists(customMigrationsPath)) && (await fse.readdir(customMigrationsPath))) || [];
-
-	migrationFiles = migrationFiles.filter((file: string) => /^[0-9]+[A-Z]-[^.]+\.(?:js|ts)$/.test(file));
-	customMigrationFiles = customMigrationFiles.filter((file: string) => file.endsWith('.js'));
-
-	const completedMigrations = await database.select<Migration[]>('*').from('directus_migrations').orderBy('version');
-
-	const migrations = [
-		...migrationFiles.map((path) => parseFilePath(path)),
-		...customMigrationFiles.map((path) => parseFilePath(path, true)),
-	].sort((a, b) => (a.version! > b.version! ? 1 : -1));
-
-	const migrationKeys = new Set(migrations.map((m) => m.version));
-
-	if (migrations.length > migrationKeys.size) {
-		throw new Error('Migration keys collide! Please ensure that every migration uses a unique key.');
+	if (log) {
+		for (const migration of migrations) {
+			if (migration.completed || migration.required) continue;
+			logger.info(`Skipping ${migration.name}: ${migration.skipReason}`);
+		}
 	}
 
-	function parseFilePath(filePath: string, custom = false) {
-		const version = filePath.split('-')[0];
-		const name = formatTitle(filePath.split('-').slice(1).join('_').split('.')[0]!);
-		const completed = !!completedMigrations.find((migration) => migration.version === version);
+	const migrationKeys = new Set(runnableMigrations.map((m) => m.version));
 
-		return {
-			file: custom ? path.join(customMigrationsPath, filePath) : path.join(__dirname, filePath),
-			version,
-			name,
-			completed,
-		};
+	if (runnableMigrations.length > migrationKeys.size) {
+		throw new Error('Migration keys collide! Please ensure that every migration uses a unique key.');
 	}
 
 	if (direction === 'up') await up();
 	if (direction === 'down') await down();
 	if (direction === 'latest') await latest();
+
+	async function getMigrationsTable(): Promise<string | null> {
+		return await resolveMigrationsTable(database);
+	}
+
+	async function getCompletedMigrations(migrationsTable: string): Promise<Migration[]> {
+		return await getCompletedMigrationsFromTable(migrationsTable);
+	}
+
+	async function getCompletedMigrationsFromTable(migrationsTable: string): Promise<Migration[]> {
+		return await getStoredMigrations(database, migrationsTable);
+	}
+
+	async function insertMigration(version: string, name: string): Promise<void> {
+		const migrationsTable = (await getMigrationsTable()) ?? DEFAULT_MIGRATIONS_TABLE;
+		await database.insert({ version, name }).into(migrationsTable);
+	}
+
+	async function deleteMigration(version: string): Promise<void> {
+		const migrationsTable = (await getMigrationsTable()) ?? DEFAULT_MIGRATIONS_TABLE;
+		await database(migrationsTable).delete().where({ version });
+	}
+
+	function getMigrationVersion(version: string | undefined): string {
+		if (!version) {
+			throw new Error('Migration version is missing');
+		}
+
+		return version;
+	}
 
 	async function up() {
 		const currentVersion = completedMigrations[completedMigrations.length - 1];
@@ -59,9 +70,9 @@ export default async function run(database: Knex, direction: 'up' | 'down' | 'la
 		let nextVersion: any;
 
 		if (!currentVersion) {
-			nextVersion = migrations[0];
+			nextVersion = runnableMigrations[0];
 		} else {
-			nextVersion = migrations.find((migration) => {
+			nextVersion = runnableMigrations.find((migration) => {
 				return migration.version! > currentVersion.version && migration.completed === false;
 			});
 		}
@@ -70,14 +81,18 @@ export default async function run(database: Knex, direction: 'up' | 'down' | 'la
 			throw Error('Nothing to upgrade');
 		}
 
-		const { up } = await import(`file://${nextVersion.file}`);
+		const { up } = nextVersion.module;
 
 		if (log) {
 			logger.info(`Applying ${nextVersion.name}...`);
 		}
 
+		if (!up) {
+			throw new Error(`Migration ${nextVersion.name} is missing an up() export`);
+		}
+
 		await up(database);
-		await database.insert({ version: nextVersion.version, name: nextVersion.name }).into('directus_migrations');
+		await insertMigration(nextVersion.version, nextVersion.name);
 
 		await flushCaches(true);
 	}
@@ -95,14 +110,18 @@ export default async function run(database: Knex, direction: 'up' | 'down' | 'la
 			throw new Error("Couldn't find migration");
 		}
 
-		const { down } = await import(`file://${migration.file}`);
+		const { down } = migration.module;
 
 		if (log) {
 			logger.info(`Undoing ${migration.name}...`);
 		}
 
+		if (!down) {
+			throw new Error(`Migration ${migration.name} is missing a down() export`);
+		}
+
 		await down(database);
-		await database('directus_migrations').delete().where({ version: migration.version });
+		await deleteMigration(getMigrationVersion(migration.version));
 
 		await flushCaches(true);
 	}
@@ -110,17 +129,21 @@ export default async function run(database: Knex, direction: 'up' | 'down' | 'la
 	async function latest() {
 		let needsCacheFlush = false;
 
-		for (const migration of migrations) {
+		for (const migration of runnableMigrations) {
 			if (migration.completed === false) {
 				needsCacheFlush = true;
-				const { up } = await import(`file://${migration.file}`);
+				const { up } = migration.module;
 
 				if (log) {
 					logger.info(`Applying ${migration.name}...`);
 				}
 
+				if (!up) {
+					throw new Error(`Migration ${migration.name} is missing an up() export`);
+				}
+
 				await up(database);
-				await database.insert({ version: migration.version, name: migration.name }).into('directus_migrations');
+				await insertMigration(getMigrationVersion(migration.version), migration.name);
 			}
 		}
 

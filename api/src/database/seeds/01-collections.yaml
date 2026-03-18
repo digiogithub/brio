@@ -1,4 +1,4 @@
-table: directus_collections
+table: brio_collections
 
 columns:
   collection:

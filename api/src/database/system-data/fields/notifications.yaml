@@ -1,4 +1,4 @@
-table: directus_notifications
+table: brio_notifications
 
 fields:
   - field: id

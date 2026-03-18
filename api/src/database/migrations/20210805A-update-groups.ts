@@ -2,7 +2,7 @@ import { parseJSON } from '@brio/utils';
 import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-	const groups = await knex.select('*').from('directus_fields').where({ interface: 'group-standard' });
+	const groups = await knex.select('*').from('brio_fields').where({ interface: 'group-standard' });
 
 	const raw = [];
 	const detail = [];
@@ -18,16 +18,16 @@ export async function up(knex: Knex): Promise<void> {
 	}
 
 	for (const field of raw) {
-		await knex('directus_fields').update({ interface: 'group-raw' }).where({ id: field.id });
+		await knex('brio_fields').update({ interface: 'group-raw' }).where({ id: field.id });
 	}
 
 	for (const field of detail) {
-		await knex('directus_fields').update({ interface: 'group-detail' }).where({ id: field.id });
+		await knex('brio_fields').update({ interface: 'group-detail' }).where({ id: field.id });
 	}
 }
 
 export async function down(knex: Knex): Promise<void> {
-	await knex('directus_fields')
+	await knex('brio_fields')
 		.update({
 			interface: 'group-standard',
 		})

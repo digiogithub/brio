@@ -12,7 +12,7 @@ import asyncHandler from '../utils/async-handler.js';
 
 const router = Router();
 
-router.use(useCollection('directus_fields'));
+router.use(useCollection('brio_fields'));
 
 router.get(
 	'/',

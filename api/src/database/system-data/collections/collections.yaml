@@ -1,4 +1,4 @@
-table: directus_collections
+table: brio_collections
 
 defaults:
   collection: null
@@ -11,64 +11,64 @@ defaults:
   accountability: 'all'
 
 data:
-  - collection: directus_activity
-    note: $t:directus_collection.directus_activity
+  - collection: brio_activity
+    note: $t:brio_collection.brio_activity
     accountability: null
-  - collection: directus_collections
+  - collection: brio_collections
     icon: list_alt
-    note: $t:directus_collection.directus_collections
-  - collection: directus_fields
+    note: $t:brio_collection.brio_collections
+  - collection: brio_fields
     icon: input
-    note: $t:directus_collection.directus_fields
-  - collection: directus_files
+    note: $t:brio_collection.brio_fields
+  - collection: brio_files
     icon: folder
-    note: $t:directus_collection.directus_files
+    note: $t:brio_collection.brio_files
     display_template: '{{ $thumbnail }} {{ title }}'
-  - collection: directus_folders
-    note: $t:directus_collection.directus_folders
+  - collection: brio_folders
+    note: $t:brio_collection.brio_folders
     display_template: '{{ name }}'
-  - collection: directus_migrations
-    note: $t:directus_collection.directus_migrations
-  - collection: directus_permissions
+  - collection: brio_migrations
+    note: $t:brio_collection.brio_migrations
+  - collection: brio_permissions
     icon: admin_panel_settings
-    note: $t:directus_collection.directus_permissions
-  - collection: directus_presets
+    note: $t:brio_collection.brio_permissions
+  - collection: brio_presets
     icon: bookmark
-    note: $t:directus_collection.directus_presets
+    note: $t:brio_collection.brio_presets
     accountability: null
-  - collection: directus_relations
+  - collection: brio_relations
     icon: merge_type
-    note: $t:directus_collection.directus_relations
-  - collection: directus_revisions
-    note: $t:directus_collection.directus_revisions
+    note: $t:brio_collection.brio_relations
+  - collection: brio_revisions
+    note: $t:brio_collection.brio_revisions
     accountability: null
-  - collection: directus_roles
+  - collection: brio_roles
     icon: supervised_user_circle
-    note: $t:directus_collection.directus_roles
-  - collection: directus_sessions
-    note: $t:directus_collection.directus_sessions
-  - collection: directus_settings
+    note: $t:brio_collection.brio_roles
+  - collection: brio_sessions
+    note: $t:brio_collection.brio_sessions
+  - collection: brio_settings
     singleton: true
-    note: $t:directus_collection.directus_settings
-  - collection: directus_users
+    note: $t:brio_collection.brio_settings
+  - collection: brio_users
     archive_field: status
     archive_value: archived
     unarchive_value: draft
     icon: people_alt
-    note: $t:directus_collection.directus_users
+    note: $t:brio_collection.brio_users
     display_template: '{{ first_name }} {{ last_name }}'
-  - collection: directus_webhooks
-    note: $t:directus_collection.directus_webhooks
-  - collection: directus_dashboards
-    note: $t:directus_collection.directus_dashboards
-  - collection: directus_panels
-    note: $t:directus_collection.directus_panels
-  - collection: directus_notifications
-    note: $t:directus_collection.directus_notifications
-  - collection: directus_shares
+  - collection: brio_webhooks
+    note: $t:brio_collection.brio_webhooks
+  - collection: brio_dashboards
+    note: $t:brio_collection.brio_dashboards
+  - collection: brio_panels
+    note: $t:brio_collection.brio_panels
+  - collection: brio_notifications
+    note: $t:brio_collection.brio_notifications
+  - collection: brio_shares
     icon: share
-    note: $t:directus_collection.directus_shares
-  - collection: directus_flows
-    note: $t:directus_collection.directus_flows
-  - collection: directus_operations
-    note: $t:directus_collection.directus_operations
+    note: $t:brio_collection.brio_shares
+  - collection: brio_flows
+    note: $t:brio_collection.brio_flows
+  - collection: brio_operations
+    note: $t:brio_collection.brio_operations

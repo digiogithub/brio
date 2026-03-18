@@ -1,4 +1,4 @@
-table: directus_relations
+table: brio_relations
 
 fields:
   - field: id

@@ -2,7 +2,7 @@ import type { Knex } from 'knex';
 import { merge } from 'lodash-es';
 
 export async function up(knex: Knex): Promise<void> {
-	await knex('directus_collections').delete().where('collection', 'like', 'directus_%');
+	await knex('brio_collections').delete().where('collection', 'like', 'brio_%');
 }
 
 export async function down(knex: Knex): Promise<void> {
@@ -18,63 +18,63 @@ export async function down(knex: Knex): Promise<void> {
 
 	const systemCollections = [
 		{
-			collection: 'directus_activity',
+			collection: 'brio_activity',
 			note: 'Accountability logs for all events',
 		},
 		{
-			collection: 'directus_collections',
+			collection: 'brio_collections',
 			icon: 'list_alt',
 			note: 'Additional collection configuration and metadata',
 		},
 		{
-			collection: 'directus_fields',
+			collection: 'brio_fields',
 			icon: 'input',
 			note: 'Additional field configuration and metadata',
 		},
 		{
-			collection: 'directus_files',
+			collection: 'brio_files',
 			icon: 'folder',
 			note: 'Metadata for all managed file assets',
 		},
 		{
-			collection: 'directus_folders',
+			collection: 'brio_folders',
 			note: 'Provides virtual directories for files',
 		},
 		{
-			collection: 'directus_permissions',
+			collection: 'brio_permissions',
 			icon: 'admin_panel_settings',
 			note: 'Access permissions for each role',
 		},
 		{
-			collection: 'directus_presets',
+			collection: 'brio_presets',
 			icon: 'bookmark_border',
 			note: 'Presets for collection defaults and bookmarks',
 		},
 		{
-			collection: 'directus_relations',
+			collection: 'brio_relations',
 			icon: 'merge_type',
 			note: 'Relationship configuration and metadata',
 		},
 		{
-			collection: 'directus_revisions',
+			collection: 'brio_revisions',
 			note: 'Data snapshots for all activity',
 		},
 		{
-			collection: 'directus_roles',
+			collection: 'brio_roles',
 			icon: 'supervised_user_circle',
 			note: 'Permission groups for system users',
 		},
 		{
-			collection: 'directus_sessions',
+			collection: 'brio_sessions',
 			note: 'User session information',
 		},
 		{
-			collection: 'directus_settings',
+			collection: 'brio_settings',
 			singleton: true,
 			note: 'Project configuration options',
 		},
 		{
-			collection: 'directus_users',
+			collection: 'brio_users',
 			archive_field: 'status',
 			archive_value: 'archived',
 			unarchive_value: 'draft',
@@ -82,7 +82,7 @@ export async function down(knex: Knex): Promise<void> {
 			note: 'System users for the platform',
 		},
 		{
-			collection: 'directus_webhooks',
+			collection: 'brio_webhooks',
 			note: 'Configuration for event-based HTTP requests',
 		},
 	].map((row) => {
@@ -95,5 +95,5 @@ export async function down(knex: Knex): Promise<void> {
 		return merge({}, defaults, row);
 	});
 
-	await knex.insert(systemCollections).into('directus_collections');
+	await knex.insert(systemCollections).into('brio_collections');
 }

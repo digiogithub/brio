@@ -16,7 +16,7 @@ import { sanitizeQuery } from '../utils/sanitize-query.js';
 
 const router = express.Router();
 
-router.use(useCollection('directus_users'));
+router.use(useCollection('brio_users'));
 
 router.post(
 	'/',
@@ -69,7 +69,7 @@ const readHandler = asyncHandler(async (req, res, next) => {
 	});
 
 	const item = await service.readByQuery(req.sanitizedQuery);
-	const meta = await metaService.getMetaForQuery('directus_users', req.sanitizedQuery);
+	const meta = await metaService.getMetaForQuery('brio_users', req.sanitizedQuery);
 
 	res.locals['payload'] = { data: item || null, meta };
 	return next();
@@ -380,7 +380,7 @@ router.post(
 
 			if (role && role.enforce_tfa) {
 				const existingPermission = await req.accountability.permissions?.find(
-					(p) => p.collection === 'directus_users' && p.action === 'update'
+					(p) => p.collection === 'brio_users' && p.action === 'update'
 				);
 
 				if (existingPermission) {
@@ -391,7 +391,7 @@ router.post(
 				} else {
 					(req.accountability.permissions || (req.accountability.permissions = [])).push({
 						action: 'update',
-						collection: 'directus_users',
+						collection: 'brio_users',
 						fields: ['tfa_secret'],
 						permissions: { id: { _eq: req.accountability.user } },
 						presets: null,
@@ -435,7 +435,7 @@ router.post(
 
 			if (role && role.enforce_tfa) {
 				const existingPermission = await req.accountability.permissions?.find(
-					(p) => p.collection === 'directus_users' && p.action === 'update'
+					(p) => p.collection === 'brio_users' && p.action === 'update'
 				);
 
 				if (existingPermission) {
@@ -446,7 +446,7 @@ router.post(
 				} else {
 					(req.accountability.permissions || (req.accountability.permissions = [])).push({
 						action: 'update',
-						collection: 'directus_users',
+						collection: 'brio_users',
 						fields: ['tfa_secret'],
 						permissions: { id: { _eq: req.accountability.user } },
 						presets: null,

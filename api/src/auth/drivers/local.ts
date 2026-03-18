@@ -21,7 +21,7 @@ export class LocalAuthDriver extends AuthDriver {
 
 		const user = await this.knex
 			.select('id')
-			.from('directus_users')
+			.from('brio_users')
 			.whereRaw('LOWER(??) = ?', ['email', payload['email'].toLowerCase()])
 			.first();
 

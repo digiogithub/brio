@@ -7,7 +7,7 @@ export class WebhooksService extends ItemsService<Webhook> {
 	messenger: Messenger;
 
 	constructor(options: AbstractServiceOptions) {
-		super('directus_webhooks', options);
+		super('brio_webhooks', options);
 		this.messenger = getMessenger();
 	}
 

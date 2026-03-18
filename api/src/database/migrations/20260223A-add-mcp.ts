@@ -1,7 +1,7 @@
 import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-    await knex.schema.alterTable('directus_settings', (table) => {
+    await knex.schema.alterTable('brio_settings', (table) => {
         table.boolean('mcp_enabled').defaultTo(false).notNullable();
         table.boolean('mcp_allow_deletes').defaultTo(false).notNullable();
         table.string('mcp_prompts_collection').defaultTo(null).nullable();
@@ -11,7 +11,7 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-    await knex.schema.alterTable('directus_settings', (table) => {
+    await knex.schema.alterTable('brio_settings', (table) => {
         table.dropColumn('mcp_enabled');
         table.dropColumn('mcp_allow_deletes');
         table.dropColumn('mcp_prompts_collection');

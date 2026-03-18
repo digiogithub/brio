@@ -14,7 +14,7 @@ export const useFlowsStore = defineStore({
 			const { isAdmin } = useUserStore();
 			const { hasPermission } = usePermissionsStore();
 
-			if (isAdmin !== true && !hasPermission('directus_flows', 'read')) {
+			if (isAdmin !== true && !hasPermission('brio_flows', 'read')) {
 				this.flows = [];
 			} else {
 				try {

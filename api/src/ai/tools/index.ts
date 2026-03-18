@@ -8,6 +8,7 @@ import { items } from './items/index.js';
 import { operations } from './operations/index.js';
 import { relations } from './relations/index.js';
 import { schema } from './schema/index.js';
+import { semanticSearch } from './semantic-search/index.js';
 import { system } from './system/index.js';
 import { triggerFlow } from './trigger-flow/index.js';
 import type { ToolConfig } from './types.js';
@@ -25,10 +26,11 @@ export const ALL_TOOLS: ToolConfig<any>[] = [
     collections,
     fields,
     relations,
+    semanticSearch,
 ];
 
 export const getAllMcpTools = () => ALL_TOOLS;
 
 export const findMcpTool = (name: string) => ALL_TOOLS.find((tool) => tool.name === name);
 
-export { collections, fields, files, flows, items, operations, relations, schema, system, triggerFlow };
+export { collections, fields, files, flows, items, operations, relations, schema, semanticSearch, system, triggerFlow };

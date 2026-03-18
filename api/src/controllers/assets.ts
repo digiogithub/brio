@@ -20,20 +20,20 @@ import { getMilliseconds } from '../utils/get-milliseconds.js';
 
 const router = Router();
 
-router.use(useCollection('directus_files'));
+router.use(useCollection('brio_files'));
 
 router.get(
 	'/:pk/:filename?',
 	// Validate query params
 	asyncHandler(async (req, res, next) => {
-		const payloadService = new PayloadService('directus_settings', { schema: req.schema });
+		const payloadService = new PayloadService('brio_settings', { schema: req.schema });
 		const defaults = { storage_asset_presets: [], storage_asset_transform: 'all' };
 
 		const database = getDatabase();
 
 		const savedAssetSettings = await database
 			.select('storage_asset_presets', 'storage_asset_transform')
-			.from('directus_settings')
+			.from('brio_settings')
 			.first();
 
 		if (savedAssetSettings) {

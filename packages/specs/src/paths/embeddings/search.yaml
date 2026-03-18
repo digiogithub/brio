@@ -1,0 +1,64 @@
+post:
+  summary: Semantic Search
+  description: Search embedded content by semantic similarity.
+  operationId: semanticSearch
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - query
+          properties:
+            query:
+              type: string
+            collection:
+              type: string
+            field:
+              type: string
+            limit:
+              type: integer
+              minimum: 1
+              maximum: 50
+            distance_metric:
+              type: string
+              enum:
+                - cosine
+                - l2
+  responses:
+    '200':
+      description: Successful request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    collection:
+                      type: string
+                    item:
+                      type: string
+                    field:
+                      type: string
+                    chunk_index:
+                      type: integer
+                    chunk_text:
+                      type: string
+                      nullable: true
+                    distance:
+                      type: number
+                    metadata:
+                      type: object
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/UnauthorizedError'
+    '404':
+      $ref: '../../openapi.yaml#/components/responses/NotFoundError'
+  tags:
+    - Embeddings

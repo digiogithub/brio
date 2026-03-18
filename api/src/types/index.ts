@@ -3,6 +3,7 @@ export * from './ast.js';
 export * from './auth.js';
 export * from './collection.js';
 export * from './database.js';
+export * from './embeddings.js';
 export * from './events.js';
 export * from './files.js';
 export * from './graphql.js';

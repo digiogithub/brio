@@ -1,5 +1,5 @@
 type: object
-x-collection: directus_activity
+x-collection: brio_activity
 properties:
   id:
     description: Unique identifier for the object.

@@ -193,6 +193,7 @@ const allowedEnvironmentVars = [
 	'FLOWS_ENV_ALLOW_LIST',
 	// ai / mcp
 	'AI_ENABLED',
+	'EMBEDDINGS_ENABLED',
 	'MCP_ENABLED',
 ].map((name) => new RegExp(`^${name}$`));
 
@@ -296,6 +297,7 @@ const defaults: Record<string, any> = {
 	FLOWS_ENV_ALLOW_LIST: false,
 
 	AI_ENABLED: true,
+	EMBEDDINGS_ENABLED: true,
 	MCP_ENABLED: true,
 };
 

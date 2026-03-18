@@ -7,7 +7,7 @@ import asyncHandler from '../utils/async-handler.js';
 
 const router = express.Router();
 
-router.use(useCollection('directus_settings'));
+router.use(useCollection('brio_settings'));
 
 router.get(
 	'/',

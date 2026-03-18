@@ -3,6 +3,8 @@ import type { Knex } from 'knex';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import path from 'path';
+import { Client_SQLite3 } from '../../database/sqlite/client.js';
+import { createSQLiteConnectionHook } from '../../database/sqlite/extensions.js';
 import type { Driver } from '../../types/index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -53,7 +55,7 @@ export default function createDBConnection(client: Driver, credentials: Credenti
 	}
 
 	const knexConfig: Knex.Config = {
-		client: client,
+		client: client === 'sqlite3' ? Client_SQLite3 : client,
 		connection: connection,
 		seeds: {
 			extension: 'js',
@@ -64,6 +66,7 @@ export default function createDBConnection(client: Driver, credentials: Credenti
 
 	if (client === 'sqlite3') {
 		knexConfig.useNullAsDefault = true;
+		knexConfig.pool!.afterCreate = createSQLiteConnectionHook();
 	}
 
 	if (client === 'cockroachdb') {

@@ -49,7 +49,10 @@ export type Info = {
 		execAllowedModules: string[];
 	};
 	ai_enabled?: boolean;
+	embeddings_enabled?: boolean;
 	mcp_enabled?: boolean;
+	vector_supported?: boolean;
+	vector_capabilities?: Record<string, any> | null;
 };
 
 export type Auth = {
@@ -66,7 +69,10 @@ export const useServerStore = defineStore('serverStore', () => {
 		rateLimit: undefined,
 		flows: undefined,
 		ai_enabled: false,
+		embeddings_enabled: false,
 		mcp_enabled: false,
+		vector_supported: undefined,
+		vector_capabilities: null,
 	});
 
 	const auth = reactive<Auth>({
@@ -102,7 +108,10 @@ export const useServerStore = defineStore('serverStore', () => {
 		info.os = serverInfoResponse.data.data?.os;
 		info.flows = serverInfoResponse.data.data?.flows;
 		info.ai_enabled = serverInfoResponse.data.data?.ai_enabled;
+		info.embeddings_enabled = serverInfoResponse.data.data?.embeddings_enabled;
 		info.mcp_enabled = serverInfoResponse.data.data?.mcp_enabled;
+		info.vector_supported = serverInfoResponse.data.data?.vector_supported;
+		info.vector_capabilities = serverInfoResponse.data.data?.vector_capabilities ?? null;
 
 		auth.providers = authResponse.data.data;
 		auth.disableDefault = authResponse.data.disableDefault;
@@ -131,7 +140,10 @@ export const useServerStore = defineStore('serverStore', () => {
 		info.node = undefined;
 		info.os = undefined;
 		info.ai_enabled = false;
+		info.embeddings_enabled = false;
 		info.mcp_enabled = false;
+		info.vector_supported = undefined;
+		info.vector_capabilities = null;
 
 		auth.providers = [];
 		auth.disableDefault = false;

@@ -1,4 +1,4 @@
-table: directus_presets
+table: brio_presets
 
 columns:
   id:
@@ -9,18 +9,18 @@ columns:
   user:
     type: uuid
     references:
-      table: directus_users
+      table: brio_users
       column: id
   role:
     type: uuid
     references:
-      table: directus_roles
+      table: brio_roles
       column: id
   collection:
     type: string
     length: 64
     references:
-      table: directus_collections
+      table: brio_collections
       column: collection
   search:
     type: string

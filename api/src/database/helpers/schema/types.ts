@@ -129,7 +129,7 @@ export abstract class SchemaHelper extends DatabaseHelper {
 		orderByFields: Knex.Raw[]
 	): Knex.QueryBuilder {
 		dbQuery.rowNumber(
-			knex.ref('directus_row_number').toQuery(),
+			knex.ref('brio_row_number').toQuery(),
 			knex.raw(`partition by ?? order by ${orderByString}`, [`${table}.${primaryKey}`, ...orderByFields])
 		);
 

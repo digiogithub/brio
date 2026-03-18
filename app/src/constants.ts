@@ -19,14 +19,14 @@ Backend as a Service & CMS
  * These are the system endpoints that don't have full/regular CRUD operations available.
  */
 export const COLLECTIONS_DENY_LIST = [
-	'directus_activity',
-	'directus_collections',
-	'directus_fields',
-	'directus_migrations',
-	'directus_relations',
-	'directus_revisions',
-	'directus_sessions',
-	'directus_settings',
+	'brio_activity',
+	'brio_collections',
+	'brio_fields',
+	'brio_migrations',
+	'brio_relations',
+	'brio_revisions',
+	'brio_sessions',
+	'brio_settings',
 ];
 
 export const MODULE_BAR_DEFAULT = [

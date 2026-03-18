@@ -2,7 +2,7 @@ import type { Knex } from 'knex';
 import knex from 'knex';
 import { createTracker, MockClient, Tracker } from 'knex-mock-client';
 import type { MockedFunction } from 'vitest';
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import run from './run.js';
 
 describe('run', () => {
@@ -10,8 +10,17 @@ describe('run', () => {
 	let tracker: Tracker;
 
 	beforeAll(() => {
-		db = vi.mocked(knex.default({ client: MockClient }));
+		db = knex.default({ client: MockClient }) as unknown as MockedFunction<Knex>;
 		tracker = createTracker(db);
+	});
+
+	beforeEach(() => {
+		Object.defineProperty(db, 'schema', {
+			configurable: true,
+			value: {
+				hasTable: vi.fn(async (tableName: string) => tableName === 'brio_migrations'),
+			},
+		});
 	});
 
 	afterEach(() => {
@@ -19,8 +28,8 @@ describe('run', () => {
 	});
 
 	describe('when passed the argument up', () => {
-		it('returns "Nothing To Upgrade" if no directus_migrations', async () => {
-			tracker.on.select('directus_migrations').response(['Empty']);
+		it('returns "Nothing To Upgrade" if no brio_migrations', async () => {
+			tracker.on.select('brio_migrations').response(['Empty']);
 
 			await run(db, 'up').catch((e: Error) => {
 				expect(e).toBeInstanceOf(Error);
@@ -28,8 +37,8 @@ describe('run', () => {
 			});
 		});
 
-		it('returns "Method implemented in the dialect driver" if no directus_migrations', async () => {
-			tracker.on.select('directus_migrations').response([]);
+		it('returns "Method implemented in the dialect driver" if no brio_migrations', async () => {
+			tracker.on.select('brio_migrations').response([]);
 
 			await run(db, 'up').catch((e: Error) => {
 				expect(e).toBeInstanceOf(Error);
@@ -38,7 +47,7 @@ describe('run', () => {
 		});
 
 		it('returns undefined if the migration is successful', async () => {
-			tracker.on.select('directus_migrations').response([
+			tracker.on.select('brio_migrations').response([
 				{
 					version: '20201028A',
 					name: 'Remove Collection Foreign Keys',
@@ -46,16 +55,16 @@ describe('run', () => {
 				},
 			]);
 
-			tracker.on.delete('directus_relations').response([]);
-			tracker.on.insert('directus_migrations').response(['Remove System Relations', '20201029A']);
+			tracker.on.delete('brio_relations').response([]);
+			tracker.on.insert('brio_migrations').response(['Remove System Relations', '20201029A']);
 
 			expect(await run(db, 'up')).toBe(undefined);
 		});
 	});
 
 	describe('when passed the argument down', () => {
-		it('returns "Nothing To downgrade" if no valid directus_migrations', async () => {
-			tracker.on.select('directus_migrations').response(['Empty']);
+		it('returns "Nothing To downgrade" if no valid brio_migrations', async () => {
+			tracker.on.select('brio_migrations').response(['Empty']);
 
 			await run(db, 'down').catch((e: Error) => {
 				expect(e).toBeInstanceOf(Error);
@@ -63,8 +72,8 @@ describe('run', () => {
 			});
 		});
 
-		it('returns "Method implemented in the dialect driver" if no directus_migrations', async () => {
-			tracker.on.select('directus_migrations').response([]);
+		it('returns "Method implemented in the dialect driver" if no brio_migrations', async () => {
+			tracker.on.select('brio_migrations').response([]);
 
 			await run(db, 'down').catch((e: Error) => {
 				expect(e).toBeInstanceOf(Error);
@@ -73,7 +82,7 @@ describe('run', () => {
 		});
 
 		it(`returns "Couldn't find migration" if an invalid migration object is supplied`, async () => {
-			tracker.on.select('directus_migrations').response([
+			tracker.on.select('brio_migrations').response([
 				{
 					version: '202018129A',
 					name: 'Fake Migration',
@@ -89,8 +98,8 @@ describe('run', () => {
 	});
 
 	describe('when passed the argument latest', () => {
-		it('returns "Nothing To downgrade" if no valid directus_migrations', async () => {
-			tracker.on.select('directus_migrations').response(['Empty']);
+		it('returns "Nothing To downgrade" if no valid brio_migrations', async () => {
+			tracker.on.select('brio_migrations').response(['Empty']);
 
 			await run(db, 'latest').catch((e: Error) => {
 				expect(e).toBeInstanceOf(Error);
@@ -98,8 +107,8 @@ describe('run', () => {
 			});
 		});
 
-		it('returns "Method implemented in the dialect driver" if no directus_migrations', async () => {
-			tracker.on.select('directus_migrations').response([]);
+		it('returns "Method implemented in the dialect driver" if no brio_migrations', async () => {
+			tracker.on.select('brio_migrations').response([]);
 
 			await run(db, 'latest').catch((e: Error) => {
 				expect(e).toBeInstanceOf(Error);

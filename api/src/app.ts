@@ -13,6 +13,7 @@ import assetsRouter from './controllers/assets.js';
 import authRouter from './controllers/auth.js';
 import collectionsRouter from './controllers/collections.js';
 import dashboardsRouter from './controllers/dashboards.js';
+import embeddingsRouter from './controllers/embeddings.js';
 import extensionsRouter from './controllers/extensions.js';
 import fieldsRouter from './controllers/fields.js';
 import filesRouter from './controllers/files.js';
@@ -43,6 +44,7 @@ import {
 	validateDatabaseExtensions,
 	validateMigrations,
 } from './database/index.js';
+import { init as initEmbeddings } from './embeddings.js';
 import emitter from './emitter.js';
 import env from './env.js';
 import { InvalidPayloadException } from './exceptions/invalid-payload.js';
@@ -250,6 +252,7 @@ export default async function createApp(): Promise<express.Application> {
 	app.use('/assets', assetsRouter);
 	app.use('/collections', collectionsRouter);
 	app.use('/dashboards', dashboardsRouter);
+	app.use('/embeddings', embeddingsRouter);
 	app.use('/extensions', extensionsRouter);
 	app.use('/fields', fieldsRouter);
 	app.use('/files', filesRouter);
@@ -285,6 +288,7 @@ export default async function createApp(): Promise<express.Application> {
 
 	// Register all webhooks
 	await initWebhooks();
+	await initEmbeddings();
 
 	collectTelemetry();
 

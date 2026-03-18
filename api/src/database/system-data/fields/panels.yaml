@@ -1,4 +1,4 @@
-table: directus_panels
+table: brio_panels
 
 fields:
   - field: id

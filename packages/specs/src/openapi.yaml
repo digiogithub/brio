@@ -16,7 +16,7 @@ tags:
     description:
       All events that happen within Brio are tracked and stored in the activities collection. This gives you full
       accountability over everything that happens.
-    x-collection: directus_activity
+    x-collection: brio_activity
   - name: Assets
     description: Image typed files can be dynamically resized and transformed to fit any need.
   - name: Authentication
@@ -27,52 +27,54 @@ tags:
     description:
       Presets hold the preferences of individual users of the platform. This allows Brio to show and maintain custom
       item listings for users of the app.
-    x-collection: directus_presets
+    x-collection: brio_presets
   - name: Collections
     description:
       Collections are the individual collections of items, similar to tables in a database. Changes to collections will
       alter the schema of the database.
-    x-collection: directus_collections
+    x-collection: brio_collections
   - name: Extensions
     description:
       Brio can easily be extended through the addition of several types of extensions, including layouts,
       interfaces, and modules.
+  - name: Embeddings
+    description: Manage embeddings and run semantic search queries.
   - name: Fields
     description: Fields are individual pieces of content within an item. They are mapped to columns in the database.
-    x-collection: directus_fields
+    x-collection: brio_fields
   - name: Files
     description:
       Files can be saved in any given location. Brio has a powerful assets endpoint that can be used to generate
       thumbnails for images on the fly.
-    x-collection: directus_files
+    x-collection: brio_files
   - name: Flows
     description: Flows enable custom, event-driven data processing and task automation.
-    x-collection: directus_flows
+    x-collection: brio_flows
   - name: Folders
     description: Group files by virtual folders.
-    x-collection: directus_folders
+    x-collection: brio_folders
   - name: Items
     description:
       Items are individual pieces of data in your database. They can be anything, from articles, to IoT status checks.
   - name: Operations
     description: Operations are the building blocks within Data Flows.
-    x-collection: directus_operations
+    x-collection: brio_operations
   - name: Permissions
     description: Permissions control who has access to what and when.
-    x-collection: directus_permissions
+    x-collection: brio_permissions
   - name: Relations
     description:
       What data is linked to what other data. Allows you to assign authors to articles, products to sales, and whatever
       other structures you can think of.
-    x-collection: directus_relations
+    x-collection: brio_relations
   - name: Revisions
     description:
       Revisions are individual changes to items made. Brio keeps track of changes made, so you're able to revert to
       a previous state at will.
-    x-collection: directus_revisions
+    x-collection: brio_revisions
   - name: Roles
     description: Roles are groups of users that share permissions.
-    x-collection: directus_roles
+    x-collection: brio_roles
   - name: Schema
     description: Retrieve and update the schema of an instance.
   - name: Server
@@ -81,15 +83,15 @@ tags:
       check what kind of latency we're dealing with.
   - name: Settings
     description: Settings control the way the platform works and acts.
-    x-collection: directus_settings
+    x-collection: brio_settings
   - name: Users
     description: Users are what gives you access to the data.
-    x-collection: directus_users
+    x-collection: brio_users
   - name: Utilities
     description: Brio comes with various utility endpoints you can use to simplify your development flow.
   - name: Webhooks
     description: Webhooks.
-    x-collection: directus_webhooks
+    x-collection: brio_webhooks
 paths:
   # Activity
   /activity:
@@ -148,6 +150,18 @@ paths:
     $ref: './paths/extensions/displays.yaml'
   /extensions/modules:
     $ref: './paths/extensions/modules.yaml'
+
+  # Embeddings
+  /embeddings/search:
+    $ref: './paths/embeddings/search.yaml'
+  /embeddings/config:
+    $ref: './paths/embeddings/config.yaml'
+  /embeddings/status:
+    $ref: './paths/embeddings/status.yaml'
+  /embeddings/stats:
+    $ref: './paths/embeddings/stats.yaml'
+  /embeddings/test-connection:
+    $ref: './paths/embeddings/test-connection.yaml'
 
   # Fields
   /fields:

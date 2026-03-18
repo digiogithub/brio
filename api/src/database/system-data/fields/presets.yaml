@@ -1,4 +1,4 @@
-table: directus_presets
+table: brio_presets
 
 fields:
   - field: filter

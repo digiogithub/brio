@@ -1,4 +1,4 @@
-table: directus_folders
+table: brio_folders
 
 fields:
   - field: id

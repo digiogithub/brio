@@ -441,7 +441,7 @@ function usePreset() {
 }
 
 function useForm() {
-	const systemCollectionWhiteList = ['directus_users', 'directus_files', 'directus_activity'];
+	const systemCollectionWhiteList = ['brio_users', 'brio_files', 'brio_activity'];
 
 	const fields = computed(() => [
 		{
@@ -457,7 +457,7 @@ function useForm() {
 							value: collection.collection,
 						}))
 						.filter((option) => {
-							if (option.value.startsWith('directus_')) return systemCollectionWhiteList.includes(option.value);
+							if (option.value.startsWith('brio_')) return systemCollectionWhiteList.includes(option.value);
 
 							return true;
 						}),

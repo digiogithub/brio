@@ -98,14 +98,14 @@ if (env['GRAPHQL_INTROSPECTION'] === false) {
  * These should be ignored in the context of GraphQL, and/or are replaced by a custom resolver (for non-standard structures)
  */
 const SYSTEM_DENY_LIST = [
-	'directus_collections',
-	'directus_fields',
-	'directus_relations',
-	'directus_migrations',
-	'directus_sessions',
+	'brio_collections',
+	'brio_fields',
+	'brio_relations',
+	'brio_migrations',
+	'brio_sessions',
 ];
 
-const READ_ONLY = ['directus_activity', 'directus_revisions'];
+const READ_ONLY = ['brio_activity', 'brio_revisions'];
 
 export class GraphQLService {
 	accountability: Accountability | null;
@@ -199,10 +199,10 @@ export class GraphQLService {
 		const { CreateCollectionTypes, UpdateCollectionTypes, DeleteCollectionTypes } = getWritableTypes();
 
 		const scopeFilter = (collection: SchemaOverview['collections'][string]) => {
-			if (this.scope === 'items' && collection.collection.startsWith('directus_') === true) return false;
+			if (this.scope === 'items' && collection.collection.startsWith('brio_') === true) return false;
 
 			if (this.scope === 'system') {
-				if (collection.collection.startsWith('directus_') === false) return false;
+				if (collection.collection.startsWith('brio_') === false) return false;
 				if (SYSTEM_DENY_LIST.includes(collection.collection)) return false;
 			}
 
@@ -229,7 +229,7 @@ export class GraphQLService {
 		if (readableCollections.length > 0) {
 			schemaComposer.Query.addFields(
 				readableCollections.reduce((acc, collection) => {
-					const collectionName = this.scope === 'items' ? collection.collection : collection.collection.substring(9);
+					const collectionName = this.scope === 'items' ? collection.collection : collection.collection.substring(5);
 					acc[collectionName] = ReadCollectionTypes[collection.collection]!.getResolver(collection.collection);
 
 					if (this.schema.collections[collection.collection]!.singleton === false) {
@@ -261,7 +261,7 @@ export class GraphQLService {
 					.filter(scopeFilter)
 					.filter((collection) => READ_ONLY.includes(collection.collection) === false)
 					.reduce((acc, collection) => {
-						const collectionName = this.scope === 'items' ? collection.collection : collection.collection.substring(9);
+						const collectionName = this.scope === 'items' ? collection.collection : collection.collection.substring(5);
 
 						acc[`create_${collectionName}_items`] = CreateCollectionTypes[collection.collection]!.getResolver(
 							`create_${collection.collection}_items`
@@ -283,7 +283,7 @@ export class GraphQLService {
 					.filter(scopeFilter)
 					.filter((collection) => READ_ONLY.includes(collection.collection) === false)
 					.reduce((acc, collection) => {
-						const collectionName = this.scope === 'items' ? collection.collection : collection.collection.substring(9);
+						const collectionName = this.scope === 'items' ? collection.collection : collection.collection.substring(5);
 
 						if (collection.singleton) {
 							acc[`update_${collectionName}`] = UpdateCollectionTypes[collection.collection]!.getResolver(
@@ -315,7 +315,7 @@ export class GraphQLService {
 					.filter(scopeFilter)
 					.filter((collection) => READ_ONLY.includes(collection.collection) === false)
 					.reduce((acc, collection) => {
-						const collectionName = this.scope === 'items' ? collection.collection : collection.collection.substring(9);
+						const collectionName = this.scope === 'items' ? collection.collection : collection.collection.substring(5);
 
 						acc[`delete_${collectionName}_items`] = DeleteCollectionTypes['many']!.getResolver(
 							`delete_${collection.collection}_items`
@@ -1318,7 +1318,7 @@ export class GraphQLService {
 	 */
 	async resolveQuery(info: GraphQLResolveInfo): Promise<Partial<Item> | null> {
 		let collection = info.fieldName;
-		if (this.scope === 'system') collection = `directus_${collection}`;
+		if (this.scope === 'system') collection = `brio_${collection}`;
 		const selections = this.replaceFragmentsInSelections(info.fieldNodes[0]?.selectionSet?.selections, info.fragments);
 
 		if (!selections) return null;
@@ -1385,7 +1385,7 @@ export class GraphQLService {
 	): Promise<Partial<Item> | boolean | undefined> {
 		const action = info.fieldName.split('_')[0] as 'create' | 'update' | 'delete';
 		let collection = info.fieldName.substring(action.length + 1);
-		if (this.scope === 'system') collection = `directus_${collection}`;
+		if (this.scope === 'system') collection = `brio_${collection}`;
 
 		const selections = this.replaceFragmentsInSelections(info.fieldNodes[0]?.selectionSet?.selections, info.fragments);
 		const query = this.getQuery(args, selections || [], info.variableValues);
@@ -1745,33 +1745,33 @@ export class GraphQLService {
 		};
 
 		switch (collection) {
-			case 'directus_activity':
+			case 'brio_activity':
 				return new ActivityService(opts);
-			case 'directus_files':
+			case 'brio_files':
 				return new FilesService(opts);
-			case 'directus_folders':
+			case 'brio_folders':
 				return new FoldersService(opts);
-			case 'directus_permissions':
+			case 'brio_permissions':
 				return new PermissionsService(opts);
-			case 'directus_presets':
+			case 'brio_presets':
 				return new PresetsService(opts);
-			case 'directus_notifications':
+			case 'brio_notifications':
 				return new NotificationsService(opts);
-			case 'directus_revisions':
+			case 'brio_revisions':
 				return new RevisionsService(opts);
-			case 'directus_roles':
+			case 'brio_roles':
 				return new RolesService(opts);
-			case 'directus_settings':
+			case 'brio_settings':
 				return new SettingsService(opts);
-			case 'directus_users':
+			case 'brio_users':
 				return new UsersService(opts);
-			case 'directus_webhooks':
+			case 'brio_webhooks':
 				return new WebhooksService(opts);
-			case 'directus_shares':
+			case 'brio_shares':
 				return new SharesService(opts);
-			case 'directus_flows':
+			case 'brio_flows':
 				return new FlowsService(opts);
-			case 'directus_operations':
+			case 'brio_operations':
 				return new OperationsService(opts);
 			default:
 				return new ItemsService(collection, opts);
@@ -2033,15 +2033,15 @@ export class GraphQLService {
 		});
 
 		const Collection = schemaComposer.createObjectTC({
-			name: 'directus_collections',
+			name: 'brio_collections',
 		});
 
 		const Field = schemaComposer.createObjectTC({
-			name: 'directus_fields',
+			name: 'brio_fields',
 		});
 
 		const Relation = schemaComposer.createObjectTC({
-			name: 'directus_relations',
+			name: 'brio_relations',
 		});
 
 		/**
@@ -2390,12 +2390,12 @@ export class GraphQLService {
 			},
 		});
 
-		if ('directus_collections' in schema.read.collections) {
+		if ('brio_collections' in schema.read.collections) {
 			Collection.addFields({
 				collection: GraphQLString,
 				meta: schemaComposer.createObjectTC({
-					name: 'directus_collections_meta',
-					fields: Object.values(schema.read.collections['directus_collections']!.fields).reduce((acc, field) => {
+					name: 'brio_collections_meta',
+					fields: Object.values(schema.read.collections['brio_collections']!.fields).reduce((acc, field) => {
 						acc[field.field] = {
 							type: field.nullable
 								? getGraphQLType(field.type, field.special)
@@ -2407,7 +2407,7 @@ export class GraphQLService {
 					}, {} as ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>),
 				}),
 				schema: schemaComposer.createObjectTC({
-					name: 'directus_collections_schema',
+					name: 'brio_collections_schema',
 					fields: {
 						name: GraphQLString,
 						comment: GraphQLString,
@@ -2445,14 +2445,14 @@ export class GraphQLService {
 			});
 		}
 
-		if ('directus_fields' in schema.read.collections) {
+		if ('brio_fields' in schema.read.collections) {
 			Field.addFields({
 				collection: GraphQLString,
 				field: GraphQLString,
 				type: GraphQLString,
 				meta: schemaComposer.createObjectTC({
-					name: 'directus_fields_meta',
-					fields: Object.values(schema.read.collections['directus_fields']!.fields).reduce((acc, field) => {
+					name: 'brio_fields_meta',
+					fields: Object.values(schema.read.collections['brio_fields']!.fields).reduce((acc, field) => {
 						acc[field.field] = {
 							type: field.nullable
 								? getGraphQLType(field.type, field.special)
@@ -2464,7 +2464,7 @@ export class GraphQLService {
 					}, {} as ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>),
 				}),
 				schema: schemaComposer.createObjectTC({
-					name: 'directus_fields_schema',
+					name: 'brio_fields_schema',
 					fields: {
 						name: GraphQLString,
 						table: GraphQLString,
@@ -2528,13 +2528,13 @@ export class GraphQLService {
 			});
 		}
 
-		if ('directus_relations' in schema.read.collections) {
+		if ('brio_relations' in schema.read.collections) {
 			Relation.addFields({
 				collection: GraphQLString,
 				field: GraphQLString,
 				related_collection: GraphQLString,
 				schema: schemaComposer.createObjectTC({
-					name: 'directus_relations_schema',
+					name: 'brio_relations_schema',
 					fields: {
 						table: new GraphQLNonNull(GraphQLString),
 						column: new GraphQLNonNull(GraphQLString),
@@ -2546,8 +2546,8 @@ export class GraphQLService {
 					},
 				}),
 				meta: schemaComposer.createObjectTC({
-					name: 'directus_relations_meta',
-					fields: Object.values(schema.read.collections['directus_relations']!.fields).reduce((acc, field) => {
+					name: 'brio_relations_meta',
+					fields: Object.values(schema.read.collections['brio_relations']!.fields).reduce((acc, field) => {
 						acc[field.field] = {
 							type: getGraphQLType(field.type, field.special),
 							description: field.note,
@@ -2607,11 +2607,11 @@ export class GraphQLService {
 				create_collections_item: {
 					type: Collection,
 					args: {
-						data: toInputObjectType(Collection.clone('create_directus_collections'), {
+						data: toInputObjectType(Collection.clone('create_brio_collections'), {
 							postfix: '_input',
 						}).addFields({
 							fields: [
-								toInputObjectType(Field.clone('create_directus_collections_fields'), { postfix: '_input' }).NonNull,
+								toInputObjectType(Field.clone('create_brio_collections_fields'), { postfix: '_input' }).NonNull,
 							],
 						}).NonNull,
 					},
@@ -2629,7 +2629,7 @@ export class GraphQLService {
 					type: Collection,
 					args: {
 						collection: new GraphQLNonNull(GraphQLString),
-						data: toInputObjectType(Collection.clone('update_directus_collections'), {
+						data: toInputObjectType(Collection.clone('update_brio_collections'), {
 							postfix: '_input',
 						}).removeField(['collection', 'schema']).NonNull,
 					},
@@ -2670,7 +2670,7 @@ export class GraphQLService {
 					type: Field,
 					args: {
 						collection: new GraphQLNonNull(GraphQLString),
-						data: toInputObjectType(Field.clone('create_directus_fields'), { postfix: '_input' }).NonNull,
+						data: toInputObjectType(Field.clone('create_brio_fields'), { postfix: '_input' }).NonNull,
 					},
 					resolve: async (_, args) => {
 						const service = new FieldsService({
@@ -2687,7 +2687,7 @@ export class GraphQLService {
 					args: {
 						collection: new GraphQLNonNull(GraphQLString),
 						field: new GraphQLNonNull(GraphQLString),
-						data: toInputObjectType(Field.clone('update_directus_fields'), { postfix: '_input' }).NonNull,
+						data: toInputObjectType(Field.clone('update_brio_fields'), { postfix: '_input' }).NonNull,
 					},
 					resolve: async (_, args) => {
 						const service = new FieldsService({
@@ -2732,7 +2732,7 @@ export class GraphQLService {
 				create_relations_item: {
 					type: Relation,
 					args: {
-						data: toInputObjectType(Relation.clone('create_directus_relations'), { postfix: '_input' }).NonNull,
+						data: toInputObjectType(Relation.clone('create_brio_relations'), { postfix: '_input' }).NonNull,
 					},
 					resolve: async (_, args) => {
 						const relationsService = new RelationsService({
@@ -2749,7 +2749,7 @@ export class GraphQLService {
 					args: {
 						collection: new GraphQLNonNull(GraphQLString),
 						field: new GraphQLNonNull(GraphQLString),
-						data: toInputObjectType(Relation.clone('update_directus_relations'), { postfix: '_input' }).NonNull,
+						data: toInputObjectType(Relation.clone('update_brio_relations'), { postfix: '_input' }).NonNull,
 					},
 					resolve: async (_, args) => {
 						const relationsService = new RelationsService({
@@ -2786,10 +2786,10 @@ export class GraphQLService {
 			});
 		}
 
-		if ('directus_users' in schema.read.collections) {
+		if ('brio_users' in schema.read.collections) {
 			schemaComposer.Query.addFields({
 				users_me: {
-					type: ReadCollectionTypes['directus_users']!,
+					type: ReadCollectionTypes['brio_users']!,
 					resolve: async (_, args, __, info) => {
 						if (!this.accountability?.user) return null;
 						const service = new UsersService({ schema: this.schema, accountability: this.accountability });
@@ -2807,12 +2807,12 @@ export class GraphQLService {
 			});
 		}
 
-		if ('directus_users' in schema.update.collections && this.accountability?.user) {
+		if ('brio_users' in schema.update.collections && this.accountability?.user) {
 			schemaComposer.Mutation.addFields({
 				update_users_me: {
-					type: ReadCollectionTypes['directus_users']!,
+					type: ReadCollectionTypes['brio_users']!,
 					args: {
-						data: toInputObjectType(UpdateCollectionTypes['directus_users']!),
+						data: toInputObjectType(UpdateCollectionTypes['brio_users']!),
 					},
 					resolve: async (_, args, __, info) => {
 						if (!this.accountability?.user) return null;
@@ -2824,7 +2824,7 @@ export class GraphQLService {
 
 						await service.updateOne(this.accountability.user, args['data']);
 
-						if ('directus_users' in ReadCollectionTypes) {
+						if ('brio_users' in ReadCollectionTypes) {
 							const selections = this.replaceFragmentsInSelections(
 								info.fieldNodes[0]?.selectionSet?.selections,
 								info.fragments
@@ -2841,10 +2841,10 @@ export class GraphQLService {
 			});
 		}
 
-		if ('directus_activity' in schema.create.collections) {
+		if ('brio_activity' in schema.create.collections) {
 			schemaComposer.Mutation.addFields({
 				create_comment: {
-					type: ReadCollectionTypes['directus_activity'] ?? GraphQLBoolean,
+					type: ReadCollectionTypes['brio_activity'] ?? GraphQLBoolean,
 					args: {
 						collection: new GraphQLNonNull(GraphQLString),
 						item: new GraphQLNonNull(GraphQLID),
@@ -2865,7 +2865,7 @@ export class GraphQLService {
 							origin: this.accountability?.origin,
 						});
 
-						if ('directus_activity' in ReadCollectionTypes) {
+						if ('brio_activity' in ReadCollectionTypes) {
 							const selections = this.replaceFragmentsInSelections(
 								info.fieldNodes[0]?.selectionSet?.selections,
 								info.fragments
@@ -2882,10 +2882,10 @@ export class GraphQLService {
 			});
 		}
 
-		if ('directus_activity' in schema.update.collections) {
+		if ('brio_activity' in schema.update.collections) {
 			schemaComposer.Mutation.addFields({
 				update_comment: {
-					type: ReadCollectionTypes['directus_activity'] ?? GraphQLBoolean,
+					type: ReadCollectionTypes['brio_activity'] ?? GraphQLBoolean,
 					args: {
 						id: new GraphQLNonNull(GraphQLID),
 						comment: new GraphQLNonNull(GraphQLString),
@@ -2898,7 +2898,7 @@ export class GraphQLService {
 
 						const primaryKey = await service.updateOne(args['id'], { comment: args['comment'] });
 
-						if ('directus_activity' in ReadCollectionTypes) {
+						if ('brio_activity' in ReadCollectionTypes) {
 							const selections = this.replaceFragmentsInSelections(
 								info.fieldNodes[0]?.selectionSet?.selections,
 								info.fragments
@@ -2915,7 +2915,7 @@ export class GraphQLService {
 			});
 		}
 
-		if ('directus_activity' in schema.delete.collections) {
+		if ('brio_activity' in schema.delete.collections) {
 			schemaComposer.Mutation.addFields({
 				delete_comment: {
 					type: DeleteCollectionTypes['one']!,
@@ -2935,14 +2935,14 @@ export class GraphQLService {
 			});
 		}
 
-		if ('directus_files' in schema.create.collections) {
+		if ('brio_files' in schema.create.collections) {
 			schemaComposer.Mutation.addFields({
 				import_file: {
-					type: ReadCollectionTypes['directus_files'] ?? GraphQLBoolean,
+					type: ReadCollectionTypes['brio_files'] ?? GraphQLBoolean,
 					args: {
 						url: new GraphQLNonNull(GraphQLString),
-						data: toInputObjectType(CreateCollectionTypes['directus_files']!).setTypeName(
-							'create_directus_files_input'
+						data: toInputObjectType(CreateCollectionTypes['brio_files']!).setTypeName(
+							'create_brio_files_input'
 						),
 					},
 					resolve: async (_, args, __, info) => {
@@ -2953,7 +2953,7 @@ export class GraphQLService {
 
 						const primaryKey = await service.importOne(args['url'], args['data']);
 
-						if ('directus_files' in ReadCollectionTypes) {
+						if ('brio_files' in ReadCollectionTypes) {
 							const selections = this.replaceFragmentsInSelections(
 								info.fieldNodes[0]?.selectionSet?.selections,
 								info.fragments
@@ -2969,7 +2969,7 @@ export class GraphQLService {
 			});
 		}
 
-		if ('directus_users' in schema.create.collections) {
+		if ('brio_users' in schema.create.collections) {
 			schemaComposer.Mutation.addFields({
 				users_invite: {
 					type: GraphQLBoolean,

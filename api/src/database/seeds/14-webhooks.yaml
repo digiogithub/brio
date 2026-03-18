@@ -1,4 +1,4 @@
-table: directus_webhooks
+table: brio_webhooks
 
 columns:
   id:

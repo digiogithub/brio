@@ -1,5 +1,5 @@
-# directus_permissions isn't surfaced in the app
-table: directus_permissions
+# brio_permissions isn't surfaced in the app
+table: brio_permissions
 
 fields:
   - field: permissions

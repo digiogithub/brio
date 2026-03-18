@@ -1,4 +1,4 @@
-table: directus_roles
+table: brio_roles
 
 columns:
   id:

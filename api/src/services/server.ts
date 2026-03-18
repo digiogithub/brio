@@ -6,6 +6,7 @@ import { Readable } from 'node:stream';
 import os from 'os';
 import { performance } from 'perf_hooks';
 import { getCache } from '../cache.js';
+import { getHelpers } from '../database/helpers/index.js';
 import getDatabase, { hasDatabaseConnection } from '../database/index.js';
 import env from '../env.js';
 import logger from '../logger.js';
@@ -65,6 +66,15 @@ export class ServerService {
 		if (this.accountability?.user) {
 			info['mcp_enabled'] = parseBoolean(env['MCP_ENABLED'], true);
 			info['ai_enabled'] = parseBoolean(env['AI_ENABLED'], true);
+			info['embeddings_enabled'] = parseBoolean(env['EMBEDDINGS_ENABLED'], true);
+			info['db_client'] = env['DB_CLIENT'];
+
+			const vectorSupported = await getHelpers(this.knex).vector.supported();
+			info['vector_supported'] = vectorSupported;
+			info['vector_capabilities'] = {
+				supported: vectorSupported,
+				distance_metrics: ['cosine', 'l2'],
+			};
 
 			if (env['RATE_LIMITER_ENABLED']) {
 				info['rateLimit'] = {
@@ -216,7 +226,7 @@ export class ServerService {
 
 			if (
 				Number(checks[`${client}:responseTime`]![0]!.observedValue!) >
-				checks[`${client}:responseTime`]![0]!.threshold! &&
+					checks[`${client}:responseTime`]![0]!.threshold! &&
 				checks[`${client}:responseTime`]![0]!.status !== 'error'
 			) {
 				checks[`${client}:responseTime`]![0]!.status = 'warn';
@@ -356,7 +366,7 @@ export class ServerService {
 
 				if (
 					checks['rateLimiterGlobal:responseTime']![0]!.observedValue >
-					checks['rateLimiterGlobal:responseTime']![0]!.threshold! &&
+						checks['rateLimiterGlobal:responseTime']![0]!.threshold! &&
 					checks['rateLimiterGlobal:responseTime']![0]!.status !== 'error'
 				) {
 					checks['rateLimiterGlobal:responseTime']![0]!.status = 'warn';
@@ -404,7 +414,7 @@ export class ServerService {
 
 					if (
 						Number(checks[`storage:${location}:responseTime`]![0]!.observedValue!) >
-						checks[`storage:${location}:responseTime`]![0]!.threshold! &&
+							checks[`storage:${location}:responseTime`]![0]!.threshold! &&
 						checks[`storage:${location}:responseTime`]![0]!.status !== 'error'
 					) {
 						checks[`storage:${location}:responseTime`]![0]!.status = 'warn';

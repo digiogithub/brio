@@ -69,7 +69,7 @@ export const items = defineTool<z.infer<typeof ItemsValidateSchema>>({
         return ['content', input.collection, String(data['id'])];
     },
     async handler({ args, schema, accountability }) {
-        if (args.collection.startsWith('directus_')) {
+        if (args.collection.startsWith('brio_')) {
             throw new InvalidPayloadException('Cannot provide a core collection');
         }
 

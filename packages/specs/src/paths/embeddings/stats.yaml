@@ -1,0 +1,20 @@
+get:
+  summary: Embeddings Stats
+  description: Get embeddings and queue statistics.
+  operationId: embeddingsStats
+  responses:
+    '200':
+      description: Successful request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/UnauthorizedError'
+    '404':
+      $ref: '../../openapi.yaml#/components/responses/NotFoundError'
+  tags:
+    - Embeddings

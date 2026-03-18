@@ -99,7 +99,7 @@ export class MailService {
 	private async getDefaultTemplateData() {
 		const projectInfo = await this.knex
 			.select(['project_name', 'project_logo', 'project_color', 'project_url'])
-			.from('directus_settings')
+			.from('brio_settings')
 			.first();
 
 		return {

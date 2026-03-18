@@ -64,11 +64,11 @@ export const handler = async (req: Request, _res: Response, next: NextFunction) 
 		} else {
 			// Try finding the user with the provided token
 			const user = await database
-				.select('directus_users.id', 'directus_users.role', 'directus_roles.admin_access', 'directus_roles.app_access')
-				.from('directus_users')
-				.leftJoin('directus_roles', 'directus_users.role', 'directus_roles.id')
+				.select('brio_users.id', 'brio_users.role', 'brio_roles.admin_access', 'brio_roles.app_access')
+				.from('brio_users')
+				.leftJoin('brio_roles', 'brio_users.role', 'brio_roles.id')
 				.where({
-					'directus_users.token': req.token,
+					'brio_users.token': req.token,
 					status: 'active',
 				})
 				.first();
