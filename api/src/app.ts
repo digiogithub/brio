@@ -39,7 +39,7 @@ import usersRouter from './controllers/users.js';
 import utilsRouter from './controllers/utils.js';
 import webhooksRouter from './controllers/webhooks.js';
 import {
-	isInstalled,
+	getInstallationStatus,
 	validateDatabaseConnection,
 	validateDatabaseExtensions,
 	validateMigrations,
@@ -84,9 +84,17 @@ export default async function createApp(): Promise<express.Application> {
 
 	await validateDatabaseConnection();
 	await validateDatabaseExtensions();
+	const installationStatus = await getInstallationStatus();
 
-	if ((await isInstalled()) === false) {
+	if (installationStatus.isInstalled === false) {
 		logger.error(`Database doesn't have Brio tables installed.`);
+		process.exit(1);
+	}
+
+	if (installationStatus.hasBrioTables === false && installationStatus.hasLegacyTables === true) {
+		logger.error(
+			'Legacy Directus-prefixed system tables detected. Run "bun run --filter @brio/api cli bootstrap" or "bun run --filter @brio/api cli database migrate:latest" before starting the API.'
+		);
 		process.exit(1);
 	}
 

@@ -1,15 +1,29 @@
 import { Router } from 'express';
 import request from 'supertest';
-import { describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 import createApp from './app.js';
+import logger from './logger.js';
+import { getInstallationStatus } from './database';
 
 vi.mock('./database', () => ({
 	default: vi.fn(),
 	getDatabaseClient: vi.fn().mockReturnValue('postgres'),
+	getInstallationStatus: vi.fn().mockResolvedValue({ hasBrioTables: true, hasLegacyTables: false, isInstalled: true }),
 	isInstalled: vi.fn(),
 	validateDatabaseConnection: vi.fn(),
 	validateDatabaseExtensions: vi.fn(),
 	validateMigrations: vi.fn(),
+}));
+
+vi.mock('./logger', () => ({
+	default: {
+		error: vi.fn(),
+		warn: vi.fn(),
+		info: vi.fn(),
+		debug: vi.fn(),
+		trace: vi.fn(),
+	},
+	expressLogger: Router(),
 }));
 
 vi.mock('./env', async () => {
@@ -72,7 +86,33 @@ vi.mock('./webhooks', () => ({
 	init: vi.fn(),
 }));
 
+beforeAll(() => {
+	vi.spyOn(process, 'exit').mockImplementation(() => {
+		throw new Error('process.exit');
+	});
+});
+
+afterEach(() => {
+	vi.clearAllMocks();
+	vi.mocked(getInstallationStatus).mockResolvedValue({ hasBrioTables: true, hasLegacyTables: false, isInstalled: true });
+});
+
 describe('createApp', async () => {
+	describe('Database installation status', () => {
+		test('Should exit with a helpful error when legacy system tables are detected', async () => {
+			vi.mocked(getInstallationStatus).mockResolvedValueOnce({
+				hasBrioTables: false,
+				hasLegacyTables: true,
+				isInstalled: true,
+			});
+
+			await expect(createApp()).rejects.toThrow('process.exit');
+			expect(logger.error).toHaveBeenCalledWith(
+				'Legacy Directus-prefixed system tables detected. Run "bun run --filter @brio/api cli bootstrap" or "bun run --filter @brio/api cli database migrate:latest" before starting the API.'
+			);
+		});
+	});
+
 	describe('Content Security Policy', () => {
 		test('Should set content-security-policy header by default', async () => {
 			const app = await createApp();

@@ -227,13 +227,30 @@ export function getDatabaseClient(database?: Knex): DatabaseClient {
 	throw new Error(`Couldn't extract database client`);
 }
 
-export async function isInstalled(): Promise<boolean> {
+export async function getInstallationStatus(): Promise<{
+	hasBrioTables: boolean;
+	hasLegacyTables: boolean;
+	isInstalled: boolean;
+}> {
 	const inspector = getSchemaInspector();
 
+	const [hasBrioTables, hasLegacyTables] = await Promise.all([
+		inspector.hasTable(SYSTEM_COLLECTIONS_TABLE),
+		inspector.hasTable(LEGACY_SYSTEM_COLLECTIONS_TABLE),
+	]);
+
+	return {
+		hasBrioTables,
+		hasLegacyTables,
+		isInstalled: hasBrioTables || hasLegacyTables,
+	};
+}
+
+export async function isInstalled(): Promise<boolean> {
 	// The existence of a system collections table alone isn't a "proper" check to see if everything
 	// is installed correctly of course, but it's safe enough to assume that this collection only
 	// exists when Brio is properly installed.
-	return (await inspector.hasTable(SYSTEM_COLLECTIONS_TABLE)) || (await inspector.hasTable(LEGACY_SYSTEM_COLLECTIONS_TABLE));
+	return (await getInstallationStatus()).isInstalled;
 }
 
 export async function validateMigrations(): Promise<boolean> {
