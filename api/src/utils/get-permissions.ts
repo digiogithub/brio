@@ -1,4 +1,4 @@
-import type { Accountability, Permission, SchemaOverview } from '@brio/types';
+import type { Accountability, Permission, PermissionsAction, SchemaOverview } from '@brio/types';
 import { deepMap, parseFilter, parseJSON, parsePreset } from '@brio/utils';
 import { cloneDeep } from 'lodash-es';
 import hash from 'object-hash';
@@ -12,6 +12,8 @@ import { UsersService } from '../services/users.js';
 import { mergePermissions } from '../utils/merge-permissions.js';
 import { mergePermissionsForShare } from './merge-permissions-for-share.js';
 
+const ADMIN_ACTIONS: PermissionsAction[] = ['create', 'read', 'update', 'delete', 'comment', 'explain', 'share'];
+
 export async function getPermissions(accountability: Accountability, schema: SchemaOverview) {
 	const database = getDatabase();
 	const { cache } = getCache();
@@ -19,6 +21,11 @@ export async function getPermissions(accountability: Accountability, schema: Sch
 	let permissions: Permission[] = [];
 
 	const { user, role, app, admin, share_scope } = accountability;
+
+	if (admin === true) {
+		return getAdminPermissions(role, schema);
+	}
+
 	const cacheKey = `permissions-${hash({ user, role, app, admin, share_scope })}`;
 
 	if (cache && env['CACHE_PERMISSIONS'] !== false) {
@@ -111,6 +118,21 @@ export async function getPermissions(accountability: Accountability, schema: Sch
 	}
 
 	return permissions;
+}
+
+function getAdminPermissions(role: Accountability['role'], schema: SchemaOverview): Permission[] {
+	return Object.keys(schema.collections).flatMap((collection) => {
+		return ADMIN_ACTIONS.map((action) => ({
+			role,
+			collection,
+			action,
+			permissions: {},
+			validation: {},
+			presets: {},
+			fields: ['*'],
+			system: true as const,
+		}));
+	});
 }
 
 function parsePermissions(permissions: any[]) {

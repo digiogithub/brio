@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import type { Knex } from 'knex';
+import type { MockedFunction } from 'vitest';
 import { afterEach, expect, test, vi } from 'vitest';
 import '../../src/types/express.d.ts';
 import getDatabase from '../database/index.js';
@@ -9,11 +10,17 @@ import env from '../env.js';
 import { InvalidCredentialsException } from '../exceptions/invalid-credentials.js';
 import { handler } from './authenticate.js';
 
-vi.mock('../../src/database');
+vi.mock('../database/index.js', () => ({
+	default: vi.fn(),
+}));
 
-vi.mock('../../src/env', () => {
+vi.mock('../env.js', () => {
 	const MOCK_ENV = {
 		SECRET: 'test',
+		EXTENSIONS_PATH: '/www/Brio/brio/api/extensions',
+		EMAIL_VERIFY_SETUP: false,
+		EMAIL_FROM: 'test@example.com',
+		PUBLIC_URL: 'http://localhost:8055',
 	};
 
 	return {
@@ -21,6 +28,8 @@ vi.mock('../../src/env', () => {
 		getEnv: () => MOCK_ENV,
 	};
 });
+
+const getDatabaseMock = getDatabase as unknown as MockedFunction<typeof getDatabase>;
 
 afterEach(() => {
 	vi.resetAllMocks();
@@ -173,8 +182,115 @@ test('Sets accountability to payload contents if valid token is passed', async (
 	expect(next).toHaveBeenCalledTimes(1);
 });
 
+test('Refreshes JWT admin/app flags from the database role for non-share tokens', async () => {
+	const userID = '3fac3c02-607f-4438-8d6e-6b8b25109b52';
+	const roleID = '38269fc6-6eb6-475a-93cb-479d97f73039';
+
+	const token = jwt.sign(
+		{
+			id: userID,
+			role: roleID,
+			app_access: false,
+			admin_access: false,
+		},
+		env['SECRET'],
+		{ issuer: 'brio' }
+	);
+
+	getDatabaseMock.mockReturnValue({
+		select: vi.fn().mockReturnThis(),
+		from: vi.fn().mockReturnThis(),
+		where: vi.fn().mockReturnThis(),
+		first: vi.fn().mockResolvedValue({ admin_access: true, app_access: true }),
+	} as unknown as Knex);
+
+	const req = {
+		ip: '127.0.0.1',
+		get: vi.fn((string) => {
+			switch (string) {
+				case 'user-agent':
+					return 'fake-user-agent';
+				case 'origin':
+					return 'fake-origin';
+				default:
+					return null;
+			}
+		}),
+		token,
+	} as unknown as Request;
+
+	const res = {} as Response;
+	const next = vi.fn();
+
+	await handler(req, res, next);
+
+	expect(req.accountability).toEqual({
+		user: userID,
+		role: roleID,
+		app: true,
+		admin: true,
+		ip: '127.0.0.1',
+		userAgent: 'fake-user-agent',
+		origin: 'fake-origin',
+	});
+	expect(next).toHaveBeenCalledTimes(1);
+});
+
+test('Keeps JWT share token flags without resolving role access from the database', async () => {
+	const userID = '3fac3c02-607f-4438-8d6e-6b8b25109b52';
+	const roleID = '38269fc6-6eb6-475a-93cb-479d97f73039';
+	const share = 'ca0ad005-f4ad-4bfe-b428-419ee8784790';
+
+	const token = jwt.sign(
+		{
+			id: userID,
+			role: roleID,
+			app_access: false,
+			admin_access: false,
+			share,
+			share_scope: { collection: 'articles', item: 15 },
+		},
+		env['SECRET'],
+		{ issuer: 'brio' }
+	);
+
+	const database = {
+		select: vi.fn().mockReturnThis(),
+		from: vi.fn().mockReturnThis(),
+		where: vi.fn().mockReturnThis(),
+		first: vi.fn(),
+	} as unknown as Knex;
+
+	getDatabaseMock.mockReturnValue(database);
+
+	const req = {
+		ip: '127.0.0.1',
+		get: vi.fn((string) => {
+			switch (string) {
+				case 'user-agent':
+					return 'fake-user-agent';
+				case 'origin':
+					return 'fake-origin';
+				default:
+					return null;
+			}
+		}),
+		token,
+	} as unknown as Request;
+
+	const res = {} as Response;
+	const next = vi.fn();
+
+	await handler(req, res, next);
+
+	expect(req.accountability?.admin).toBe(false);
+	expect(req.accountability?.app).toBe(false);
+	expect((database as any).first).not.toHaveBeenCalled();
+	expect(next).toHaveBeenCalledTimes(1);
+});
+
 test('Throws InvalidCredentialsException when static token is used, but user does not exist', async () => {
-	vi.mocked(getDatabase).mockReturnValue({
+	getDatabaseMock.mockReturnValue({
 		select: vi.fn().mockReturnThis(),
 		from: vi.fn().mockReturnThis(),
 		leftJoin: vi.fn().mockReturnThis(),
@@ -235,7 +351,7 @@ test('Sets accountability to user information when static token is used', async 
 		origin: 'fake-origin',
 	};
 
-	vi.mocked(getDatabase).mockReturnValue({
+	getDatabaseMock.mockReturnValue({
 		select: vi.fn().mockReturnThis(),
 		from: vi.fn().mockReturnThis(),
 		leftJoin: vi.fn().mockReturnThis(),

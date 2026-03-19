@@ -3,27 +3,30 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import YAML from 'yaml';
 
+const SYSTEM_PREFIXES = ['directus_', 'brio_'] as const;
+
 const SYSTEM_PRESET_COLLECTIONS: Record<string, string[]> = {
     // Core access control (Brio 9 does not have directus_policies)
-    roles: ['directus_roles'],
-    permissions: ['directus_permissions'],
+    roles: ['brio_roles'],
+    permissions: ['brio_permissions'],
     // Automations
-    flows: ['directus_flows', 'directus_operations'],
+    flows: ['brio_flows', 'brio_operations'],
     // Dashboards
-    panels: ['directus_dashboards', 'directus_panels'],
+    panels: ['brio_dashboards', 'brio_panels'],
 };
 
 const SYSTEM_COLLECTION_ORDER: string[] = [
-    'directus_settings',
-    'directus_roles',
-    'directus_permissions',
-    'directus_flows',
-    'directus_operations',
-    'directus_dashboards',
-    'directus_panels',
+    'brio_settings',
+    'brio_roles',
+    'brio_permissions',
+    'brio_flows',
+    'brio_operations',
+    'brio_dashboards',
+    'brio_panels',
 ];
 
-export const MIGRATION_TABLE = 'directus_yaml_migrations';
+export const MIGRATION_TABLE = 'brio_yaml_migrations';
+export const LEGACY_MIGRATION_TABLE = 'directus_yaml_migrations';
 
 type MigrationRunReport = {
     filename: string;
@@ -100,14 +103,23 @@ export type ListedMigration = {
     report?: string | null;
 };
 
-function isInternalDirectusCollection(name: string): boolean {
-    return name.startsWith('directus_');
+function isInternalSystemCollection(name: string): boolean {
+    return SYSTEM_PREFIXES.some((prefix) => name.startsWith(prefix));
+}
+
+function normalizeSystemCollectionName(name: string | null | undefined): string | null | undefined {
+    if (typeof name !== 'string') return name;
+    if (name.startsWith('directus_')) {
+        return `brio_${name.slice('directus_'.length)}`;
+    }
+
+    return name;
 }
 
 function filterSnapshotForNonInternalCollections(snapshot: any): any {
     if (!snapshot) return snapshot;
 
-    const allowCollection = (c: string | null | undefined) => typeof c === 'string' && c.length > 0 && !isInternalDirectusCollection(c);
+    const allowCollection = (c: string | null | undefined) => typeof c === 'string' && c.length > 0 && !isInternalSystemCollection(c);
 
     const allowedCollections = new Set<string>(
         (snapshot?.collections ?? [])
@@ -256,7 +268,19 @@ export async function writeMigrationFile(dir: string, filename: string, data: Ya
 }
 
 export async function ensureTrackingTable(database: any): Promise<void> {
+    const hasLegacy = await database.schema.hasTable(LEGACY_MIGRATION_TABLE);
     const has = await database.schema.hasTable(MIGRATION_TABLE);
+
+    if (hasLegacy && has) {
+        throw new Error(
+            `Cannot rename "${LEGACY_MIGRATION_TABLE}" to "${MIGRATION_TABLE}" because both tables exist. Resolve this state before rerunning yaml migrations.`
+        );
+    }
+
+    if (hasLegacy) {
+        await database.schema.renameTable(LEGACY_MIGRATION_TABLE, MIGRATION_TABLE);
+    }
+
     if (!has) {
         await database.schema.createTable(MIGRATION_TABLE, (t: any) => {
             t.uuid('id').primary();
@@ -467,7 +491,7 @@ export async function exportMigrationSnapshot(options: {
                 dataCollections = (filteredSnapshot?.collections ?? [])
                     .filter((c: any) => c?.meta?.system !== true)
                     .map((c: any) => c.collection)
-                    .filter((c: any) => typeof c === 'string' && !c.startsWith('directus_'));
+                    .filter((c: any) => typeof c === 'string' && !isInternalSystemCollection(c));
             }
         }
     }
@@ -479,7 +503,7 @@ export async function exportMigrationSnapshot(options: {
         const fromPresets = presets.flatMap((p) => SYSTEM_PRESET_COLLECTIONS[p] ?? []);
         const fromManual = cleanCollectionList(options.systemDataCollections);
 
-        systemCollections = ['directus_settings', ...fromPresets, ...fromManual].filter(
+        systemCollections = ['brio_settings', ...fromPresets, ...fromManual].filter(
             (c) => typeof c === 'string' && c.length > 0,
         );
 
@@ -509,7 +533,7 @@ export async function exportMigrationSnapshot(options: {
         for (const collection of systemCollections) {
             if (!(await tableExists(collection))) continue;
             const perCollectionLimit =
-                collection === 'directus_settings' ? Math.max(1, Math.min(limit, 50)) : Math.max(1, limit);
+                collection === 'brio_settings' ? Math.max(1, Math.min(limit, 50)) : Math.max(1, limit);
             const items = await options.database(collection).select('*').limit(perCollectionLimit);
             data.push({ collection, match: ['id'], items });
         }
@@ -637,12 +661,19 @@ function mergeSnapshotsForPartialApply(currentSnapshot: any, targetSnapshot: any
 
 function mergeDataCollections(oldCols: YamlMigrationDataCollection[], newCols: YamlMigrationDataCollection[]): YamlMigrationDataCollection[] {
     const byCollection = new Map<string, YamlMigrationDataCollection>();
-    for (const c of oldCols) byCollection.set(c.collection, { ...c, items: Array.isArray(c.items) ? [...c.items] : [] });
+    for (const c of oldCols) {
+        const collection = normalizeSystemCollectionName(c.collection);
+        if (!collection) continue;
+        byCollection.set(collection, { ...c, collection, items: Array.isArray(c.items) ? [...c.items] : [] });
+    }
 
     for (const c of newCols) {
-        const current = byCollection.get(c.collection);
+        const collection = normalizeSystemCollectionName(c.collection);
+        if (!collection) continue;
+
+        const current = byCollection.get(collection);
         if (!current) {
-            byCollection.set(c.collection, { ...c, items: Array.isArray(c.items) ? [...c.items] : [] });
+            byCollection.set(collection, { ...c, collection, items: Array.isArray(c.items) ? [...c.items] : [] });
             continue;
         }
 
@@ -843,46 +874,51 @@ export async function applyMigrationFile(options: {
             };
 
             // Special handling for flows/operations to avoid FK ordering issues
+            const normalizedCollections = parsed.data.collections.map((collection) => ({
+                ...collection,
+                collection: normalizeSystemCollectionName(collection?.collection) ?? collection?.collection,
+            }));
+
             const byName = new Map<string, YamlMigrationDataCollection>();
-            for (const col of parsed.data.collections) {
+            for (const col of normalizedCollections) {
                 if (col?.collection) byName.set(col.collection, col);
             }
 
-            const flows = byName.get('directus_flows');
-            const operations = byName.get('directus_operations');
+            const flows = byName.get('brio_flows');
+            const operations = byName.get('brio_operations');
 
             if (flows && operations) {
                 await upsertCollection({
-                    collection: 'directus_flows',
+                    collection: 'brio_flows',
                     matchFields: Array.isArray(flows.match) && flows.match.length > 0 ? flows.match : ['id'],
                     items: flows.items ?? [],
                     transformItem: (item) => ({ ...item, operation: null }),
                 });
 
                 await upsertCollection({
-                    collection: 'directus_operations',
+                    collection: 'brio_operations',
                     matchFields: Array.isArray(operations.match) && operations.match.length > 0 ? operations.match : ['id'],
                     items: operations.items ?? [],
                     transformItem: (item) => ({ ...item, resolve: null, reject: null }),
                 });
 
                 await upsertCollection({
-                    collection: 'directus_operations',
+                    collection: 'brio_operations',
                     matchFields: Array.isArray(operations.match) && operations.match.length > 0 ? operations.match : ['id'],
                     items: operations.items ?? [],
                 });
 
                 await upsertCollection({
-                    collection: 'directus_flows',
+                    collection: 'brio_flows',
                     matchFields: Array.isArray(flows.match) && flows.match.length > 0 ? flows.match : ['id'],
                     items: flows.items ?? [],
                 });
 
-                byName.delete('directus_flows');
-                byName.delete('directus_operations');
+                byName.delete('brio_flows');
+                byName.delete('brio_operations');
             }
 
-            for (const col of parsed.data.collections) {
+            for (const col of normalizedCollections) {
                 if (!col?.collection) continue;
                 if (!byName.has(col.collection)) continue;
 

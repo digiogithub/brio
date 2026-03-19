@@ -6,6 +6,8 @@ import { parsePreset } from '@/utils/parse-preset';
 import { defineStore } from 'pinia';
 import { useUserStore } from '../stores/user';
 
+const ADMIN_ACTIONS: Permission['action'][] = ['create', 'read', 'update', 'delete', 'comment', 'explain', 'share'];
+
 export const usePermissionsStore = defineStore({
 	id: 'permissionsStore',
 	state: () => ({
@@ -19,13 +21,19 @@ export const usePermissionsStore = defineStore({
 				params: { limit: -1, filter: { role: { _eq: userStore.currentUser!.role.id } } },
 			});
 
-			const fields = getNestedDynamicVariableFieldsInPresets(response.data.data);
+			let rawPermissions = response.data.data as Permission[];
+
+			if (userStore.currentUser?.role?.admin_access === true) {
+				rawPermissions = await hydrateAdminPermissions(userStore.currentUser.role.id, rawPermissions);
+			}
+
+			const fields = getNestedDynamicVariableFieldsInPresets(rawPermissions);
 
 			if (fields.length > 0) {
 				await userStore.hydrateAdditionalFields(fields);
 			}
 
-			this.permissions = response.data.data.map((rawPermission: Permission) => {
+			this.permissions = rawPermissions.map((rawPermission: Permission) => {
 				if (rawPermission.permissions) {
 					rawPermission.permissions = parseFilter(rawPermission.permissions);
 				}
@@ -58,6 +66,42 @@ export const usePermissionsStore = defineStore({
 				}
 
 				return fields;
+			}
+
+			async function hydrateAdminPermissions(roleId: string, existingPermissions: Permission[]): Promise<Permission[]> {
+				const { data } = await api.get('/collections', {
+					params: { limit: -1, fields: ['collection'] },
+				});
+
+				const collections = (data.data as Array<{ collection: string }>).map(({ collection }) => collection);
+
+				const generatedPermissions = collections.flatMap((collection) => {
+					return ADMIN_ACTIONS.map((action) => ({
+						role: roleId,
+						collection,
+						action,
+						permissions: {},
+						validation: {},
+						presets: {},
+						fields: ['*'],
+						system: true,
+					}));
+				});
+
+				if (existingPermissions.length === 0) return generatedPermissions;
+
+				const permissionMap = new Map(
+					existingPermissions.map((permission) => [
+						`${permission.collection}:${permission.action}:${permission.role}`,
+						permission,
+					])
+				);
+
+				for (const permission of generatedPermissions) {
+					permissionMap.set(`${permission.collection}:${permission.action}:${permission.role}`, permission);
+				}
+
+				return Array.from(permissionMap.values());
 			}
 		},
 		dehydrate() {

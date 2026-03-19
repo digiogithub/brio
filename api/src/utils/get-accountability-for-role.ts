@@ -28,8 +28,9 @@ export async function getAccountabilityForRole(
 			role: null,
 			admin: true,
 			app: true,
-			permissions: [],
 		};
+
+		generatedAccountability.permissions = await getPermissions(generatedAccountability, context.schema);
 	} else {
 		const roleInfo = await context.database
 			.select(['app_access', 'admin_access'])

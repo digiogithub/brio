@@ -118,6 +118,36 @@ describe('actions', () => {
 
 			expect(userStore.hydrateAdditionalFields).not.toHaveBeenCalled();
 		});
+
+		test('should synthesize wildcard permissions for admin users', async () => {
+			const userStore = useUserStore();
+			userStore.currentUser = mockAdminUser as any;
+
+			vi.spyOn(vi.mocked(api), 'get').mockImplementation((path: string) => {
+				if (path === '/permissions') {
+					return Promise.resolve({ data: { data: [] } }) as any;
+				}
+
+				if (path === '/collections') {
+					return Promise.resolve({
+						data: { data: [{ collection: 'brio_users' }, { collection: 'brio_files' }] },
+					}) as any;
+				}
+
+				return Promise.reject(new Error(`GET "${path}" is not mocked in this test`)) as any;
+			});
+
+			const permissionsStore = usePermissionsStore();
+			await permissionsStore.hydrate();
+
+			expect(permissionsStore.permissions).toEqual(
+				expect.arrayContaining([
+					expect.objectContaining({ collection: 'brio_users', action: 'read', fields: ['*'] }),
+					expect.objectContaining({ collection: 'brio_files', action: 'delete', fields: ['*'] }),
+				])
+			);
+			expect(permissionsStore.permissions).toHaveLength(14);
+		});
 	});
 
 	describe('getPermissionsForUser', () => {

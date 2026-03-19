@@ -3,7 +3,9 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import YAML from 'yaml';
 
-const MIGRATION_TABLE = 'directus_yaml_migrations';
+const MIGRATION_TABLE = 'brio_yaml_migrations';
+const LEGACY_MIGRATION_TABLE = 'directus_yaml_migrations';
+const SYSTEM_PREFIXES = ['directus_', 'brio_'] as const;
 
 type MigrationRunReport = {
     filename: string;
@@ -25,14 +27,23 @@ type MigrationRunReport = {
     };
 };
 
-function isInternalDirectusCollection(name: string): boolean {
-    return name.startsWith('directus_');
+function isInternalSystemCollection(name: string): boolean {
+    return SYSTEM_PREFIXES.some((prefix) => name.startsWith(prefix));
+}
+
+function normalizeSystemCollectionName(name: string | null | undefined): string | null | undefined {
+    if (typeof name !== 'string') return name;
+    if (name.startsWith('directus_')) {
+        return `brio_${name.slice('directus_'.length)}`;
+    }
+
+    return name;
 }
 
 function filterSnapshotForNonInternalCollections(snapshot: any): any {
     if (!snapshot) return snapshot;
 
-    const allowCollection = (c: string | null | undefined) => typeof c === 'string' && c.length > 0 && !isInternalDirectusCollection(c);
+    const allowCollection = (c: string | null | undefined) => typeof c === 'string' && c.length > 0 && !isInternalSystemCollection(c);
 
     const allowedCollections = new Set<string>(
         (snapshot?.collections ?? [])
@@ -132,7 +143,19 @@ async function ensureMigrationsDirExists(dir: string): Promise<void> {
 }
 
 async function ensureTrackingTable(database: any): Promise<void> {
+    const hasLegacy = await database.schema.hasTable(LEGACY_MIGRATION_TABLE);
     const has = await database.schema.hasTable(MIGRATION_TABLE);
+
+    if (hasLegacy && has) {
+        throw new Error(
+            `Cannot rename "${LEGACY_MIGRATION_TABLE}" to "${MIGRATION_TABLE}" because both tables exist. Resolve this state before rerunning yaml migrations.`
+        );
+    }
+
+    if (hasLegacy) {
+        await database.schema.renameTable(LEGACY_MIGRATION_TABLE, MIGRATION_TABLE);
+    }
+
     if (!has) {
         await database.schema.createTable(MIGRATION_TABLE, (t: any) => {
             t.uuid('id').primary();
@@ -303,7 +326,7 @@ async function applyOne(context: any, filename: string, forceSchema: boolean): P
             if (!ItemsService) throw new Error('ItemsService not available');
 
             for (const col of parsed.data.collections) {
-                const collection = col?.collection;
+                const collection = normalizeSystemCollectionName(col?.collection);
                 if (!collection) continue;
                 const matchFields = Array.isArray(col.match) && col.match.length > 0 ? col.match : ['id'];
                 const pk = schema?.collections?.[collection]?.primary;

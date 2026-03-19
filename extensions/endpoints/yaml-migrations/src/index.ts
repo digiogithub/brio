@@ -61,7 +61,7 @@ export default defineEndpoint({
             const internal: string[] = [];
             const regular: string[] = [];
             for (const name of names) {
-                if (name.startsWith('directus_')) internal.push(name);
+                if (name.startsWith('directus_') || name.startsWith('brio_')) internal.push(name);
                 else regular.push(name);
             }
 

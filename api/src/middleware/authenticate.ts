@@ -53,10 +53,24 @@ export const handler = async (req: Request, _res: Response, next: NextFunction) 
 	if (req.token) {
 		if (isBrioJWT(req.token)) {
 			const payload = verifyAccessJWT(req.token, env['SECRET']);
+			const roleAccess =
+				payload.share || !payload.role
+					? null
+					: await database
+						.select('admin_access', 'app_access')
+						.from('brio_roles')
+						.where({ id: payload.role })
+						.first();
 
 			req.accountability.role = payload.role;
-			req.accountability.admin = payload.admin_access === true || payload.admin_access == 1;
-			req.accountability.app = payload.app_access === true || payload.app_access == 1;
+			req.accountability.admin =
+				roleAccess?.admin_access !== undefined
+					? roleAccess.admin_access === true || roleAccess.admin_access == 1
+					: payload.admin_access === true || payload.admin_access == 1;
+			req.accountability.app =
+				roleAccess?.app_access !== undefined
+					? roleAccess.app_access === true || roleAccess.app_access == 1
+					: payload.app_access === true || payload.app_access == 1;
 
 			if (payload.share) req.accountability.share = payload.share;
 			if (payload.share_scope) req.accountability.share_scope = payload.share_scope;
