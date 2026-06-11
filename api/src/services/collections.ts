@@ -259,7 +259,25 @@ export class CollectionsService {
 			limit: -1,
 		})) as CollectionMeta[];
 
-		meta.push(...systemCollectionRows);
+		// Merge system collection rows — static rows serve as defaults; DB rows take precedence.
+		// Avoids duplication when the repair migration (20260611A) already populated brio_collections.
+		const existingCollections = new Set(meta.map((m) => m.collection));
+
+		for (const systemRow of systemCollectionRows) {
+			if (existingCollections.has(systemRow.collection)) {
+				// DB row exists — augment it with any missing static defaults
+				const dbRow = meta.find((m) => m.collection === systemRow.collection)!;
+
+				for (const [key, value] of Object.entries(systemRow)) {
+					if (dbRow[key as keyof CollectionMeta] === undefined || dbRow[key as keyof CollectionMeta] === null) {
+						(dbRow as Record<string, unknown>)[key] = value;
+					}
+				}
+			} else {
+				meta.push(systemRow);
+				existingCollections.add(systemRow.collection);
+			}
+		}
 
 		if (this.accountability && this.accountability.admin !== true) {
 			const collectionsGroups: { [key: string]: string } = meta.reduce(

@@ -75,10 +75,24 @@ export class FieldsService {
 				limit: -1,
 			})) as FieldMeta[];
 
-			fields.push(...systemFieldRows.filter((fieldMeta) => fieldMeta.collection === collection));
+			// Merge system field rows — avoid duplication if repair migration already populated brio_fields
+			const existingKeys = new Set(fields.map((f) => `${f.collection}:${f.field}`));
+
+			for (const row of systemFieldRows.filter((r) => r.collection === collection)) {
+				if (!existingKeys.has(`${row.collection}:${row.field}`)) {
+					fields.push(row);
+				}
+			}
 		} else {
 			fields = (await nonAuthorizedItemsService.readByQuery({ limit: -1 })) as FieldMeta[];
-			fields.push(...systemFieldRows);
+
+			const existingKeys = new Set(fields.map((f) => `${f.collection}:${f.field}`));
+
+			for (const row of systemFieldRows) {
+				if (!existingKeys.has(`${row.collection}:${row.field}`)) {
+					fields.push(row);
+				}
+			}
 		}
 
 		const columns = (await this.schemaInspector.columnInfo(collection)).map((column) => ({
@@ -112,10 +126,21 @@ export class FieldsService {
 
 		let aliasFields = [...((await this.payloadService.processValues('read', await aliasQuery)) as FieldMeta[])];
 
+		// Merge system field rows for alias query — avoid duplication
+		const aliasExistingKeys = new Set(aliasFields.map((f) => `${f.collection}:${f.field}`));
+
 		if (collection) {
-			aliasFields.push(...systemFieldRows.filter((fieldMeta) => fieldMeta.collection === collection));
+			for (const row of systemFieldRows.filter((r) => r.collection === collection)) {
+				if (!aliasExistingKeys.has(`${row.collection}:${row.field}`)) {
+					aliasFields.push(row);
+				}
+			}
 		} else {
-			aliasFields.push(...systemFieldRows);
+			for (const row of systemFieldRows) {
+				if (!aliasExistingKeys.has(`${row.collection}:${row.field}`)) {
+					aliasFields.push(row);
+				}
+			}
 		}
 
 		aliasFields = aliasFields.filter((field) => {

@@ -21,3 +21,4 @@ bun.lockb
 .vscode
 .idea
 database
+.pando*

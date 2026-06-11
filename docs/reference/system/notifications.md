@@ -242,7 +242,7 @@ POST /notifications
 
 [
 	{
-		"collection": "directus_files",
+		"collection": "brio_files",
 		"recipient": "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca",
 		"message": "Hi there! You should check out these files"
 	},
@@ -273,7 +273,7 @@ mutation {
 	create_notifications_items(
 		data: [
 			{
-				collection: "directus_files"
+				collection: "brio_files"
 				recipient: "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca"
 				message: "Hi there! You should check out these files"
 			}

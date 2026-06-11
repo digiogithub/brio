@@ -468,7 +468,7 @@ type CustomTypes = {
 	collection name exactly. Typos won't get caught here
 	since SDK will assume it's a custom user collection.
 	*/
-	directus_users: UserType;
+	brio_users: UserType;
 };
 
 const brio = new Brio<CustomTypes>('https://example.brio.app');
@@ -611,7 +611,7 @@ type MyBlog = {
 	// You can also extend Brio collection. The naming has
 	// to match a Brio system collection and it will be merged
 	// into the system spec.
-	directus_users: {
+	brio_users: {
 		bio: string;
 	};
 };
@@ -777,7 +777,7 @@ await articles.createOne(
 brio.activity;
 ```
 
-The activity property has all the methods of brio.items('directus_activity') with the addition of an alias to the
+The activity property has all the methods of brio.items('brio_activity') with the addition of an alias to the
 activity comments (below).
 
 ```js
@@ -901,7 +901,7 @@ await brio.fields.deleteOne(/* collection name */ 'articles', /* field_name */ '
 brio.files;
 ```
 
-The files property support all of the functions common to all items - brio.items('directus_files') with one
+The files property support all of the functions common to all items - brio.items('brio_files') with one
 addition: import.
 
 ### Import
@@ -1010,7 +1010,7 @@ await brio.files.import({
 brio.folders;
 ```
 
-Same methods as `brio.items("directus_folders")`.
+Same methods as `brio.items("brio_folders")`.
 
 ## Permissions
 
@@ -1018,7 +1018,7 @@ Same methods as `brio.items("directus_folders")`.
 brio.permissions;
 ```
 
-Same methods as `brio.items("directus_permissions")`.
+Same methods as `brio.items("brio_permissions")`.
 
 ## Presets
 
@@ -1026,7 +1026,7 @@ Same methods as `brio.items("directus_permissions")`.
 brio.presets;
 ```
 
-Same methods as `brio.items("directus_presets")`.
+Same methods as `brio.items("brio_presets")`.
 
 ## Relations
 
@@ -1034,7 +1034,7 @@ Same methods as `brio.items("directus_presets")`.
 brio.relations;
 ```
 
-Same methods as `brio.items("directus_relations")`.
+Same methods as `brio.items("brio_relations")`.
 
 ## Revisions
 
@@ -1042,7 +1042,7 @@ Same methods as `brio.items("directus_relations")`.
 brio.revisions;
 ```
 
-Same methods as `brio.items("directus_revisions")`.
+Same methods as `brio.items("brio_revisions")`.
 
 ## Roles
 
@@ -1050,7 +1050,7 @@ Same methods as `brio.items("directus_revisions")`.
 brio.roles;
 ```
 
-Same methods as `brio.items("directus_roles")`.
+Same methods as `brio.items("brio_roles")`.
 
 ## Settings
 
@@ -1058,7 +1058,7 @@ Same methods as `brio.items("directus_roles")`.
 brio.settings;
 ```
 
-Same methods as `brio.items("directus_settings")`.
+Same methods as `brio.items("brio_settings")`.
 
 ## Server
 
@@ -1080,7 +1080,7 @@ await brio.server.info();
 brio.users;
 ```
 
-Same methods as `brio.items("directus_users")`, and:
+Same methods as `brio.items("brio_users")`, and:
 
 ### Invite a New User
 

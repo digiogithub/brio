@@ -86,11 +86,11 @@ Delete trigger for the foreign key constraint.
 {
 	"collection": "about_us",
 	"field": "logo",
-	"related_collection": "directus_files",
+	"related_collection": "brio_files",
 	"schema": {
 		"table": "about_us",
 		"column": "logo",
-		"foreign_key_table": "directus_files",
+		"foreign_key_table": "brio_files",
 		"foreign_key_column": "id",
 		"constraint_name": "about_us_logo_foreign",
 		"on_update": "NO ACTION",
@@ -102,7 +102,7 @@ Delete trigger for the foreign key constraint.
 		"many_collection": "about_us",
 		"many_field": "logo",
 		"one_allowed_collections": null,
-		"one_collection": "directus_files",
+		"one_collection": "brio_files",
 		"one_collection_field": null,
 		"one_deselect_action": "nullify",
 		"one_field": null,
@@ -299,7 +299,7 @@ POST /relations
 {
 	"collection": "articles",
 	"field": "featured_image",
-	"related_collection": "directus_files"
+	"related_collection": "brio_files"
 }
 ```
 
@@ -320,7 +320,7 @@ type Mutation {
 ```graphql
 mutation {
 	create_relations_item(
-		data: { collection: "articles", field: "featured_image", related_collection: "directus_files" }
+		data: { collection: "articles", field: "featured_image", related_collection: "brio_files" }
 	) {
 		collection
 		field

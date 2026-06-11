@@ -64,10 +64,22 @@ export class RelationsService {
 			};
 		}
 
-		const metaRows = [
-			...(await this.relationsItemService.readByQuery(metaReadQuery, opts)),
-			...systemRelationRows,
-		].filter((metaRow) => {
+		const dbMetaRows = await this.relationsItemService.readByQuery(metaReadQuery, opts);
+
+		// Merge system relation rows — avoid duplication if repair migration populated brio_relations.
+		// Key: many_collection + many_field + one_collection + one_field (unique relation identity)
+		const relKey = (r: typeof systemRelationRows[number]) =>
+			`${r.many_collection}:${r.many_field}:${r.one_collection}:${r.one_field ?? ''}`;
+		const existingRelKeys = new Set(dbMetaRows.map(relKey));
+		const mergedMetaRows = [...dbMetaRows];
+
+		for (const row of systemRelationRows) {
+			if (!existingRelKeys.has(relKey(row))) {
+				mergedMetaRows.push(row);
+			}
+		}
+
+		const metaRows = mergedMetaRows.filter((metaRow) => {
 			if (!collection) return true;
 			return metaRow.many_collection === collection;
 		});

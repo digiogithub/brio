@@ -49,7 +49,7 @@ The options used by the layout. This structure is based on the used layout.
 	"bookmark": null,
 	"user": "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca",
 	"role": null,
-	"collection": "directus_activity",
+	"collection": "brio_activity",
 	"search": null,
 	"filters": [],
 	"layout": "tabular",
@@ -266,7 +266,7 @@ POST /presets
 
 [
 	{
-		"collection": "directus_files",
+		"collection": "brio_files",
 		"user": "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca",
 		"layout": "cards",
 		"search": "Brio"
@@ -298,7 +298,7 @@ mutation {
 	create_presets_items(
 		data: [
 			{
-				collection: "directus_files"
+				collection: "brio_files"
 				user: "410b5772-e63f-4ae6-9ea2-39c3a31bd6ca"
 				layout: "cards"
 				search: "Brio"

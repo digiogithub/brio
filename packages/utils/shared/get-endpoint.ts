@@ -3,5 +3,9 @@ export function getEndpoint(collection: string): string {
 		return `/${collection.substring(9)}`;
 	}
 
+	if (collection.startsWith('brio_')) {
+		return `/${collection.substring(5)}`;
+	}
+
 	return `/items/${collection}`;
 }
