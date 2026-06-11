@@ -22,178 +22,184 @@ import { LocalAuthDriver } from './local.js';
 samlify.setSchemaValidator(validator);
 
 export class SAMLAuthDriver extends LocalAuthDriver {
-	sp: samlify.ServiceProviderInstance;
-	idp: samlify.IdentityProviderInstance;
-	usersService: UsersService;
-	config: Record<string, any>;
+  sp: samlify.ServiceProviderInstance;
+  idp: samlify.IdentityProviderInstance;
+  usersService: UsersService;
+  config: Record<string, any>;
 
-	constructor(options: AuthDriverOptions, config: Record<string, any>) {
-		super(options, config);
+  constructor(options: AuthDriverOptions, config: Record<string, any>) {
+    super(options, config);
 
-		this.config = config;
-		this.usersService = new UsersService({ knex: this.knex, schema: this.schema });
+    this.config = config;
+    this.usersService = new UsersService({ knex: this.knex, schema: this.schema });
 
-		this.sp = samlify.ServiceProvider(getConfigFromEnv(`AUTH_${config['provider'].toUpperCase()}_SP`));
-		this.idp = samlify.IdentityProvider(getConfigFromEnv(`AUTH_${config['provider'].toUpperCase()}_IDP`));
-	}
+    this.sp = samlify.ServiceProvider(getConfigFromEnv(`AUTH_${config['provider'].toUpperCase()}_SP`));
+    this.idp = samlify.IdentityProvider(getConfigFromEnv(`AUTH_${config['provider'].toUpperCase()}_IDP`));
+  }
 
-	async fetchUserID(identifier: string) {
-		const user = await this.knex
-			.select('id')
-			.from('brio_users')
-			.whereRaw('LOWER(??) = ?', ['external_identifier', identifier.toLowerCase()])
-			.first();
+  async fetchUserID(identifier: string) {
+    const user = await this.knex
+      .select('id')
+      .from('brio_users')
+      .whereRaw('LOWER(??) = ?', ['external_identifier', identifier.toLowerCase()])
+      .first();
 
-		return user?.id;
-	}
+    return user?.id;
+  }
 
-	override async getUserID(payload: Record<string, any>) {
-		const { provider, emailKey, identifierKey, givenNameKey, familyNameKey, allowPublicRegistration } = this.config;
+  override async getUserID(payload: Record<string, any>) {
+    const { provider, emailKey, identifierKey, givenNameKey, familyNameKey, allowPublicRegistration } = this.config;
 
-		const email = payload[emailKey ?? 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
-		const identifier = payload[identifierKey ?? 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+    const email = payload[emailKey ?? 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
+    const identifier = payload[identifierKey ?? 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
-		const userID = await this.fetchUserID(identifier);
+    const userID = await this.fetchUserID(identifier);
 
-		if (userID) return userID;
+    if (userID) return userID;
 
-		if (!allowPublicRegistration) {
-			logger.trace(`[SAML] User doesn't exist, and public registration not allowed for provider "${provider}"`);
-			throw new InvalidCredentialsException();
-		}
+    if (!allowPublicRegistration) {
+      logger.trace(`[SAML] User doesn't exist, and public registration not allowed for provider "${provider}"`);
+      throw new InvalidCredentialsException();
+    }
 
-		const firstName = payload[givenNameKey ?? 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'];
-		const lastName = payload[familyNameKey ?? 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'];
+    const firstName = payload[givenNameKey ?? 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'];
+    const lastName = payload[familyNameKey ?? 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'];
 
-		const userPayload = {
-			provider,
-			first_name: firstName,
-			last_name: lastName,
-			email: email,
-			external_identifier: identifier.toLowerCase(),
-			role: this.config['defaultRoleId'],
-		};
+    const userPayload = {
+      provider,
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      external_identifier: identifier.toLowerCase(),
+      role: this.config['defaultRoleId'],
+    };
 
-		// Run hook so the end user has the chance to augment the
-		// user that is about to be created
-		const updatedUserPayload = await emitter.emitFilter(
-			`auth.create`,
-			userPayload,
-			{ identifier: identifier.toLowerCase(), provider: this.config['provider'], providerPayload: { ...payload } },
-			{ database: getDatabase(), schema: this.schema, accountability: null }
-		);
+    // Run hook so the end user has the chance to augment the
+    // user that is about to be created
+    const updatedUserPayload = await emitter.emitFilter(
+      `auth.create`,
+      userPayload,
+      { identifier: identifier.toLowerCase(), provider: this.config['provider'], providerPayload: { ...payload } },
+      { database: getDatabase(), schema: this.schema, accountability: null }
+    );
 
-		try {
-			return await this.usersService.createOne(updatedUserPayload);
-		} catch (error) {
-			if (error instanceof RecordNotUniqueException) {
-				logger.warn(error, '[SAML] Failed to register user. User not unique');
-				throw new InvalidProviderException();
-			}
+    try {
+      return await this.usersService.createOne(updatedUserPayload);
+    } catch (error) {
+      if (error instanceof RecordNotUniqueException) {
+        logger.warn(error, '[SAML] Failed to register user. User not unique');
+        throw new InvalidProviderException();
+      }
 
-			throw error;
-		}
-	}
+      throw error;
+    }
+  }
 
-	// There's no local checks to be done when the user is authenticated in the IdP
-	override async login(_user: User): Promise<void> {
-		return;
-	}
+  // There's no local checks to be done when the user is authenticated in the IdP
+  override async login(_user: User): Promise<void> {
+    return;
+  }
 }
 
 export function createSAMLAuthRouter(providerName: string) {
-	const router = Router();
+  const router = Router();
 
-	router.get(
-		'/metadata',
-		asyncHandler(async (_req, res) => {
-			const { sp } = getAuthProvider(providerName) as SAMLAuthDriver;
-			return res.header('Content-Type', 'text/xml').send(sp.getMetadata());
-		})
-	);
+  const isSafeRedirect = (url: string): boolean => url.startsWith('/') && !url.startsWith('//');
 
-	router.get(
-		'/',
-		asyncHandler(async (req, res) => {
-			const { sp, idp } = getAuthProvider(providerName) as SAMLAuthDriver;
-			const { context: url } = sp.createLoginRequest(idp, 'redirect');
-			const parsedUrl = new URL(url);
+  router.get(
+    '/metadata',
+    asyncHandler(async (_req, res) => {
+      const { sp } = getAuthProvider(providerName) as SAMLAuthDriver;
+      return res.header('Content-Type', 'text/xml').send(sp.getMetadata());
+    })
+  );
 
-			if (req.query['redirect']) {
-				parsedUrl.searchParams.append('RelayState', req.query['redirect'] as string);
-			}
+  router.get(
+    '/',
+    asyncHandler(async (req, res) => {
+      const { sp, idp } = getAuthProvider(providerName) as SAMLAuthDriver;
+      const { context: url } = sp.createLoginRequest(idp, 'redirect');
+      const parsedUrl = new URL(url);
 
-			return res.redirect(parsedUrl.toString());
-		})
-	);
+      if (req.query['redirect']) {
+        parsedUrl.searchParams.append('RelayState', req.query['redirect'] as string);
+      }
 
-	router.post(
-		'/logout',
-		asyncHandler(async (req, res) => {
-			const { sp, idp } = getAuthProvider(providerName) as SAMLAuthDriver;
-			const { context } = sp.createLogoutRequest(idp, 'redirect', req.body);
+      return res.redirect(parsedUrl.toString());
+    })
+  );
 
-			const authService = new AuthenticationService({ accountability: req.accountability, schema: req.schema });
+  router.post(
+    '/logout',
+    asyncHandler(async (req, res) => {
+      const { sp, idp } = getAuthProvider(providerName) as SAMLAuthDriver;
+      const { context } = sp.createLogoutRequest(idp, 'redirect', req.body);
 
-			if (req.cookies[env['REFRESH_TOKEN_COOKIE_NAME']]) {
-				const currentRefreshToken = req.cookies[env['REFRESH_TOKEN_COOKIE_NAME']];
+      const authService = new AuthenticationService({ accountability: req.accountability, schema: req.schema });
 
-				if (currentRefreshToken) {
-					await authService.logout(currentRefreshToken);
-					res.clearCookie(env['REFRESH_TOKEN_COOKIE_NAME'], COOKIE_OPTIONS);
-				}
-			}
+      if (req.cookies[env['REFRESH_TOKEN_COOKIE_NAME']]) {
+        const currentRefreshToken = req.cookies[env['REFRESH_TOKEN_COOKIE_NAME']];
 
-			return res.redirect(context);
-		})
-	);
+        if (currentRefreshToken) {
+          await authService.logout(currentRefreshToken);
+          res.clearCookie(env['REFRESH_TOKEN_COOKIE_NAME'], COOKIE_OPTIONS);
+        }
+      }
 
-	router.post(
-		'/acs',
-		express.urlencoded({ extended: false }),
-		asyncHandler(async (req, res, next) => {
-			const relayState: string | undefined = req.body?.RelayState;
+      return res.redirect(context);
+    })
+  );
 
-			try {
-				const { sp, idp } = getAuthProvider(providerName) as SAMLAuthDriver;
-				const { extract } = await sp.parseLoginResponse(idp, 'post', req);
+  router.post(
+    '/acs',
+    express.urlencoded({ extended: false }),
+    asyncHandler(async (req, res, next) => {
+      const relayState: string | undefined = req.body?.RelayState;
 
-				const authService = new AuthenticationService({ accountability: req.accountability, schema: req.schema });
-				const { accessToken, refreshToken, expires } = await authService.login(providerName, extract.attributes);
+      try {
+        const { sp, idp } = getAuthProvider(providerName) as SAMLAuthDriver;
+        const { extract } = await sp.parseLoginResponse(idp, 'post', req);
 
-				res.locals['payload'] = {
-					data: {
-						access_token: accessToken,
-						refresh_token: refreshToken,
-						expires,
-					},
-				};
+        const authService = new AuthenticationService({ accountability: req.accountability, schema: req.schema });
+        const { accessToken, refreshToken, expires } = await authService.login(providerName, extract.attributes);
 
-				if (relayState) {
-					res.cookie(env['REFRESH_TOKEN_COOKIE_NAME'], refreshToken, COOKIE_OPTIONS);
-					return res.redirect(relayState);
-				}
+        res.locals['payload'] = {
+          data: {
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            expires,
+          },
+        };
 
-				return next();
-			} catch (error: any) {
-				if (relayState) {
-					let reason = 'UNKNOWN_EXCEPTION';
+        if (relayState && isSafeRedirect(relayState)) {
+          res.cookie(env['REFRESH_TOKEN_COOKIE_NAME'], refreshToken, COOKIE_OPTIONS);
+          return res.redirect(relayState);
+        }
 
-					if (error instanceof BaseException) {
-						reason = error.code;
-					} else {
-						logger.warn(error, `[SAML] Unexpected error during SAML login`);
-					}
+        return next();
+      } catch (error: any) {
+        if (relayState) {
+          const safeUrl = relayState.split('?')[0];
 
-					return res.redirect(`${relayState.split('?')[0]}?reason=${reason}`);
-				}
+          if (isSafeRedirect(safeUrl)) {
+            let reason = 'UNKNOWN_EXCEPTION';
 
-				logger.warn(error, `[SAML] Unexpected error during SAML login`);
-				throw error;
-			}
-		}),
-		respond
-	);
+            if (error instanceof BaseException) {
+              reason = error.code;
+            } else {
+              logger.warn(error, `[SAML] Unexpected error during SAML login`);
+            }
 
-	return router;
+            return res.redirect(`${safeUrl}?reason=${reason}`);
+          }
+        }
+
+        logger.warn(error, `[SAML] Unexpected error during SAML login`);
+        throw error;
+      }
+    }),
+    respond
+  );
+
+  return router;
 }

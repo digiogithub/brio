@@ -1,14 +1,13 @@
 export function getFieldsFromTemplate(template: string | null): string[] {
-	if (template === null) return [];
+  if (template === null) return [];
 
-	const regex = /{{(.*?)}}/g;
-	const fields = template.match(regex);
+  const regex = /{{([^}]+)}}/g;
+  const fields: string[] = [];
+  let match: RegExpExecArray | null;
 
-	if (!Array.isArray(fields)) {
-		return [];
-	}
+  while ((match = regex.exec(template)) !== null) {
+    fields.push(match[1]!.trim());
+  }
 
-	return fields.map((field) => {
-		return field.replace(/{{/g, '').replace(/}}/g, '').trim();
-	});
+  return fields;
 }
