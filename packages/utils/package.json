@@ -1,67 +1,67 @@
 {
-	"name": "@brio/utils",
-	"version": "9.26.0",
-	"type": "module",
-	"scripts": {
-		"build": "echo 'No build needed - Bun runs TypeScript natively'",
-		"dev": "echo 'No dev build needed - Bun runs TypeScript natively'",
-		"test": "vitest --watch=false"
-	},
-	"description": "Utilities shared between the Brio packages",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/nicobrio/brio.git",
-		"directory": "packages/utils"
-	},
-	"funding": "https://github.com/nicobrio/brio?sponsor=1",
-	"license": "GPL-3.0",
-	"author": "Rijk van Zanten <rijkvanzanten@me.com>",
-	"exports": {
-		".": {
-			"types": "./shared/index.ts",
-			"import": "./shared/index.ts"
-		},
-		"./node": {
-			"types": "./node/index.ts",
-			"import": "./node/index.ts"
-		},
-		"./browser": {
-			"types": "./browser/index.ts",
-			"import": "./browser/index.ts"
-		},
-		"./package.json": "./package.json"
-	},
-	"main": "shared/index.ts",
-	"types": "shared/index.ts",
-	"files": [
-		"dist",
-		"!**/*.test.{js,d.ts}"
-	],
-	"publishConfig": {
-		"access": "public"
-	},
-	"dependencies": {
-		"@brio/constants": "workspace:*",
-		"@brio/storage": "workspace:*",
-		"date-fns": "2.29.3",
-		"fs-extra": "11.1.1",
-		"joi": "17.9.1",
-		"lodash-es": "4.17.21",
-		"micromustache": "8.0.3",
-		"tmp": "0.2.1",
-		"vue": "3.2.47"
-	},
-	"devDependencies": {
-		"@brio/tsconfig": "0.0.7",
-		"@brio/types": "workspace:*",
-		"@ngneat/falso": "6.4.0",
-		"@types/fs-extra": "11.0.1",
-		"@types/lodash-es": "4.17.7",
-		"@types/node": "18.15.13",
-		"@types/tmp": "0.2.3",
-		"@vitest/coverage-c8": "0.30.1",
-		"concurrently": "8.0.1",
-		"typescript": "5.0.4",
-		"vitest": "0.30.1"
-	}
+  "name": "@brio/utils",
+  "version": "9.26.0",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'No build needed - Bun runs TypeScript natively'",
+    "dev": "echo 'No dev build needed - Bun runs TypeScript natively'",
+    "test": "vitest --watch=false"
+  },
+  "description": "Utilities shared between the Brio packages",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicobrio/brio.git",
+    "directory": "packages/utils"
+  },
+  "funding": "https://github.com/nicobrio/brio?sponsor=1",
+  "license": "GPL-3.0",
+  "author": "Rijk van Zanten <rijkvanzanten@me.com>",
+  "exports": {
+    ".": {
+      "types": "./shared/index.ts",
+      "import": "./shared/index.ts"
+    },
+    "./node": {
+      "types": "./node/index.ts",
+      "import": "./node/index.ts"
+    },
+    "./browser": {
+      "types": "./browser/index.ts",
+      "import": "./browser/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "shared/index.ts",
+  "types": "shared/index.ts",
+  "files": [
+    "dist",
+    "!**/*.test.{js,d.ts}"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@brio/constants": "workspace:*",
+    "@brio/storage": "workspace:*",
+    "date-fns": "2.29.3",
+    "fs-extra": "11.1.1",
+    "joi": "18.2.1",
+    "lodash-es": "4.17.21",
+    "micromustache": "8.0.3",
+    "tmp": "0.2.1",
+    "vue": "3.2.47"
+  },
+  "devDependencies": {
+    "@brio/tsconfig": "0.0.7",
+    "@brio/types": "workspace:*",
+    "@ngneat/falso": "6.4.0",
+    "@types/fs-extra": "11.0.1",
+    "@types/lodash-es": "4.17.7",
+    "@types/node": "18.15.13",
+    "@types/tmp": "0.2.3",
+    "@vitest/coverage-c8": "0.30.1",
+    "concurrently": "8.0.1",
+    "typescript": "5.0.4",
+    "vitest": "0.30.1"
+  }
 }

@@ -1,41 +1,41 @@
 {
-	"name": "@brio/exceptions",
-	"version": "9.26.0",
-	"type": "module",
-	"scripts": {
-		"build": "echo 'No build needed - Bun runs TypeScript natively'",
-		"dev": "echo 'No dev build needed - Bun runs TypeScript natively'",
-		"test": "vitest --watch=false"
-	},
-	"description": "Shared exceptions in Brio",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/nicobrio/brio.git",
-		"directory": "packages/exceptions"
-	},
-	"funding": "https://github.com/nicobrio/brio?sponsor=1",
-	"license": "GPL-3.0",
-	"author": "Rijk van Zanten <rijkvanzanten@me.com>",
-	"exports": {
-		".": "./src/index.ts",
-		"./package.json": "./package.json"
-	},
-	"main": "src/index.ts",
-	"types": "src/index.ts",
-	"files": [
-		"dist",
-		"!**/*.test.{js,d.ts}"
-	],
-	"publishConfig": {
-		"access": "public"
-	},
-	"devDependencies": {
-		"@brio/tsconfig": "0.0.7",
-		"@brio/types": "workspace:*",
-		"@ngneat/falso": "6.4.0",
-		"@vitest/coverage-c8": "0.30.1",
-		"joi": "17.9.1",
-		"typescript": "5.0.4",
-		"vitest": "0.30.1"
-	}
+  "name": "@brio/exceptions",
+  "version": "9.26.0",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'No build needed - Bun runs TypeScript natively'",
+    "dev": "echo 'No dev build needed - Bun runs TypeScript natively'",
+    "test": "vitest --watch=false"
+  },
+  "description": "Shared exceptions in Brio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicobrio/brio.git",
+    "directory": "packages/exceptions"
+  },
+  "funding": "https://github.com/nicobrio/brio?sponsor=1",
+  "license": "GPL-3.0",
+  "author": "Rijk van Zanten <rijkvanzanten@me.com>",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "dist",
+    "!**/*.test.{js,d.ts}"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@brio/tsconfig": "0.0.7",
+    "@brio/types": "workspace:*",
+    "@ngneat/falso": "6.4.0",
+    "@vitest/coverage-c8": "0.30.1",
+    "joi": "18.2.1",
+    "typescript": "5.0.4",
+    "vitest": "0.30.1"
+  }
 }
