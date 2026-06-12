@@ -2,6 +2,7 @@ import { Router } from 'express';
 import request from 'supertest';
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 import createApp from './app.js';
+import env from './env.js';
 import logger from './logger.js';
 import { getInstallationStatus } from './database';
 
@@ -95,6 +96,9 @@ beforeAll(() => {
 afterEach(() => {
 	vi.clearAllMocks();
 	vi.mocked(getInstallationStatus).mockResolvedValue({ hasBrioTables: true, hasLegacyTables: false, isInstalled: true });
+	env['SERVE_APP'] = true;
+	env['APP_DEV_URL'] = false;
+	process.env['NODE_ENV'] = 'test';
 });
 
 describe('createApp', async () => {
@@ -176,6 +180,18 @@ describe('createApp', async () => {
 			const response = await request(app).get('/admin');
 
 			expect(response.text).toEqual(expect.stringContaining(mockEmbedBody));
+		});
+
+		test('Should redirect admin requests to the Vite app in development when the API does not serve the app', async () => {
+			env['SERVE_APP'] = false;
+			env['APP_DEV_URL'] = 'http://localhost:8080';
+			process.env['NODE_ENV'] = 'development';
+
+			const app = await createApp();
+			const response = await request(app).get('/admin/settings?panel=data');
+
+			expect(response.status).toBe(302);
+			expect(response.headers['location']).toBe('http://localhost:8080/admin/settings?panel=data');
 		});
 	});
 

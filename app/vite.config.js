@@ -74,6 +74,7 @@ export default defineConfig(async () => {
 		},
 		base: process.env.NODE_ENV === 'production' ? '' : '/admin/',
 		server: {
+			host: '0.0.0.0',
 			port: 8080,
 			strictPort: true,
 			hmr: {

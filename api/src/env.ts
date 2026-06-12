@@ -26,6 +26,7 @@ const allowedEnvironmentVars = [
 	'MAX_PAYLOAD_SIZE',
 	'ROOT_REDIRECT',
 	'SERVE_APP',
+	'APP_DEV_URL',
 	'GRAPHQL_INTROSPECTION',
 	'MAX_BATCH_MUTATION',
 	'LOGGER_.+',
@@ -284,6 +285,7 @@ const defaults: Record<string, any> = {
 	IMPORT_IP_DENY_LIST: ['0.0.0.0', '169.254.169.254'],
 
 	SERVE_APP: true,
+	APP_DEV_URL: false,
 
 	RELATIONAL_BATCH_SIZE: 25000,
 

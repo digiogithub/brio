@@ -223,6 +223,13 @@ export default async function createApp(): Promise<express.Application> {
 		app.get('/admin', sendHtml);
 		app.use('/admin', express.static(path.join(adminPath, '..'), { setHeaders: setStaticHeaders }));
 		app.use('/admin/*', sendHtml);
+	} else if (process.env['NODE_ENV'] === 'development') {
+		app.use('/admin', (req, res) => {
+			const appDevOrigin = env['APP_DEV_URL'] || `${req.protocol}://${req.hostname}:8080`;
+			const redirectUrl = new URL(req.originalUrl, appDevOrigin);
+
+			res.redirect(redirectUrl.toString());
+		});
 	}
 
 	// use the rate limiter - all routes for now
