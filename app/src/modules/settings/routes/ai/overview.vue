@@ -27,6 +27,7 @@
 				:fields="aiFields"
 				:primary-key="1"
 				:disabled="!serverStore.info.ai_enabled"
+				:show-no-visible-fields="false"
 			/>
 
 			<div class="embeddings-section">

@@ -4,20 +4,30 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const repoRoot = resolve(__dirname, '../../..');
 
-const { name, version } = JSON.parse(readFileSync(resolve(__dirname, '../../package.json'), 'utf8')) as {
+const { name, version: packageVersion } = JSON.parse(
+	readFileSync(resolve(__dirname, '../../package.json'), 'utf8')
+) as {
 	name: string;
 	version: string;
 };
 
-/**
- * Resolve the latest local git tag with the `brio-` prefix.
- * Falls back to the local package.json version when no matching tag is available.
- */
-export async function getLatestTag(): Promise<string> {
+function normalizeBrioTag(tag: string): string {
+	return tag.replace(/^brio[-_]/, '');
+}
+
+function readBrioVersionFromEnv(): string | null {
+	const value = process.env['BRIO_VERSION'];
+	if (typeof value !== 'string') return null;
+
+	const normalized = value.trim();
+	return normalized.length > 0 ? normalizeBrioTag(normalized) : null;
+}
+
+function readLatestBrioTagFromGit(): string | null {
 	try {
-		const repoRoot = resolve(__dirname, '../../..');
-		const output = execFileSync('git', ['tag', '--list', 'brio-*', '--sort=-v:refname'], {
+		const output = execFileSync('git', ['tag', '--list', 'brio-*', 'brio_*', '--sort=-v:refname'], {
 			cwd: repoRoot,
 			encoding: 'utf8',
 			stdio: ['ignore', 'pipe', 'ignore'],
@@ -28,14 +38,28 @@ export async function getLatestTag(): Promise<string> {
 			.map((line) => line.trim())
 			.find((tag) => tag.length > 0);
 
-		if (latestBrioTag) {
-			return latestBrioTag.replace(/^brio-/, '');
-		}
+		return latestBrioTag ? normalizeBrioTag(latestBrioTag) : null;
 	} catch {
-		// Git unavailable or not a git repository – fall back silently
+		return null;
 	}
-
-	return version;
 }
+
+/**
+ * Resolve the Brio version from the explicit environment override, the latest local git tag,
+ * or the local package.json version.
+ */
+export function getBrioVersion(): string {
+	return readBrioVersionFromEnv() ?? readLatestBrioTagFromGit() ?? packageVersion;
+}
+
+/**
+ * Resolve the latest local git tag with the `brio-` or `brio_` prefix.
+ * Falls back to the resolved Brio version when no matching tag is available.
+ */
+export async function getLatestTag(): Promise<string> {
+	return readLatestBrioTagFromGit() ?? getBrioVersion();
+}
+
+const version = getBrioVersion();
 
 export { name, version };

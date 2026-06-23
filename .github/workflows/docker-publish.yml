@@ -36,9 +36,9 @@ jobs:
       - name: Extract metadata for Docker
         id: meta
         run: |
-          # Get the latest tag that points to the current commit (if any)
+          # Get the latest Brio tag that points to the current commit (if any)
           TAG=""
-          for t in $(git tag --sort=-creatordate); do
+          for t in $(git tag --list 'brio-*' 'brio_*' --sort=-v:refname); do
             TAG_COMMIT=$(git rev-list -n 1 "$t")
             if [ "$TAG_COMMIT" = "${{ github.sha }}" ]; then
               TAG="$t"
@@ -46,17 +46,21 @@ jobs:
             fi
           done
 
-          # If no tag points to this commit, use the most recent tag
+          # If no Brio tag points to this commit, use the most recent Brio tag
           if [ -z "$TAG" ]; then
-            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+            TAG=$(git tag --list 'brio-*' 'brio_*' --sort=-v:refname | head -n 1)
           fi
 
           SHORT_SHA=$(git rev-parse --short HEAD)
+          VERSION="${TAG#brio-}"
+          VERSION="${VERSION#brio_}"
 
           echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "short_sha=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
 
-          echo "Detected tag: ${TAG}"
+          echo "Detected Brio tag: ${TAG}"
+          echo "Resolved Brio version: ${VERSION}"
           echo "Short SHA: ${SHORT_SHA}"
 
       - name: Build and push Docker image
@@ -64,6 +68,8 @@ jobs:
         with:
           context: .
           push: true
+          build-args: |
+            BRIO_VERSION=${{ steps.meta.outputs.version }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tag || steps.meta.outputs.short_sha }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.short_sha }}

@@ -55,6 +55,8 @@ RUN mkdir -p database extensions uploads
 
 FROM oven/bun:latest AS runtime
 
+ARG BRIO_VERSION=""
+
 # Use non-root user for security
 USER bun
 WORKDIR /brio
@@ -62,6 +64,7 @@ WORKDIR /brio
 EXPOSE 8055
 
 ENV \
+	BRIO_VERSION="${BRIO_VERSION}" \
 	DB_CLIENT="sqlite3" \
 	DB_FILENAME="/brio/database/database.sqlite" \
 	EXTENSIONS_PATH="/brio/extensions" \

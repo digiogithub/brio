@@ -1,7 +1,10 @@
 version: '3.8'
 services:
   brio:
-    build: .
+    build:
+      context: .
+      args:
+        BRIO_VERSION: ${BRIO_VERSION:-2.x}
     ports:
       - "8055:8055"
     environment:
