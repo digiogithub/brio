@@ -59,12 +59,6 @@ fields:
       - cast-timestamp
     width: half
     readonly: true
-    conditions:
-      - name: notCreatedYet
-        rule:
-          id:
-            _null: true
-        hidden: true
 
   - field: user_created
     special:
@@ -75,9 +69,3 @@ fields:
     options:
       template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
     readonly: true
-    conditions:
-      - name: notCreatedYet
-        rule:
-          id:
-            _null: true
-        hidden: true
