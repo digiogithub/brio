@@ -389,20 +389,25 @@ export default defineComponent({
 }
 
 .disabled-notice {
-	margin-bottom: var(--theme--form--row-gap);
+	margin-bottom: var(--form-vertical-gap, 40px);
+}
+
+.capability-notice {
+	margin-bottom: var(--form-vertical-gap, 40px);
 }
 
 .mcp-section {
-	margin-top: var(--theme--form--row-gap);
+	margin-top: var(--form-vertical-gap, 40px);
 }
 
 .embeddings-section {
-	margin-top: var(--theme--form--row-gap);
+	margin-top: var(--form-vertical-gap, 40px);
 }
 
 .provider-notice {
 	display: grid;
 	gap: 6px;
+	margin-bottom: var(--form-vertical-gap, 40px);
 }
 
 .provider-title {

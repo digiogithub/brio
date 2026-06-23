@@ -182,9 +182,19 @@ export async function up(knex: Knex): Promise<void> {
   const fieldsCount = await knex('brio_fields').count('* as count').first();
 
   if (!fieldsCount || Number(fieldsCount.count) === 0) {
+    const JSON_COLS = ['options', 'display_options', 'conditions', 'translations'];
+
     // Preparar datos: systemFieldRows tiene valores con 'brio_*'
     const fieldsToInsert = systemFieldRows.map((row) => {
       const { system, ...rest } = row as Record<string, unknown>;
+
+      // Serializar columnas JSON para que SQLite las almacene correctamente
+      for (const col of JSON_COLS) {
+        if (rest[col] && typeof rest[col] === 'object') {
+          rest[col] = JSON.stringify(rest[col]);
+        }
+      }
+
       return rest;
     });
 

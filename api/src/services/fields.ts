@@ -75,11 +75,16 @@ export class FieldsService {
 				limit: -1,
 			})) as FieldMeta[];
 
-			// Merge system field rows — avoid duplication if repair migration already populated brio_fields
+			// Merge system field rows — avoid duplication if repair migration already populated brio_fields.
+			// Fields that exist in both the DB and systemFieldRows must keep system:true so that the frontend
+			// does not strip their i18n translations (parseField clears translations for non-system fields).
 			const existingKeys = new Set(fields.map((f) => `${f.collection}:${f.field}`));
 
 			for (const row of systemFieldRows.filter((r) => r.collection === collection)) {
-				if (!existingKeys.has(`${row.collection}:${row.field}`)) {
+				if (existingKeys.has(`${row.collection}:${row.field}`)) {
+					const idx = fields.findIndex((f) => f.collection === row.collection && f.field === row.field);
+					if (idx >= 0) (fields[idx] as Record<string, unknown>).system = true;
+				} else {
 					fields.push(row);
 				}
 			}
@@ -89,7 +94,10 @@ export class FieldsService {
 			const existingKeys = new Set(fields.map((f) => `${f.collection}:${f.field}`));
 
 			for (const row of systemFieldRows) {
-				if (!existingKeys.has(`${row.collection}:${row.field}`)) {
+				if (existingKeys.has(`${row.collection}:${row.field}`)) {
+					const idx = fields.findIndex((f) => f.collection === row.collection && f.field === row.field);
+					if (idx >= 0) (fields[idx] as Record<string, unknown>).system = true;
+				} else {
 					fields.push(row);
 				}
 			}
@@ -131,13 +139,19 @@ export class FieldsService {
 
 		if (collection) {
 			for (const row of systemFieldRows.filter((r) => r.collection === collection)) {
-				if (!aliasExistingKeys.has(`${row.collection}:${row.field}`)) {
+				if (aliasExistingKeys.has(`${row.collection}:${row.field}`)) {
+					const idx = aliasFields.findIndex((f) => f.collection === row.collection && f.field === row.field);
+					if (idx >= 0) (aliasFields[idx] as Record<string, unknown>).system = true;
+				} else {
 					aliasFields.push(row);
 				}
 			}
 		} else {
 			for (const row of systemFieldRows) {
-				if (!aliasExistingKeys.has(`${row.collection}:${row.field}`)) {
+				if (aliasExistingKeys.has(`${row.collection}:${row.field}`)) {
+					const idx = aliasFields.findIndex((f) => f.collection === row.collection && f.field === row.field);
+					if (idx >= 0) (aliasFields[idx] as Record<string, unknown>).system = true;
+				} else {
 					aliasFields.push(row);
 				}
 			}

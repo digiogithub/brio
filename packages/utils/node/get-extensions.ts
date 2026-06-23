@@ -1,11 +1,12 @@
 import {
 	EXTENSION_NAME_REGEX,
 	EXTENSION_PKG_KEY,
+	EXTENSION_TYPES,
 	HYBRID_EXTENSION_TYPES,
 	NESTED_EXTENSION_TYPES,
 	ExtensionManifest,
 } from '@brio/constants';
-import type { ApiExtensionType, AppExtensionType, Extension } from '@brio/types';
+import type { ApiExtensionType, AppExtensionType, Extension, ExtensionType } from '@brio/types';
 import fse from 'fs-extra';
 import path from 'path';
 import { isIn, isTypeIn } from './array-helpers.js';
@@ -19,7 +20,11 @@ export const findExtension = async (folder: string, filename: string) => {
 	return `${filename}.js`;
 };
 
-export async function resolvePackageExtensions(root: string, extensionNames?: string[]): Promise<Extension[]> {
+export async function resolvePackageExtensions(
+	root: string,
+	extensionNames?: string[],
+	allowedTypes: readonly ExtensionType[] = EXTENSION_TYPES
+): Promise<Extension[]> {
 	const extensions: Extension[] = [];
 
 	const local = extensionNames === undefined;
@@ -42,6 +47,10 @@ export async function resolvePackageExtensions(root: string, extensionNames?: st
 		}
 
 		const extensionOptions = parsedManifest[EXTENSION_PKG_KEY];
+
+		if (!allowedTypes.includes(extensionOptions.type)) {
+			continue;
+		}
 
 		if (extensionOptions.type === 'bundle') {
 			extensions.push({
@@ -86,7 +95,10 @@ export async function resolvePackageExtensions(root: string, extensionNames?: st
 	return extensions;
 }
 
-export async function getPackageExtensions(root: string): Promise<Extension[]> {
+export async function getPackageExtensions(
+	root: string,
+	allowedTypes: readonly ExtensionType[] = EXTENSION_TYPES
+): Promise<Extension[]> {
 	let pkg: { dependencies?: Record<string, string> };
 
 	try {
@@ -97,13 +109,16 @@ export async function getPackageExtensions(root: string): Promise<Extension[]> {
 
 	const extensionNames = Object.keys(pkg.dependencies ?? {}).filter((dep) => EXTENSION_NAME_REGEX.test(dep));
 
-	return resolvePackageExtensions(root, extensionNames);
+	return resolvePackageExtensions(root, extensionNames, allowedTypes);
 }
 
-export async function getLocalExtensions(root: string): Promise<Extension[]> {
+export async function getLocalExtensions(
+	root: string,
+	allowedTypes: readonly ExtensionType[] = NESTED_EXTENSION_TYPES
+): Promise<Extension[]> {
 	const extensions: Extension[] = [];
 
-	for (const extensionType of NESTED_EXTENSION_TYPES) {
+	for (const extensionType of allowedTypes) {
 		const typeDir = pluralize(extensionType);
 		const typePath = path.resolve(root, typeDir);
 

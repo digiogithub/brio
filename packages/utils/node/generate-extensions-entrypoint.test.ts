@@ -25,11 +25,11 @@ describe('generateExtensionsEntrypoint', () => {
 
 	it('returns an extension entrypoint exporting a single App extension', () => {
 		const mockExtensions: Extension[] = [
-			{ path: './extensions/panel', name: 'mock-panel-extension', type: 'panel', entrypoint: 'index.js', local: true },
+			{ path: './extensions/panel', name: 'mock-panel-extension', type: 'panel', entrypoint: 'src/index.ts', local: true },
 		];
 
 		expect(generateExtensionsEntrypoint(mockExtensions)).toBe(
-			`import panel0 from './extensions/panel/index.js';export const interfaces = [];export const displays = [];export const layouts = [];export const modules = [];export const panels = [panel0];export const operations = [];`
+			`import panel0 from './extensions/panel/src/index.ts';export const interfaces = [];export const displays = [];export const layouts = [];export const modules = [];export const panels = [panel0];export const operations = [];`
 		);
 	});
 
@@ -39,13 +39,13 @@ describe('generateExtensionsEntrypoint', () => {
 				path: './extensions/operation',
 				name: 'mock-operation-extension',
 				type: 'operation',
-				entrypoint: { app: 'app.js', api: 'api.js' },
+				entrypoint: { app: 'src/app.ts', api: 'src/api.ts' },
 				local: true,
 			},
 		];
 
 		expect(generateExtensionsEntrypoint(mockExtensions)).toBe(
-			`import operation0 from './extensions/operation/app.js';export const interfaces = [];export const displays = [];export const layouts = [];export const modules = [];export const panels = [];export const operations = [operation0];`
+			`import operation0 from './extensions/operation/src/app.ts';export const interfaces = [];export const displays = [];export const layouts = [];export const modules = [];export const panels = [];export const operations = [operation0];`
 		);
 	});
 
@@ -78,14 +78,14 @@ describe('generateExtensionsEntrypoint', () => {
 				path: './extensions/display',
 				name: 'mock-display-extension',
 				type: 'display',
-				entrypoint: 'index.js',
+				entrypoint: 'src/index.ts',
 				local: true,
 			},
 			{
 				path: './extensions/operation',
 				name: 'mock-operation-extension',
 				type: 'operation',
-				entrypoint: { app: 'app.js', api: 'api.js' },
+				entrypoint: { app: 'src/app.ts', api: 'src/api.ts' },
 				local: true,
 			},
 			{
@@ -115,7 +115,7 @@ describe('generateExtensionsEntrypoint', () => {
 		];
 
 		expect(generateExtensionsEntrypoint(mockExtensions)).toBe(
-			`import display0 from './extensions/display/index.js';import operation0 from './extensions/operation/app.js';import {layouts as layoutBundle0,operations as operationBundle0} from './extensions/bundle/app.js';export const interfaces = [];export const displays = [display0];export const layouts = [...layoutBundle0];export const modules = [];export const panels = [];export const operations = [operation0,...operationBundle0];`
+			`import display0 from './extensions/display/src/index.ts';import operation0 from './extensions/operation/src/app.ts';import {layouts as layoutBundle0,operations as operationBundle0} from './extensions/bundle/app.js';export const interfaces = [];export const displays = [display0];export const layouts = [...layoutBundle0];export const modules = [];export const panels = [];export const operations = [operation0,...operationBundle0];`
 		);
 	});
 });

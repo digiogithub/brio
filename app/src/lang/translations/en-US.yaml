@@ -1234,6 +1234,12 @@ fields:
     embeddings_dimensions: Vector Dimensions
     embeddings_batch_size: Batch Size
   brio_settings:
+    mcp_configuration: MCP Configuration
+    mcp_enabled: MCP Server
+    mcp_allow_deletes: Allow Deletes
+    mcp_prompts_collection: AI Prompts Collection
+    mcp_system_prompt_enabled: Use System Prompt
+    mcp_system_prompt: Custom System Prompt
     embeddings_configuration: Embeddings Configuration
     embeddings_provider: Embeddings Provider
     embeddings_model: Embedding Model
@@ -1328,6 +1334,12 @@ field_options:
     embeddings_dimensions_note: Number of dimensions for embedding vectors. Leave empty to use the model default.
     embeddings_batch_size_note: Number of texts to embed in a single API call (1-2048).
   brio_settings:
+    mcp_enabled_note: Enable Model Context Protocol server for this project.
+    mcp_allow_deletes_note: Allow MCP tools to execute delete actions.
+    mcp_prompts_collection_placeholder: ai_prompts
+    mcp_prompts_collection_note: Collection used to store reusable MCP prompt templates.
+    mcp_system_prompt_enabled_note: Use default system prompt for MCP tool sessions.
+    mcp_system_prompt_note: Optional custom system prompt override for MCP sessions.
     embeddings_provider_placeholder: Select a provider...
     embeddings_provider_note: Select the AI provider for generating vector embeddings.
     embeddings_model_placeholder: text-embedding-3-small

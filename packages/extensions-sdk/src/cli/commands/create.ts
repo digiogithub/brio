@@ -139,13 +139,13 @@ async function createLocalExtension({
 	const options: ExtensionOptions = isIn(type, HYBRID_EXTENSION_TYPES)
 		? {
 				type,
-				path: { app: 'dist/app.js', api: 'dist/api.js' },
+				path: { app: `src/app.${languageToShort(language)}`, api: `src/api.${languageToShort(language)}` },
 				source: { app: `src/app.${languageToShort(language)}`, api: `src/api.${languageToShort(language)}` },
 				host,
 		  }
 		: {
 				type,
-				path: 'dist/index.js',
+				path: `src/index.${languageToShort(language)}`,
 				source: `src/index.${languageToShort(language)}`,
 				host,
 		  };

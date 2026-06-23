@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"brio:extension": {
 		"type": "hook",
-		"path": "./dist/index.js",
+		"path": "./src/index.ts",
 		"source": "./src/index.ts",
 		"host": "^9.0.0"
 	},
