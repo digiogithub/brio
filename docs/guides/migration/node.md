@@ -2,7 +2,7 @@
 description: Learn how to migrate your data model to a new Brio project using Node.js.
 tags: []
 skill_level:
-directus_version: 9.23.0
+brio_version: 9.23.0
 author_override:
 author: Kevin Lewis
 ---
@@ -13,7 +13,7 @@ author: Kevin Lewis
 
 :::tip Author: {{$frontmatter.author}}
 
-**Brio Version:** {{$frontmatter.directus_version}}
+**Brio Version:** {{$frontmatter.brio_version}}
 
 :::
 

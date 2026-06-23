@@ -1,4 +1,6 @@
 import {
+	APP_EXTENSION_ENTRYPOINT,
+	APP_EXTENSION_OUTPUT_DIR,
 	APP_EXTENSION_TYPES,
 	APP_SHARED_DEPS,
 	HYBRID_EXTENSION_TYPES,
@@ -39,7 +41,7 @@ import chokidar, { FSWatcher } from 'chokidar';
 import express, { Router } from 'express';
 import { clone, escapeRegExp } from 'lodash-es';
 import { schedule, validate } from 'node-cron';
-import { readdir } from 'node:fs/promises';
+import { readdir, rm } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -261,6 +263,10 @@ class ExtensionManager {
 		try {
 			await ensureExtensionDirs(env['EXTENSIONS_PATH'], NESTED_EXTENSION_TYPES);
 
+			if (env['SERVE_APP']) {
+				await this.buildAppExtensionArtifacts();
+			}
+
 			this.extensions = await this.getExtensions();
 		} catch (err: any) {
 			logger.warn(`Couldn't load extensions`);
@@ -273,7 +279,7 @@ class ExtensionManager {
 		await this.registerBundles();
 
 		if (env['SERVE_APP']) {
-			this.appExtensions = await this.generateExtensionBundle();
+			this.appExtensions = await this.loadBuiltAppExtensions();
 		}
 
 		this.isLoaded = true;
@@ -363,22 +369,52 @@ class ExtensionManager {
 		);
 	}
 
-	private async generateExtensionBundle(): Promise<string | null> {
-		const sharedDepsMapping = await this.getSharedDepsMapping(APP_SHARED_DEPS);
+	private async buildAppExtensionArtifacts(): Promise<void> {
+		const appExtensions = (await this.getExtensions()).filter((extension) => APP_EXTENSION_TYPES.includes(extension.type as any));
 
+		for (const extension of appExtensions) {
+			if (extension.local !== true) continue;
+
+			const extensionPath = extension.path;
+			const outputDir = path.resolve(extensionPath, APP_EXTENSION_OUTPUT_DIR);
+			const entrypointPath = path.resolve(extensionPath, extension.entrypoint);
+
+			if (await Bun.file(entrypointPath).exists()) {
+				continue;
+			}
+
+			await rm(outputDir, { recursive: true, force: true });
+
+			try {
+				await Bun.$`bun run --cwd ${extensionPath} build`.quiet();
+			} catch (error: any) {
+				logger.warn(`Couldn't build app extension "${extension.name}" before startup`);
+				logger.warn(error);
+			}
+		}
+	}
+
+	private async loadBuiltAppExtensions(): Promise<string | null> {
+		this.appExtensionChunks.clear();
+
+		const appExtensions = this.extensions.filter((extension) => APP_EXTENSION_TYPES.includes(extension.type as any));
+		const sharedDepsMapping = await this.getSharedDepsMapping(APP_SHARED_DEPS);
 		const internalImports = Object.entries(sharedDepsMapping).map(([name, path]) => ({
 			find: name,
 			replacement: path,
 		}));
-
-		const entrypoint = generateExtensionsEntrypoint(this.extensions);
+		const entrypoint = generateExtensionsEntrypoint(appExtensions);
 
 		try {
 			const bundle = await rollup({
 				input: 'entry',
 				external: Object.values(sharedDepsMapping),
 				makeAbsoluteExternalsRelative: false,
-				plugins: [virtual({ entry: entrypoint }), alias({ entries: internalImports }), nodeResolve({ browser: true })],
+				plugins: [
+					virtual({ entry: entrypoint }),
+					alias({ entries: internalImports }),
+					nodeResolve({ browser: true, extensions: ['.mjs', '.js', '.json', '.node'] }),
+				],
 			});
 
 			const { output } = await bundle.generate({ format: 'es', compact: true });
@@ -391,9 +427,9 @@ class ExtensionManager {
 
 			await bundle.close();
 
-			return output[0].code;
+			return output[0]?.type === 'chunk' ? output[0].code : null;
 		} catch (error: any) {
-			logger.warn(`Couldn't bundle App extensions`);
+			logger.warn(`Couldn't bundle built App extensions`);
 			logger.warn(error);
 		}
 

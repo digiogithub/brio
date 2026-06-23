@@ -2,7 +2,7 @@
 description: Try to make this description a clear, catchy, cool, 2-4 line explanation of your recipe.
 tags: []
 skill_level:
-directus_version:
+brio_version:
 author_override:
 author: Eron Powell
 ---
@@ -15,7 +15,7 @@ author: Eron Powell
 
 <!-- **Skill Level:** {{$frontmatter.skill_level}}\ -->
 
-**Brio Version:** {{$frontmatter.directus_version}}
+**Brio Version:** {{$frontmatter.brio_version}}
 
 <!-- **Tags:** {{$frontmatter.tags.join(", ")}} -->
 

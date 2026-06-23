@@ -85,7 +85,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	notifications: [directus_notifications]
+	notifications: [brio_notifications]
 }
 ```
 
@@ -135,7 +135,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	notifications_by_id(id: ID!): directus_notifications
+	notifications_by_id(id: ID!): brio_notifications
 }
 ```
 
@@ -196,7 +196,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_notifications_item(data: create_directus_notifications_input!): directus_notifications
+	create_notifications_item(data: create_brio_notifications_input!): brio_notifications
 }
 ```
 
@@ -262,7 +262,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_notifications_items(data: [create_directus_notifications_input!]!): [directus_notifications]
+	create_notifications_items(data: [create_brio_notifications_input!]!): [brio_notifications]
 }
 ```
 
@@ -339,7 +339,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_notifications_item(id: ID!, data: update_directus_notifications_input): directus_notifications
+	update_notifications_item(id: ID!, data: update_brio_notifications_input): brio_notifications
 }
 ```
 
@@ -403,7 +403,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_notifications_items(ids: [ID!]!, data: update_directus_notifications_input): [directus_notifications]
+	update_notifications_items(ids: [ID!]!, data: update_brio_notifications_input): [brio_notifications]
 }
 ```
 

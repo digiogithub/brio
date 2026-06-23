@@ -42,8 +42,10 @@ COPY . .
 RUN bun run --filter @brio/specs build
 
 # Build the frontend app (Vite build)
-# No TypeScript compilation needed — Bun runs TS natively
+# No TypeScript compilation needed — Bun runs TS natively for server code,
+# but Vue-based admin extensions still need precompiled browser artifacts.
 RUN bun run --filter @brio/app build
+RUN bun run ext:build
 
 # Create required directories
 RUN mkdir -p database extensions uploads

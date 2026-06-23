@@ -2,7 +2,7 @@
 description:
 tags: []
 skill_level:
-directus_version: 9.18.1
+brio_version: 9.18.1
 author_override:
 author: Eron Powell
 ---
@@ -17,7 +17,7 @@ author: Eron Powell
 
 <!-- **Skill Level:** {{$frontmatter.skill_level}}\ -->
 
-**Brio Version:** {{$frontmatter.directus_version}}
+**Brio Version:** {{$frontmatter.brio_version}}
 
 <!-- **Tags:** {{$frontmatter.tags.join(", ")}} -->
 

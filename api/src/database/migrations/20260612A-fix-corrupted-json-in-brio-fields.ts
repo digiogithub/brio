@@ -1,7 +1,9 @@
 import type { Knex } from 'knex';
+import { getDatabaseClient } from '../index.js';
 import { systemFieldRows } from '../system-data/fields/index.js';
 
 const JSON_COLUMNS = ['options', 'display_options', 'conditions', 'translations'] as const;
+const CORRUPTED_JSON_VALUE = '[object Object]';
 
 /**
  * Repara columnas JSON en brio_fields que quedaron almacenadas como '[object Object]'
@@ -10,6 +12,8 @@ const JSON_COLUMNS = ['options', 'display_options', 'conditions', 'translations'
  * Esta migración es IDEMPOTENTE.
  */
 export async function up(knex: Knex): Promise<void> {
+	const client = getDatabaseClient(knex);
+
 	for (const row of systemFieldRows) {
 		const updates: Record<string, string> = {};
 
@@ -29,10 +33,15 @@ export async function up(knex: Knex): Promise<void> {
 		};
 
 		for (const col of Object.keys(updates) as (keyof typeof updates)[]) {
-			await knex('brio_fields')
-				.where(conditions)
-				.where(col, '[object Object]')
-				.update({ [col]: updates[col] });
+			const query = knex('brio_fields').where(conditions);
+
+			if (client === 'postgres' || client === 'cockroachdb') {
+				query.whereRaw('??::text = ?', [col, JSON.stringify(CORRUPTED_JSON_VALUE)]);
+			} else {
+				query.where(col, CORRUPTED_JSON_VALUE);
+			}
+
+			await query.update({ [col]: updates[col] });
 		}
 	}
 }

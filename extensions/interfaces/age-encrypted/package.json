@@ -4,12 +4,12 @@
     "description": "Admin UI interface for age-encrypted string/text fields",
     "brio:extension": {
         "type": "interface",
-        "path": "./src/index.ts",
+        "path": "./dist/index.js",
         "source": "./src/index.ts",
         "host": "^9.0.0"
     },
     "scripts": {
-        "build": "bun run ../../../packages/extensions-sdk/src/cli/run.ts build",
+        "build": "mkdir -p dist && bun run ../../../packages/extensions-sdk/src/cli/run.ts build -i ./src/index.ts -o ./dist/index.js -t interface",
         "dev": "bun run ../../../packages/extensions-sdk/src/cli/run.ts build -w --no-minify"
     },
     "devDependencies": {

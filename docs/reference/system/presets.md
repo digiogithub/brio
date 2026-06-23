@@ -112,7 +112,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	presets: [directus_presets]
+	presets: [brio_presets]
 }
 ```
 
@@ -161,7 +161,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	presets_by_id(id: ID!): directus_presets
+	presets_by_id(id: ID!): brio_presets
 }
 ```
 
@@ -220,7 +220,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_presets_item(data: create_directus_presets_input!): directus_presets
+	create_presets_item(data: create_brio_presets_input!): brio_presets
 }
 ```
 
@@ -287,7 +287,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_presets_items(data: [create_directus_presets_input!]!): [directus_presets]
+	create_presets_items(data: [create_brio_presets_input!]!): [brio_presets]
 }
 ```
 
@@ -354,7 +354,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_presets_item(id: ID!, data: update_directus_presets_input): directus_presets
+	update_presets_item(id: ID!, data: update_brio_presets_input): brio_presets
 }
 ```
 
@@ -418,7 +418,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_presets_items(ids: [ID!]!, data: update_directus_presets_input): [directus_presets]
+	update_presets_items(ids: [ID!]!, data: update_brio_presets_input): [brio_presets]
 }
 ```
 

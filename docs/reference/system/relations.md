@@ -27,7 +27,7 @@ Name of the related collection. This matches the table name in the database.
 Brio metadata. Used to enable non-database relationship types
 
 `id` **integer**\
-Primary key of the metadata row in `directus_relations`.
+Primary key of the metadata row in `brio_relations`.
 
 `many_collection` **string**\
 Name of the collection. Matches the top level `collection` field.
@@ -146,7 +146,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	relations: [directus_relations]
+	relations: [brio_relations]
 }
 ```
 
@@ -202,7 +202,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	relations_in_collection(collection: String!): [directus_relations]
+	relations_in_collection(collection: String!): [brio_relations]
 }
 ```
 
@@ -251,7 +251,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	relations_by_name(collection: String!, field: String!): directus_relations
+	relations_by_name(collection: String!, field: String!): brio_relations
 }
 ```
 
@@ -311,7 +311,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_relations_item(data: create_directus_relations_input!): directus_relations
+	create_relations_item(data: create_brio_relations_input!): brio_relations
 }
 ```
 
@@ -373,7 +373,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_relations_item(collection: String!, field: String!, data: update_directus_relations_input!): directus_relations
+	update_relations_item(collection: String!, field: String!, data: update_brio_relations_input!): brio_relations
 }
 ```
 

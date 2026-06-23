@@ -118,7 +118,7 @@ public_label: Herkese Açık
 public_description: Kimlik doğrulaması olmadan hangi API verilerinin kullanılabileceğini kontrol eder.
 admin_description: Sınırsız Uygulama/API erişimine sahip ilk yönetici rolü.
 not_allowed: İzin Verilmedi
-directus_version: Directus Versiyon
+brio_version: Directus Versiyon
 node_version: Node Versiyon
 node_uptime: Node Hizmet Zamanı
 os_type: OS Tip
@@ -1022,30 +1022,30 @@ content: İçerik
 singleton: Tekil
 singleton_label: Tekil obje olarak davran
 system_fields_locked: Sistem alanları kilitlidir ve düzenlenemez
-directus_collection:
-  directus_activity: Tüm etkinlikler için izlenebilirlik kayıtları
-  directus_collections: Ek koleksiyon ayarları ve metaveri
-  directus_dashboards: Panolar modülündeki panolar
-  directus_fields: Ek alan ayarları ve metaveri
-  directus_files: Yönetilen tüm dosyalar için metaveri
-  directus_flows: Otomasyon akışları
-  directus_folders: Dosyalar için sanal klasörler sunar
-  directus_migrations: Veritabanının hangi sürümünü kullanıyorsunuz
-  directus_notifications: Bildirimler kullanıcılara gönderildi
-  directus_operations: Akışların içerisindeki operasyonlar
-  directus_panels: Panolar modülündeki panolardaki tekil paneller
-  directus_permissions: Her bir rol için yetkilere eriş
-  directus_presets: Koleksiyon varsayılanları ve yer işaretleri için ön ayarlar
-  directus_relations: İlişki ayarı ve metaveri
-  directus_revisions: Tüm etkinlikler için anlık veri görüntüleri
-  directus_roles: Sistem kullanıcıları için yetki grupları
-  directus_sessions: Kullanıcı oturum bilgisi
-  directus_settings: Proje konfigürasyon seçenekleri
-  directus_shares: Dışarı paylaşılan öğeleri takip eder
-  directus_users: Platform için sistem kullanıcıları
-  directus_webhooks: Olay tabanlı HTTP istekleri için konfigürasyon
+brio_collection:
+  brio_activity: Tüm etkinlikler için izlenebilirlik kayıtları
+  brio_collections: Ek koleksiyon ayarları ve metaveri
+  brio_dashboards: Panolar modülündeki panolar
+  brio_fields: Ek alan ayarları ve metaveri
+  brio_files: Yönetilen tüm dosyalar için metaveri
+  brio_flows: Otomasyon akışları
+  brio_folders: Dosyalar için sanal klasörler sunar
+  brio_migrations: Veritabanının hangi sürümünü kullanıyorsunuz
+  brio_notifications: Bildirimler kullanıcılara gönderildi
+  brio_operations: Akışların içerisindeki operasyonlar
+  brio_panels: Panolar modülündeki panolardaki tekil paneller
+  brio_permissions: Her bir rol için yetkilere eriş
+  brio_presets: Koleksiyon varsayılanları ve yer işaretleri için ön ayarlar
+  brio_relations: İlişki ayarı ve metaveri
+  brio_revisions: Tüm etkinlikler için anlık veri görüntüleri
+  brio_roles: Sistem kullanıcıları için yetki grupları
+  brio_sessions: Kullanıcı oturum bilgisi
+  brio_settings: Proje konfigürasyon seçenekleri
+  brio_shares: Dışarı paylaşılan öğeleri takip eder
+  brio_users: Platform için sistem kullanıcıları
+  brio_webhooks: Olay tabanlı HTTP istekleri için konfigürasyon
 fields:
-  directus_activity:
+  brio_activity:
     item: Öğe Birincil Anahtarı
     action: İşlem
     collection: Koleksiyon
@@ -1056,7 +1056,7 @@ fields:
     origin: Kaynak
     ip: IP Adresi
     revisions: Revizyonlar
-  directus_collections:
+  brio_collections:
     collection: Koleksiyon
     icon: İkon
     note: Not
@@ -1072,7 +1072,7 @@ fields:
     accountability: Etkinlik ve Revizyon Takibi
     archive_field: Arşiv Alanı
     item_duplication_fields: Öğe Çoğaltma Alanları
-  directus_files:
+  brio_files:
     $thumbnail: Küçük Resim
     title: Başlık
     description: Açıklama
@@ -1096,7 +1096,7 @@ fields:
     height: Yükseklik
     charset: Karakter Seti
     duration: Süre
-  directus_users:
+  brio_users:
     first_name: Ad
     last_name: Soyad
     email: E-posta
@@ -1127,7 +1127,7 @@ fields:
     last_page: Son Sayfa
     last_access: Son Erişim
     email_notifications: E-posta Bildirimleri
-  directus_settings:
+  brio_settings:
     jpg: JPEG
     png: PNG
     webP: WebP
@@ -1167,7 +1167,7 @@ fields:
     transformations_presets: Transformasyonları aşağıdaki ön ayarlar ile sınırla
     image_editor: Resim Düzenleyici
     custom_aspect_ratios: Özel ilişkiler
-  directus_shares:
+  brio_shares:
     name: Ad
     role: Rol
     password: Parola
@@ -1175,7 +1175,7 @@ fields:
     date_end: Bitiş Tarihi
     max_uses: Maksimum Kullanım
     times_used: Kullanım Sayısı
-  directus_fields:
+  brio_fields:
     collection: Koleksiyon Adı
     icon: Koleksiyon İkonu
     note: Not
@@ -1183,7 +1183,7 @@ fields:
     singleton: Tekil
     translation: Alan Adı Çevirileri
     display_template: Şablon
-  directus_roles:
+  brio_roles:
     name: Rol Adı
     icon: Rol İkonu
     description: Açıklama
@@ -1193,7 +1193,7 @@ fields:
     enforce_tfa: 2FA Gerekli
     users: Rol'deki Kullanıcılar
     module_list: Modül Navigasyonu
-  directus_webhooks:
+  brio_webhooks:
     name: İsim
     method: Metod
     status: Durum
@@ -1206,7 +1206,7 @@ fields:
     actions: Aksiyonlar
     collections: Koleksiyonlar
 field_options:
-  directus_settings:
+  brio_settings:
     project_name_placeholder: Benim projem...
     project_color_note: Oturum Açma ve Logo Arkaplanı
     project_logo_note: Beyaz 40x40 SVG/PNG
@@ -1235,12 +1235,12 @@ field_options:
     basemaps_style: Mapbox Stili
     files_divider_title: Dosya ve Küçük Resimler
     overrides_divider_title: Uygulamada yönlendirme
-  directus_activity:
+  brio_activity:
     login: Oturum Açma
     create: Oluşturma
     update: Güncelleme
     delete: Silme
-  directus_collections:
+  brio_collections:
     track_activity_revisions: Etkinlik ve Revizyonları Takip Et
     only_track_activity: Sadece Etkinlikleri Takip Et
     do_not_track_anything: Hiçbir Şeyi Takip Etme
@@ -1263,14 +1263,14 @@ field_options:
     sort_field: Bir alan seçin...
     accountability_divider: İzlenebilirlik
     duplication_divider: Çoğaltma
-  directus_files:
+  brio_files:
     title: Benzersiz bir başlık...
     description: Opsiyonel bir açıklama...
     location: Opsiyonel bir konum...
     storage_divider: Dosya Adlandırma
     filename_disk: Diskteki adı...
     filename_download: İndirirkenki adı...
-  directus_roles:
+  brio_roles:
     name: Bu rol için benzersiz bir isim...
     description: Bu rolün bir açıklaması...
     ip_access: İzin verilen IP adreslerini ekle, hepsine izin vermek için boş bırakın...
@@ -1282,7 +1282,7 @@ field_options:
       link_placeholder: Göreceli ya da tam URL...
     collections_name: Koleksiyonlar
     collections_addLabel: Koleksiyon Ekle...
-  directus_users:
+  brio_users:
     preferences_divider: Kullanıcı Tercihleri
     dropdown_auto: Otomatik (Sisteme Göre)
     dropdown_light: Açık Mod
@@ -1294,7 +1294,7 @@ field_options:
     status_dropdown_suspended: Askıda
     status_dropdown_archived: Arşivlenmiş
     token: Güvenli bir erişim anahtarı girin...
-  directus_webhooks:
+  brio_webhooks:
     status_options_active: Aktif
     status_options_inactive: Devre Dışı
     data_label: Olay Verisini Gönder

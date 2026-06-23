@@ -89,7 +89,7 @@ primary: ראשי
 rename_folder: שינוי שם תיקיה
 delete_folder: מחק תיקייה
 not_allowed: לא מורשה
-directus_version: גרסת דירקטוס
+brio_version: גרסת דירקטוס
 node_version: Node Version
 node_uptime: Node Uptime
 os_type: OS Type
@@ -160,7 +160,7 @@ width: רוחב
 height: גובה
 collection: מאגר
 fields:
-  directus_activity:
+  brio_activity:
     item: מפתח ראשי
     action: פעולה
     collection: מאגר
@@ -168,10 +168,10 @@ fields:
     user: מבצע פעולה
     comment: הערה
     ip: '‏כתובת IP'
-  directus_collections:
+  brio_collections:
     collection: מאגר
     note: הערה
-  directus_files:
+  brio_files:
     title: כותרת
     description: תיאור
     tags: תגיות
@@ -181,7 +181,7 @@ fields:
     width: רוחב
     height: גובה
     duration: משך זמן
-  directus_users:
+  brio_users:
     first_name: שם פרטי
     last_name: שם משפחה
     email: דוא"ל
@@ -196,21 +196,21 @@ fields:
     tfa_secret: אימות דו-שלבי
     status: סטטוס
     role: תפקיד
-  directus_settings:
+  brio_settings:
     module_bar: סרגל מודולים
-  directus_shares:
+  brio_shares:
     role: תפקיד
     password: סיסמה
-  directus_fields:
+  brio_fields:
     note: הערה
     translation: תרגומי שמות שדות
-  directus_roles:
+  brio_roles:
     name: שם תפקיד
     description: תיאור
-  directus_webhooks:
+  brio_webhooks:
     status: סטטוס
 field_options:
-  directus_collections:
+  brio_collections:
     language: שפה
 comment: הערה
 description: תיאור

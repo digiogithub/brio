@@ -83,7 +83,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	dashboards: [directus_dashboards]
+	dashboards: [brio_dashboards]
 }
 ```
 
@@ -132,7 +132,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	dashboards_by_id(id: ID!): directus_dashboards
+	dashboards_by_id(id: ID!): brio_dashboards
 }
 ```
 
@@ -190,7 +190,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_dashboards_item(data: create_directus_dashboards_input!): directus_dashboards
+	create_dashboards_item(data: create_brio_dashboards_input!): brio_dashboards
 }
 ```
 
@@ -254,7 +254,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_dashboards_items(data: [create_directus_dashboards_input!]!): [directus_dashboards]
+	create_dashboards_items(data: [create_brio_dashboards_input!]!): [brio_dashboards]
 }
 ```
 
@@ -322,7 +322,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_dashboards_item(id: ID!, data: update_directus_dashboards_input): directus_dashboards
+	update_dashboards_item(id: ID!, data: update_brio_dashboards_input): brio_dashboards
 }
 ```
 
@@ -386,7 +386,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_dashboards_items(ids: [ID!]!, data: update_directus_dashboards_input): [directus_dashboards]
+	update_dashboards_items(ids: [ID!]!, data: update_brio_dashboards_input): [brio_dashboards]
 }
 ```
 

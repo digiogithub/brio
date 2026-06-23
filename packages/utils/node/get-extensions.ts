@@ -1,6 +1,5 @@
 import {
 	EXTENSION_NAME_REGEX,
-	EXTENSION_PKG_KEY,
 	EXTENSION_TYPES,
 	HYBRID_EXTENSION_TYPES,
 	NESTED_EXTENSION_TYPES,
@@ -17,8 +16,25 @@ import { resolvePackage } from './resolve-package.js';
 export const findExtension = async (folder: string, filename: string) => {
 	if (await fse.exists(path.join(folder, `${filename}.cjs`))) return `${filename}.cjs`;
 	if (await fse.exists(path.join(folder, `${filename}.mjs`))) return `${filename}.mjs`;
+	if (await fse.exists(path.join(folder, `${filename}.ts`))) return `${filename}.ts`;
 	return `${filename}.js`;
 };
+
+async function readNestedExtensionManifest(extensionPath: string) {
+	const manifestPath = path.join(extensionPath, 'package.json');
+
+	if ((await fse.pathExists(manifestPath)) === false) {
+		return null;
+	}
+
+	const extensionManifest: Record<string, any> = await fse.readJSON(manifestPath);
+
+	try {
+		return ExtensionManifest.parse(extensionManifest);
+	} catch (error) {
+		throw new Error(`The extension manifest of "${extensionPath}" is not valid.\n${error}`);
+	}
+}
 
 export async function resolvePackageExtensions(
 	root: string,
@@ -46,7 +62,7 @@ export async function resolvePackageExtensions(
 			throw new Error(`The extension manifest of "${extensionName}" is not valid.\n${error}`);
 		}
 
-		const extensionOptions = parsedManifest[EXTENSION_PKG_KEY];
+		const extensionOptions = parsedManifest['brio:extension'];
 
 		if (!allowedTypes.includes(extensionOptions.type)) {
 			continue;
@@ -127,59 +143,36 @@ export async function getLocalExtensions(
 
 			for (const extensionName of extensionNames) {
 				const extensionPath = path.join(typePath, extensionName);
+				const parsedManifest = await readNestedExtensionManifest(extensionPath);
+				const manifestOptions = parsedManifest?.['brio:extension'];
 
-				// When a package.json with brio:extension is present, use the declared
-				// build output path instead of assuming index.js at the folder root.
-				const pkgFilePath = path.join(extensionPath, 'package.json');
-				let pkgMeta: { name?: string; version?: string; [key: string]: any } | null = null;
-
-				if (await fse.exists(pkgFilePath)) {
-					try {
-						const raw = await fse.readJSON(pkgFilePath);
-						const parsed = ExtensionManifest.safeParse(raw);
-						if (parsed.success) pkgMeta = parsed.data;
-					} catch {
-						// ignore malformed package.json — fall back to index.js
-					}
+				if (manifestOptions && manifestOptions.type !== extensionType) {
+					continue;
 				}
 
 				if (isIn(extensionType, HYBRID_EXTENSION_TYPES)) {
-					let appEntry: string;
-					let apiEntry: string;
-
-					if (pkgMeta && typeof pkgMeta[EXTENSION_PKG_KEY]?.path === 'object') {
-						appEntry = pkgMeta[EXTENSION_PKG_KEY].path.app;
-						apiEntry = pkgMeta[EXTENSION_PKG_KEY].path.api;
-					} else {
-						appEntry = await findExtension(extensionPath, 'app');
-						apiEntry = await findExtension(extensionPath, 'api');
-					}
-
 					extensions.push({
 						path: extensionPath,
-						name: pkgMeta?.name ?? extensionName,
+						name: parsedManifest?.name ?? extensionName,
 						type: extensionType,
-						entrypoint: { app: appEntry, api: apiEntry },
-						host: pkgMeta?.[EXTENSION_PKG_KEY]?.host,
-						version: pkgMeta?.version,
+						entrypoint: {
+							app: manifestOptions && isTypeIn(manifestOptions, HYBRID_EXTENSION_TYPES)
+								? manifestOptions.path.app
+								: await findExtension(extensionPath, 'app'),
+							api: manifestOptions && isTypeIn(manifestOptions, HYBRID_EXTENSION_TYPES)
+								? manifestOptions.path.api
+								: await findExtension(extensionPath, 'api'),
+						},
+						host: manifestOptions?.host,
 						local: true,
 					});
 				} else {
-					let entrypoint: string;
-
-					if (pkgMeta && typeof pkgMeta[EXTENSION_PKG_KEY]?.path === 'string') {
-						entrypoint = pkgMeta[EXTENSION_PKG_KEY].path;
-					} else {
-						entrypoint = await findExtension(extensionPath, 'index');
-					}
-
 					extensions.push({
 						path: extensionPath,
-						name: pkgMeta?.name ?? extensionName,
+						name: parsedManifest?.name ?? extensionName,
 						type: extensionType as AppExtensionType | ApiExtensionType,
-						entrypoint,
-						host: pkgMeta?.[EXTENSION_PKG_KEY]?.host,
-						version: pkgMeta?.version,
+						entrypoint: manifestOptions?.path ?? (await findExtension(extensionPath, 'index')),
+						host: manifestOptions?.host,
 						local: true,
 					});
 				}

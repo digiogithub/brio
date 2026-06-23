@@ -89,7 +89,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	revisions: [directus_revisions]
+	revisions: [brio_revisions]
 }
 ```
 
@@ -139,7 +139,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	revisions_by_id(id: ID!): directus_revisions
+	revisions_by_id(id: ID!): brio_revisions
 }
 ```
 

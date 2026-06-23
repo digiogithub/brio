@@ -114,7 +114,7 @@ Brio does not currently support creation of virtual tables via SQL Views.
 
 Remember, a collection is simply a database table. Therefore, you can import or create a table directly in the database
 and it will automatically appear within your Brio project. The first time you manage that table, a
-`directus_collections` record will be created with default values.
+`brio_collections` record will be created with default values.
 
 :::
 

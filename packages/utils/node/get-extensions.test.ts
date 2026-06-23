@@ -109,4 +109,16 @@ describe('get-extensions helpers', () => {
 		expect(apiExtensions[0]?.type).toBe('hook');
 		expect(apiExtensions[0]?.entrypoint).toBe('./src/index.ts');
 	});
+
+	it('falls back to TypeScript nested entrypoints without a package manifest', async () => {
+		const root = await createTempDir();
+		const endpointDir = path.join(root, 'endpoints', 'example-endpoint');
+
+		await fse.ensureDir(path.join(endpointDir, 'src'));
+		await fse.writeFile(path.join(endpointDir, 'index.ts'), 'export default {}');
+
+		const extensions = await getLocalExtensions(root, ['endpoint']);
+		expect(extensions).toHaveLength(1);
+		expect(extensions[0]?.entrypoint).toBe('index.ts');
+	});
 });

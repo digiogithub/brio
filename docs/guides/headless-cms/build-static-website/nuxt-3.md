@@ -2,7 +2,7 @@
 description: This guide shows you how build a website with Nuxt 3 and Brio as a Headless CMS.
 tags: []
 skill_level:
-directus_version: 9.21.4
+brio_version: 9.21.4
 author_override:
 author: Kevin Lewis
 ---
@@ -157,7 +157,7 @@ Create the following fields in your `posts` data model:
 - a datetime selection field called `published` - set the type to 'date'
 - a many-to-one relational field called `author` with the related collection set to `authors`
 
-In Roles & Permissions, give the Public role read access to the `authors`, `posts`, and `directus_files` collections.
+In Roles & Permissions, give the Public role read access to the `authors`, `posts`, and `brio_files` collections.
 
 Create 3 items in the posts collection -
 [here's some sample data](https://github.com/nicobrio/examples/blob/main/website-nuxt3/demo-data).

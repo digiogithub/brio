@@ -95,7 +95,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	shares: [directus_shares]
+	shares: [brio_shares]
 }
 ```
 
@@ -146,7 +146,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	shares_by_id(id: ID!): directus_shares
+	shares_by_id(id: ID!): brio_shares
 }
 ```
 
@@ -208,7 +208,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_shares_item(data: create_directus_shares_input!): directus_shares
+	create_shares_item(data: create_brio_shares_input!): brio_shares
 }
 ```
 
@@ -278,7 +278,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_shares_items(data: [create_directus_shares_input!]!): [directus_shares]
+	create_shares_items(data: [create_brio_shares_input!]!): [brio_shares]
 }
 ```
 
@@ -347,7 +347,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_shares_item(id: ID!, data: update_directus_shares_input): directus_shares
+	update_shares_item(id: ID!, data: update_brio_shares_input): brio_shares
 }
 ```
 
@@ -413,7 +413,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_shares_items(ids: [ID!]!, data: update_directus_shares_input): [directus_shares]
+	update_shares_items(ids: [ID!]!, data: update_brio_shares_input): [brio_shares]
 }
 ```
 

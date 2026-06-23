@@ -3,7 +3,7 @@ description:
   This recipe explains how to schedule content to be published for a future date depending on your front-end approach.
 tags: []
 skill_level:
-directus_version: 9.21.2
+brio_version: 9.21.2
 author_override:
 author: Bryant Gillespie
 ---
@@ -16,7 +16,7 @@ author: Bryant Gillespie
 
 <!-- **Skill Level:** {{$frontmatter.skill_level}}\ -->
 
-**Brio Version:** {{$frontmatter.directus_version}}
+**Brio Version:** {{$frontmatter.brio_version}}
 
 <!-- **Tags:** {{$frontmatter.tags.join(", ")}} -->
 

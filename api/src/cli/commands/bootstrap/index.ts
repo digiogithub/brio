@@ -22,30 +22,30 @@ export default async function bootstrap({ skipAdminInit }: { skipAdminInit?: boo
 
 	await waitForDatabase(database);
 
-	if ((await isInstalled()) === false) {
+	const installed = await isInstalled();
+
+	if (installed === false) {
 		logger.info('Installing Brio system tables...');
 
 		await installDatabase(database);
-
-		logger.info('Running migrations...');
-		await runMigrations(database, 'latest');
-
-		const schema = await getSchema();
-
-		if (skipAdminInit == null) {
-			await createDefaultAdmin(schema);
-		} else {
-			logger.info('Skipping creation of default Admin user and role...');
-		}
-
-		if (env['PROJECT_NAME'] && typeof env['PROJECT_NAME'] === 'string' && env['PROJECT_NAME'].length > 0) {
-			const settingsService = new SettingsService({ schema });
-			await settingsService.upsertSingleton({ project_name: env['PROJECT_NAME'] });
-		}
 	} else {
 		logger.info('Database already initialized, skipping install');
-		logger.info('Running migrations...');
-		await runMigrations(database, 'latest');
+	}
+
+	logger.info('Running migrations...');
+	await runMigrations(database, 'latest');
+
+	const schema = await getSchema();
+
+	if (skipAdminInit == null) {
+		await ensureDefaultAdmin(schema);
+	} else {
+		logger.info('Skipping creation of default Admin user and role...');
+	}
+
+	if (env['PROJECT_NAME'] && typeof env['PROJECT_NAME'] === 'string' && env['PROJECT_NAME'].length > 0) {
+		const settingsService = new SettingsService({ schema });
+		await settingsService.upsertSingleton({ project_name: env['PROJECT_NAME'] });
 	}
 
 	logger.info('Done');
@@ -70,15 +70,40 @@ async function waitForDatabase(database: Knex) {
 	return database;
 }
 
-async function createDefaultAdmin(schema: SchemaOverview) {
-	const { nanoid } = await import('nanoid');
+async function ensureDefaultAdmin(schema: SchemaOverview) {
+	const adminCredentials = await getAdminCredentials();
+	const database = getDatabase();
+	const rolesService = new RolesService({ schema, knex: database });
+	const usersService = new UsersService({ schema, knex: database });
+	const existingAdminRole = await getExistingAdminRole(database);
 
-	logger.info('Setting up first admin role...');
-	const rolesService = new RolesService({ schema });
-	const role = await rolesService.createOne(defaultAdminRole);
+	if (existingAdminRole) {
+		logger.info('Admin role already exists, skipping role creation...');
+	} else {
+		logger.info('Setting up first admin role...');
+	}
+
+	const role = existingAdminRole ?? (await rolesService.createOne(defaultAdminRole));
+
+	const existingAdminUser = await getUserByEmail(database, adminCredentials.email);
+
+	if (existingAdminUser) {
+		logger.info(`Admin user "${adminCredentials.email}" already exists, skipping user creation...`);
+		return;
+	}
 
 	logger.info('Adding first admin user...');
-	const usersService = new UsersService({ schema });
+
+	await usersService.createOne({
+		email: adminCredentials.email,
+		password: adminCredentials.password,
+		role,
+		...defaultAdminUser,
+	});
+}
+
+async function getAdminCredentials(): Promise<{ email: string; password: string }> {
+	const { nanoid } = await import('nanoid');
 
 	let adminEmail = env['ADMIN_EMAIL'];
 
@@ -94,5 +119,20 @@ async function createDefaultAdmin(schema: SchemaOverview) {
 		logger.info(`No admin password provided. Defaulting to "${adminPassword}"`);
 	}
 
-	await usersService.createOne({ email: adminEmail, password: adminPassword, role, ...defaultAdminUser });
+	return { email: adminEmail, password: adminPassword };
+}
+
+async function getExistingAdminRole(database: Knex): Promise<string | null> {
+	const role = await database.select('id').from('brio_roles').where({ admin_access: true }).first();
+	return role?.id ?? null;
+}
+
+async function getUserByEmail(database: Knex, email: string): Promise<{ id: string } | null> {
+	const user = await database
+		.select('id')
+		.from('brio_users')
+		.whereRaw(`LOWER(??) = ?`, ['email', email.toLowerCase()])
+		.first();
+
+	return user ?? null;
 }

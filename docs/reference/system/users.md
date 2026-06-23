@@ -135,7 +135,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	users: [directus_users]
+	users: [brio_users]
 }
 ```
 
@@ -185,7 +185,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	users_by_id(id: ID!): directus_users
+	users_by_id(id: ID!): brio_users
 }
 ```
 
@@ -229,7 +229,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	users_me: directus_users
+	users_me: brio_users
 }
 ```
 
@@ -279,7 +279,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_users_me(data: update_directus_users_input!): directus_users
+	update_users_me(data: update_brio_users_input!): brio_users
 }
 ```
 
@@ -339,7 +339,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_users_item(data: create_directus_users_input!): directus_users
+	create_users_item(data: create_brio_users_input!): brio_users
 }
 ```
 
@@ -409,7 +409,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_users_items(data: [create_directus_users_input!]!): [directus_users]
+	create_users_items(data: [create_brio_users_input!]!): [brio_users]
 }
 ```
 
@@ -471,7 +471,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_users_item(id: ID!, data: update_directus_users_input!): directus_users
+	update_users_item(id: ID!, data: update_brio_users_input!): brio_users
 }
 ```
 
@@ -535,7 +535,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_users_items(ids: [ID!]!, data: update_directus_users_input!): [directus_users]
+	update_users_items(ids: [ID!]!, data: update_brio_users_input!): [brio_users]
 }
 ```
 

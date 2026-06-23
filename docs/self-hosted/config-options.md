@@ -534,7 +534,7 @@ By default, Brio stores all uploaded files locally on disk. However, you can als
 Google Cloud Storage, Azure, or Cloudinary. You can also configure _multiple_ storage adapters at the same time. This
 allows you to choose where files are being uploaded on a file-by-file basis. In the Admin App, files will automatically
 be uploaded to the first configured storage location (in this case `local`). The used storage location is saved under
-`storage` in `directus_files`.
+`storage` in `brio_files`.
 
 ::: tip File Storage Default
 

@@ -119,7 +119,7 @@ public_label: Public
 public_description: Controls what API data is available without authenticating.
 admin_description: Initial administrative role with unrestricted App/API access.
 not_allowed: Not Allowed
-directus_version: Brio Version
+brio_version: Brio Version
 node_version: Node Version
 node_uptime: Node Uptime
 os_type: OS Type
@@ -1073,30 +1073,30 @@ content: Content
 singleton: Singleton
 singleton_label: Treat as single object
 system_fields_locked: System fields are locked and can't be edited
-directus_collection:
-  directus_activity: Accountability logs for all events
-  directus_collections: Additional collection configuration and metadata
-  directus_dashboards: Dashboards within the Insights module
-  directus_fields: Additional field configuration and metadata
-  directus_files: Metadata for all managed file assets
-  directus_flows: Automation flows
-  directus_folders: Provides virtual directories for files
-  directus_migrations: What version of the database you're using
-  directus_notifications: Notifications sent to users
-  directus_operations: Operations that run in Flows
-  directus_panels: Individual panels within Insights dashboards
-  directus_permissions: Access permissions for each role
-  directus_presets: Presets for collection defaults and bookmarks
-  directus_relations: Relationship configuration and metadata
-  directus_revisions: Data snapshots for all activity
-  directus_roles: Permission groups for system users
-  directus_sessions: User session information
-  directus_settings: Project configuration options
-  directus_shares: Tracks externally shared items
-  directus_users: System users for the platform
-  directus_webhooks: Configuration for event-based HTTP requests
+brio_collection:
+  brio_activity: Accountability logs for all events
+  brio_collections: Additional collection configuration and metadata
+  brio_dashboards: Dashboards within the Insights module
+  brio_fields: Additional field configuration and metadata
+  brio_files: Metadata for all managed file assets
+  brio_flows: Automation flows
+  brio_folders: Provides virtual directories for files
+  brio_migrations: What version of the database you're using
+  brio_notifications: Notifications sent to users
+  brio_operations: Operations that run in Flows
+  brio_panels: Individual panels within Insights dashboards
+  brio_permissions: Access permissions for each role
+  brio_presets: Presets for collection defaults and bookmarks
+  brio_relations: Relationship configuration and metadata
+  brio_revisions: Data snapshots for all activity
+  brio_roles: Permission groups for system users
+  brio_sessions: User session information
+  brio_settings: Project configuration options
+  brio_shares: Tracks externally shared items
+  brio_users: System users for the platform
+  brio_webhooks: Configuration for event-based HTTP requests
 fields:
-  directus_activity:
+  brio_activity:
     item: Item Primary Key
     action: Action
     collection: Collection
@@ -1107,7 +1107,7 @@ fields:
     origin: Origin
     ip: IP Address
     revisions: Revisions
-  directus_collections:
+  brio_collections:
     collection: Collection
     icon: Icon
     note: Note
@@ -1123,7 +1123,7 @@ fields:
     accountability: Activity & Revision Tracking
     archive_field: Archive Field
     item_duplication_fields: Item Duplication Fields
-  directus_files:
+  brio_files:
     $thumbnail: Thumbnail
     title: Title
     description: Description
@@ -1147,7 +1147,7 @@ fields:
     height: Height
     charset: Charset
     duration: Duration
-  directus_users:
+  brio_users:
     first_name: First Name
     last_name: Last Name
     email: Email
@@ -1178,7 +1178,7 @@ fields:
     last_page: Last Page
     last_access: Last Access
     email_notifications: Email Notifications
-  directus_settings:
+  brio_settings:
     jpg: JPEG
     png: PNG
     webP: WebP
@@ -1233,21 +1233,7 @@ fields:
     embeddings_base_url: Base URL
     embeddings_dimensions: Vector Dimensions
     embeddings_batch_size: Batch Size
-  brio_settings:
-    mcp_configuration: MCP Configuration
-    mcp_enabled: MCP Server
-    mcp_allow_deletes: Allow Deletes
-    mcp_prompts_collection: AI Prompts Collection
-    mcp_system_prompt_enabled: Use System Prompt
-    mcp_system_prompt: Custom System Prompt
-    embeddings_configuration: Embeddings Configuration
-    embeddings_provider: Embeddings Provider
-    embeddings_model: Embedding Model
-    embeddings_api_key: API Key
-    embeddings_base_url: Base URL
-    embeddings_dimensions: Vector Dimensions
-    embeddings_batch_size: Batch Size
-  directus_shares:
+  brio_shares:
     name: Name
     role: Role
     password: Password
@@ -1255,7 +1241,7 @@ fields:
     date_end: Date End
     max_uses: Max Uses
     times_used: Times Used
-  directus_fields:
+  brio_fields:
     collection: Collection Name
     icon: Collection Icon
     note: Note
@@ -1263,7 +1249,7 @@ fields:
     singleton: Singleton
     translation: Field Name Translations
     display_template: Template
-  directus_roles:
+  brio_roles:
     name: Role Name
     icon: Role Icon
     description: Description
@@ -1273,7 +1259,7 @@ fields:
     enforce_tfa: Require 2FA
     users: Users in Role
     module_list: Module Navigation
-  directus_webhooks:
+  brio_webhooks:
     name: Name
     method: Method
     status: Status
@@ -1286,7 +1272,7 @@ fields:
     actions: Actions
     collections: Collections
 field_options:
-  directus_settings:
+  brio_settings:
     project_name_placeholder: My project...
     project_color_note: Login & Logo Background
     project_logo_note: White 40x40 SVG/PNG
@@ -1333,30 +1319,12 @@ field_options:
     embeddings_dimensions_placeholder: Auto-detect
     embeddings_dimensions_note: Number of dimensions for embedding vectors. Leave empty to use the model default.
     embeddings_batch_size_note: Number of texts to embed in a single API call (1-2048).
-  brio_settings:
-    mcp_enabled_note: Enable Model Context Protocol server for this project.
-    mcp_allow_deletes_note: Allow MCP tools to execute delete actions.
-    mcp_prompts_collection_placeholder: ai_prompts
-    mcp_prompts_collection_note: Collection used to store reusable MCP prompt templates.
-    mcp_system_prompt_enabled_note: Use default system prompt for MCP tool sessions.
-    mcp_system_prompt_note: Optional custom system prompt override for MCP sessions.
-    embeddings_provider_placeholder: Select a provider...
-    embeddings_provider_note: Select the AI provider for generating vector embeddings.
-    embeddings_model_placeholder: text-embedding-3-small
-    embeddings_model_note: Name of the embedding model to use. Each provider has different models available.
-    embeddings_api_key_placeholder: sk-...
-    embeddings_api_key_note: API key for authenticating with the embeddings provider.
-    embeddings_base_url_placeholder: https://api.openai.com/v1
-    embeddings_base_url_note: Base URL for the embeddings API. Auto-populated for known providers, required for custom.
-    embeddings_dimensions_placeholder: Auto-detect
-    embeddings_dimensions_note: Number of dimensions for embedding vectors. Leave empty to use the model default.
-    embeddings_batch_size_note: Number of texts to embed in a single API call (1-2048).
-  directus_activity:
+  brio_activity:
     login: Login
     create: Create
     update: Update
     delete: Delete
-  directus_collections:
+  brio_collections:
     track_activity_revisions: Track Activity & Revisions
     only_track_activity: Only Track Activity
     do_not_track_anything: Do Not Track Anything
@@ -1379,14 +1347,14 @@ field_options:
     sort_field: Choose a field...
     accountability_divider: Accountability
     duplication_divider: Duplication
-  directus_files:
+  brio_files:
     title: A unique title...
     description: An optional description...
     location: An optional location...
     storage_divider: File Naming
     filename_disk: Name on disk storage...
     filename_download: Name when downloading...
-  directus_roles:
+  brio_roles:
     name: The unique name for this role...
     description: A description of this role...
     ip_access: Add allowed IP addresses, leave empty to allow all...
@@ -1398,7 +1366,7 @@ field_options:
       link_placeholder: Relative or absolute URL...
     collections_name: Collections
     collections_addLabel: Add Collection...
-  directus_users:
+  brio_users:
     preferences_divider: User Preferences
     dropdown_auto: Automatic (Based on System)
     dropdown_light: Light Mode
@@ -1410,7 +1378,7 @@ field_options:
     status_dropdown_suspended: Suspended
     status_dropdown_archived: Archived
     token: Enter a secure access token...
-  directus_webhooks:
+  brio_webhooks:
     status_options_active: Active
     status_options_inactive: Inactive
     data_label: Send Event Data

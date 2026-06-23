@@ -10,7 +10,7 @@
 				<h3 class="section-title">Export snapshot</h3>
 				<p class="muted">
 					Choose exactly which collections should be included in the schema snapshot and which collections should have data exported.
-					Internal Directus collections (<code>directus_*</code>) are listed separately.
+					Internal Brio collections (<code>brio_*</code>) are listed separately.
 				</p>
 
 				<div class="export-controls">
@@ -41,7 +41,7 @@
 
 					<div class="export-group">
 						<div class="group-header">
-							<h4>Internal Directus collections</h4>
+							<h4>Internal Brio collections</h4>
 							<div class="group-actions">
 								<button class="link" type="button" @click="setAllInternalData(true)">Select all data</button>
 								<button class="link" type="button" @click="setAllInternalData(false)">Clear data</button>

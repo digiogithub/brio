@@ -95,7 +95,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	permissions: directus_permissions
+	permissions: brio_permissions
 }
 ```
 
@@ -164,7 +164,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	permissions_by_id(id: ID!): directus_permissions
+	permissions_by_id(id: ID!): brio_permissions
 }
 ```
 
@@ -225,7 +225,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_permissions_item(data: create_directus_permissions_input!): directus_permissions
+	create_permissions_item(data: create_brio_permissions_input!): brio_permissions
 }
 ```
 
@@ -296,7 +296,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_permissions_items(data: [create_directus_permissions_input!]!): [directus_permissions]
+	create_permissions_items(data: [create_brio_permissions_input!]!): [brio_permissions]
 }
 ```
 
@@ -359,7 +359,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_permissions_item(id: ID!, data: update_directus_permissions_input!): directus_permissions
+	update_permissions_item(id: ID!, data: update_brio_permissions_input!): brio_permissions
 }
 ```
 
@@ -426,7 +426,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_permissions_items(id: [ID!]!, data: update_directus_permissions_input!): [directus_permissions]
+	update_permissions_items(id: [ID!]!, data: update_brio_permissions_input!): [brio_permissions]
 }
 ```
 

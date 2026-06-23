@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 export const APP_SHARED_DEPS = ['@brio/extensions-sdk', 'vue', 'vue-router', 'vue-i18n', 'pinia'];
 export const API_SHARED_DEPS = ['brio'];
+export const APP_EXTENSION_ENTRYPOINT = 'index.js';
+export const APP_EXTENSION_OUTPUT_DIR = 'dist';
 
 export const APP_EXTENSION_TYPES = ['interface', 'display', 'layout', 'module', 'panel'] as const;
 export const API_EXTENSION_TYPES = ['hook', 'endpoint'] as const;

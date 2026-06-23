@@ -86,7 +86,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	roles: [directus_roles]
+	roles: [brio_roles]
 }
 ```
 
@@ -138,7 +138,7 @@ POST /graphql/system
 
 ```graphql
 type Query {
-	roles_by_id(id: ID!): directus_roles
+	roles_by_id(id: ID!): brio_roles
 }
 ```
 
@@ -202,7 +202,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_roles_item(data: create_directus_roles_input!): directus_roles
+	create_roles_item(data: create_brio_roles_input!): brio_roles
 }
 ```
 
@@ -277,7 +277,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	create_roles_items(data: [create_directus_roles_input!]!): [directus_roles]
+	create_roles_items(data: [create_brio_roles_input!]!): [brio_roles]
 }
 ```
 
@@ -342,7 +342,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_roles_item(id: ID!, data: update_directus_roles_input): directus_roles
+	update_roles_item(id: ID!, data: update_brio_roles_input): brio_roles
 }
 ```
 
@@ -409,7 +409,7 @@ POST /graphql/system
 
 ```graphql
 type Mutation {
-	update_roles_items(ids: [ID!]!, data: update_directus_roles_input): [directus_roles]
+	update_roles_items(ids: [ID!]!, data: update_brio_roles_input): [brio_roles]
 }
 ```
 
