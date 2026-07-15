@@ -51,11 +51,11 @@ function filterSnapshotForNonInternalCollections(snapshot: any): any {
             .filter((c: any) => allowCollection(c)),
     );
 
+    const { systemFields: _systemFields, ...compatibleSnapshot } = snapshot;
     return {
-        ...snapshot,
+        ...compatibleSnapshot,
         collections: (snapshot?.collections ?? []).filter((c: any) => allowCollection(c?.collection)),
         fields: (snapshot?.fields ?? []).filter((f: any) => allowCollection(f?.collection)),
-        systemFields: (snapshot?.systemFields ?? []).filter((f: any) => allowCollection(f?.collection)),
         relations: (snapshot?.relations ?? []).filter(
             (r: any) =>
                 allowCollection(r?.collection) ||
@@ -106,13 +106,6 @@ function mergeSnapshotsForPartialApply(currentSnapshot: any, targetSnapshot: any
         ...targetFields.filter((f: any) => touchedCollections.has(f?.collection)),
     ];
 
-    const currentSystemFields = Array.isArray(currentSnapshot?.systemFields) ? currentSnapshot.systemFields : [];
-    const targetSystemFields = Array.isArray(targetSnapshot?.systemFields) ? targetSnapshot.systemFields : [];
-    const mergedSystemFields = [
-        ...currentSystemFields.filter((f: any) => !touchedCollections.has(f?.collection)),
-        ...targetSystemFields.filter((f: any) => touchedCollections.has(f?.collection)),
-    ];
-
     const isTouchedRelation = (r: any) =>
         touchedCollections.has(r?.collection) ||
         (typeof r?.related_collection === 'string' && touchedCollections.has(r.related_collection));
@@ -121,11 +114,11 @@ function mergeSnapshotsForPartialApply(currentSnapshot: any, targetSnapshot: any
     const targetRelations = Array.isArray(targetSnapshot?.relations) ? targetSnapshot.relations : [];
     const mergedRelations = [...currentRelations.filter((r: any) => !isTouchedRelation(r)), ...targetRelations.filter(isTouchedRelation)];
 
+    const { systemFields: _systemFields, ...compatibleSnapshot } = currentSnapshot;
     return {
-        ...currentSnapshot,
+        ...compatibleSnapshot,
         collections: mergedCollections,
         fields: mergedFields,
-        systemFields: mergedSystemFields,
         relations: mergedRelations,
     };
 }
