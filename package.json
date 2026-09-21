@@ -39,6 +39,6 @@
 		"vue-eslint-parser": "9.4.3"
 	},
 	"engines": {
-		"bun": ">=1.1.0"
+		"bun": ">=1.4.2"
 	}
 }

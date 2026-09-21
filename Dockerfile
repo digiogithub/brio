@@ -1,9 +1,14 @@
 # syntax=docker/dockerfile:1.4
 
+# Bun runtime version. Pinned (not `latest`) so the runtime only changes through a commit.
+# Bun >= 1.4.2 is required: 1.3.x never emits 'close' on inbound node:http sockets, which
+# leaks every connection through stoppable's per-socket Map (createTerminus). See DGDOPS-US-0005.
+ARG BUN_VERSION=1.4.2
+
 ####################################################################################################
 ## Build Stage — Install dependencies and build frontend
 
-FROM oven/bun:latest AS builder
+FROM oven/bun:${BUN_VERSION} AS builder
 WORKDIR /brio
 
 # Copy package files for dependency installation
@@ -53,7 +58,7 @@ RUN mkdir -p database extensions uploads
 ####################################################################################################
 ## Production Image
 
-FROM oven/bun:latest AS runtime
+FROM oven/bun:${BUN_VERSION} AS runtime
 
 ARG BRIO_VERSION=""
 
