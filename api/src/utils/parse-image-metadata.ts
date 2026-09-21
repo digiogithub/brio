@@ -76,7 +76,15 @@ export function parseXmp(buffer: Buffer): Record<string, unknown> {
 
       xmp[x] = result;
     } else {
-      xmp[x] = value?.replace(/<[^>]*>/gm, '').replace(/[<>]/g, '').trim();
+      let text = value;
+      let previous;
+
+      do {
+        previous = text;
+        text = text?.replace(/<[^>]*>/gm, '');
+      } while (text !== previous);
+
+      xmp[x] = text?.trim();
     }
   });
 

@@ -33,14 +33,14 @@ export function adjustDate(date: Date, adjustment: string): Date | undefined {
     adjustment = adjustment.substring(1);
   }
 
-  const match = /^(-?(?:\d+(?:\.\d+)?|\.\d+)) *(.*)$/i.exec(adjustment);
+  const match = /^-?(?:\d+(?:\.\d+)?|\.\d+)/.exec(adjustment);
 
-  if (!match || !match[1]) {
+  if (!match) {
     return;
   }
 
-  const amount = parseFloat(match[1]);
-  const type = (match[2] || 'days').toLowerCase();
+  const amount = parseFloat(match[0]);
+  const type = (adjustment.slice(match[0].length).replace(/^ +/, '') || 'days').toLowerCase();
 
   switch (type) {
     case 'years':
