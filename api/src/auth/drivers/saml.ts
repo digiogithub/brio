@@ -104,7 +104,24 @@ export class SAMLAuthDriver extends LocalAuthDriver {
 export function createSAMLAuthRouter(providerName: string) {
   const router = Router();
 
-  const isSafeRedirect = (url: string): boolean => url.startsWith('/') && !url.startsWith('//');
+  /**
+   * Only allow relative redirects to the same origin. Parsing with the WHATWG URL parser
+   * normalizes tricks like `/\evil.com` or `/\t/evil.com` that browsers resolve to `//evil.com`.
+   * Returns the normalized path to redirect to, or null when unsafe.
+   */
+  const getSafeRedirect = (url: unknown): string | null => {
+    if (typeof url !== 'string' || !url.startsWith('/')) return null;
+
+    const base = 'http://localhost';
+
+    try {
+      const parsed = new URL(url, base);
+      if (parsed.origin !== base) return null;
+      return parsed.pathname + parsed.search + parsed.hash;
+    } catch {
+      return null;
+    }
+  };
 
   router.get(
     '/metadata',
@@ -171,17 +188,19 @@ export function createSAMLAuthRouter(providerName: string) {
           },
         };
 
-        if (relayState && isSafeRedirect(relayState)) {
+        const redirect = getSafeRedirect(relayState);
+
+        if (redirect) {
           res.cookie(env['REFRESH_TOKEN_COOKIE_NAME'], refreshToken, COOKIE_OPTIONS);
-          return res.redirect(relayState);
+          return res.redirect(redirect);
         }
 
         return next();
       } catch (error: any) {
         if (relayState) {
-          const safeUrl = relayState.split('?')[0];
+          const safeUrl = getSafeRedirect(relayState.split('?')[0]);
 
-          if (isSafeRedirect(safeUrl)) {
+          if (safeUrl) {
             let reason = 'UNKNOWN_EXCEPTION';
 
             if (error instanceof BaseException) {
