@@ -33,7 +33,7 @@ export function adjustDate(date: Date, adjustment: string): Date | undefined {
     adjustment = adjustment.substring(1);
   }
 
-  const match = /^(-?(?:\d+)?\.?\d+) *(.*)$/i.exec(adjustment);
+  const match = /^(-?(?:\d+(?:\.\d+)?|\.\d+)) *(.*)$/i.exec(adjustment);
 
   if (!match || !match[1]) {
     return;
