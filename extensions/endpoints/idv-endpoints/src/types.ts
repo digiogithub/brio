@@ -69,7 +69,7 @@ export const startSchema = z.object({
     /** Slug of the `idv_configs` record to use */
     configSlug: z.string().min(1),
     /** Optional metadata stored on the idv_processes record */
-    metadata: z.record(z.unknown()).optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export const statusSchema = z.object({
@@ -86,7 +86,7 @@ export const importConfigSchema = z.object({
     name: z.string().min(1),
     slug: z.string().min(1).regex(/^[a-z0-9_]+$/, 'Slug must be lowercase alphanumeric with underscores'),
     description: z.string().optional(),
-    config: z.record(z.unknown()),
+    config: z.record(z.string(), z.unknown()),
 });
 
 export type StartInput = z.infer<typeof startSchema>;
