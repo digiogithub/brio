@@ -305,8 +305,18 @@ describe('#fullPath', () => {
 });
 
 describe('#read', () => {
+	let readClient: S3Client;
+
 	beforeEach(() => {
-		vi.mocked(driver['client'].send).mockReturnValue({ Body: new Readable() } as unknown as void);
+		/*
+		 * read() does not use the shared driver client, but requests a dedicated one through getClient().
+		 * Automocked class instances no longer share their method mocks (vitest >= 3), so the mocked
+		 * return value has to be set on the client instance that read() actually uses.
+		 */
+		readClient = new S3Client({});
+		driver['getClient'] = vi.fn().mockReturnValue(readClient);
+
+		vi.mocked(readClient.send).mockReturnValue({ Body: new Readable() } as unknown as void);
 		vi.mocked(isReadableStream).mockReturnValue(true);
 	});
 
@@ -352,7 +362,7 @@ describe('#read', () => {
 	});
 
 	test('Throws an error when no stream is returned', async () => {
-		vi.mocked(driver['client'].send).mockReturnValue({ Body: undefined } as unknown as void);
+		vi.mocked(readClient.send).mockReturnValue({ Body: undefined } as unknown as void);
 
 		try {
 			await driver.read(sample.path.input, sample.range);
@@ -365,7 +375,7 @@ describe('#read', () => {
 	test('Throws an error when returned stream is not a readable stream', async () => {
 		vi.mocked(isReadableStream).mockReturnValue(false);
 
-		expect(driver.read(sample.path.input, sample.range)).rejects.toThrowError(
+		await expect(driver.read(sample.path.input, sample.range)).rejects.toThrowError(
 			new Error(`No stream returned for file "${sample.path.input}"`)
 		);
 	});
@@ -373,12 +383,12 @@ describe('#read', () => {
 	test('Returns stream from S3 client', async () => {
 		const mockGetObjectCommand = {} as GetObjectCommand;
 
-		vi.mocked(driver['client'].send).mockReturnValue({ Body: sample.stream } as unknown as void);
+		vi.mocked(readClient.send).mockReturnValue({ Body: sample.stream } as unknown as void);
 		vi.mocked(GetObjectCommand).mockReturnValue(mockGetObjectCommand);
 
 		const stream = await driver.read(sample.path.input, sample.range);
 
-		expect(driver['client'].send).toHaveBeenCalledWith(mockGetObjectCommand);
+		expect(readClient.send).toHaveBeenCalledWith(mockGetObjectCommand);
 		expect(stream).toBe(sample.stream);
 	});
 });

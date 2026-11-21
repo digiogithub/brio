@@ -7,6 +7,9 @@ import { isUpToDate } from './index.js';
 vi.mock('semver');
 vi.mock('node:url');
 
+// The package uses the runtime's global fetch (no longer the undici export), so stub the global with a spy
+vi.stubGlobal('fetch', vi.fn());
+
 let sample: {
 	name: string;
 	version: string;

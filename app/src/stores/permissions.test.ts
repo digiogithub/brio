@@ -68,6 +68,16 @@ vi.mock('@/api', () => {
 					});
 				}
 
+				// Admin users get wildcard permissions synthesized from the collections list.
+				// Default to no collections so only the mocked `/permissions` records apply.
+				if (path === '/collections') {
+					return Promise.resolve({
+						data: {
+							data: [],
+						},
+					});
+				}
+
 				return Promise.reject(new Error(`GET "${path}" is not mocked in this test`));
 			},
 		},

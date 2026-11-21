@@ -2,7 +2,7 @@ import api, * as apiFunctions from '@/api';
 import * as setLanguageDefault from '@/lang/set-language';
 import { createTestingPinia } from '@pinia/testing';
 import { setActivePinia } from 'pinia';
-import { afterEach, beforeAll, beforeEach, describe, expect, SpyInstance, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, MockInstance, test, vi } from 'vitest';
 
 beforeEach(() => {
 	setActivePinia(
@@ -41,6 +41,7 @@ const mockServerInfo: Info = {
 		uptime: 10000,
 		totalmem: 12345678,
 	},
+	vector_capabilities: null,
 };
 
 const mockAuthProviders: Auth['providers'] = [
@@ -54,11 +55,14 @@ const mockAdminUser = { id: 'e7f7a94d-5b38-4978-8450-de0e38859fec' } as any;
 
 const mockAdminUserWithLanguage = { id: 'e7f7a94d-5b38-4978-8450-de0e38859fec', language: 'zh-CN' } as any;
 
-let apiGetSpy: SpyInstance;
-let replaceQueueSpy: SpyInstance;
-let setLanguageSpy: SpyInstance;
+let apiGetSpy: MockInstance;
+let replaceQueueSpy: MockInstance;
+let setLanguageSpy: MockInstance;
 
-beforeAll(() => {
+// Spies are created per test: since vitest 3 `vi.restoreAllMocks()` (see afterEach) restores
+// `vi.spyOn` spies to the original implementation, so a spy created once in `beforeAll` no longer
+// intercepts calls after the first test.
+beforeEach(() => {
 	apiGetSpy = vi.spyOn(api, 'get');
 	replaceQueueSpy = vi.spyOn(apiFunctions, 'replaceQueue').mockResolvedValue();
 	setLanguageSpy = vi.spyOn(setLanguageDefault, 'setLanguage').mockResolvedValue(true);

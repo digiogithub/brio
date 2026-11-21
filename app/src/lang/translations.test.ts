@@ -31,10 +31,12 @@ async function importLanguageFile(locale: string): Promise<{ isImported: boolean
 }
 
 describe.each(locales)('Locale %s', async (locale) => {
-	const i18n = createI18n({ locale: locale });
+	// Same mode as the app (see ./index.ts). The legacy API is compiled out through the
+	// `__VUE_I18N_LEGACY_API__: false` define in vite.config.js, so `messages` is a ref here.
+	const i18n = createI18n({ legacy: false, locale: locale });
 	const { isImported, translations } = await importLanguageFile(locale);
 	i18n.global.mergeLocaleMessage(locale, translations);
-	const messages = flatten((i18n.global.messages as Record<string, any>)[locale]);
+	const messages = flatten((i18n.global.messages.value as Record<string, any>)[locale]);
 	const translationKeys = Object.keys(messages);
 
 	test(`import ${locale} language file successfully`, () => {

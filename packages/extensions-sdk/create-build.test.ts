@@ -30,8 +30,16 @@ function getConfigFileContent(configFileName: string) {
 	}
 }
 
+/*
+ * End-to-end test: scaffolds an extension, runs `npm install` on it and builds it with the compiled CLI.
+ * The scaffold depends on `@brio/extensions-sdk` from the npm registry, which is not published yet, so
+ * the install cannot succeed. Opt in with BRIO_E2E_EXTENSIONS=1 once the @brio packages are published
+ * (also needs network access, npm and a built `dist/`).
+ */
+const runE2E = Boolean(process.env['BRIO_E2E_EXTENSIONS']);
+
 // Test one extension from each of app/api/hybrid extensions, and each config file names
-test.each(
+test.skipIf(!runE2E).each(
 	['interface', 'endpoint', 'operation'].map((extensionType, index) => {
 		return { extensionType, configFileName: CONFIG_FILE_NAMES[index] };
 	})
