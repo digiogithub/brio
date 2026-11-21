@@ -126,7 +126,7 @@ export default function useImage(
 	}
 
 	function saveImage() {
-		editor.value.fire('focus');
+		editor.value.dispatch('focus');
 
 		const img = imageSelection.value;
 		if (img === null) return;
@@ -153,7 +153,7 @@ export default function useImage(
 
 		const resizedImageUrl = addQueryToPath(newURL.toString(), queries);
 		const imageHtml = `<img src="${resizedImageUrl}" alt="${img.alt}" />`;
-		editor.value.selection.setContent(imageHtml);
+		editor.value.insertContent(imageHtml);
 		editor.value.undoManager.add();
 		closeImageDrawer();
 	}

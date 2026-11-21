@@ -109,13 +109,13 @@ export default function useLink(editor: Ref<any>): UsableLink {
 	}
 
 	function saveLink() {
-		editor.value.fire('focus');
+		editor.value.dispatch('focus');
 
 		const link = linkSelection.value;
 
 		if (link.url === null) {
 			if (linkNode.value) {
-				editor.value.selection.setContent(linkNode.value.innerText);
+				editor.value.insertContent(linkNode.value.innerText);
 				closeLinkDrawer();
 			}
 
@@ -128,7 +128,7 @@ export default function useLink(editor: Ref<any>): UsableLink {
 
 		// New anchor tag or current selection node is an anchor tag
 		if (!linkNode.value || currentSelectionNode.value === linkNode.value) {
-			editor.value.selection.setContent(linkHtml);
+			editor.value.insertContent(linkHtml);
 		}
 		// Parent node is an anchor tag
 		else if (currentSelectionNode.value) {
