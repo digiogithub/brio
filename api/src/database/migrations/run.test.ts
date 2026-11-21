@@ -8,17 +8,22 @@ import run from './run.js';
 describe('run', () => {
 	let db: MockedFunction<Knex>;
 	let tracker: Tracker;
+	let schemaDescriptor: PropertyDescriptor;
 
 	beforeAll(() => {
 		db = knex.default({ client: MockClient }) as unknown as MockedFunction<Knex>;
 		tracker = createTracker(db);
+		schemaDescriptor = Object.getOwnPropertyDescriptor(db, 'schema')!;
 	});
 
 	beforeEach(() => {
+		// Only stub the table lookup; everything else falls through to the schema builder of the mock client
 		Object.defineProperty(db, 'schema', {
 			configurable: true,
-			value: {
-				hasTable: vi.fn(async (tableName: string) => tableName === 'brio_migrations'),
+			get() {
+				const schema = schemaDescriptor.get!.call(db);
+				schema.hasTable = vi.fn(async (tableName: string) => tableName === 'brio_migrations');
+				return schema;
 			},
 		});
 	});

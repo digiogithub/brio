@@ -31,6 +31,10 @@ vi.mock('@brio/utils');
 vi.mock('node:path');
 vi.mock('node:crypto');
 
+// The driver uses the runtime's global fetch and FormData (no longer the undici exports), so stub the globals with spies
+vi.stubGlobal('fetch', vi.fn());
+vi.stubGlobal('FormData', vi.fn());
+
 let sample: {
 	config: Required<DriverCloudinaryConfig>;
 	path: {

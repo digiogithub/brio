@@ -305,14 +305,14 @@ describe('Integration Tests', () => {
 							  },
 							  "Schema": {
 							    "properties": {
+							      "brio": {
+							        "type": "string",
+							      },
 							      "collections": {
 							        "items": {
 							          "$ref": "#/components/schemas/Collections",
 							        },
 							        "type": "array",
-							      },
-							      "brio": {
-							        "type": "string",
 							      },
 							      "fields": {
 							        "items": {

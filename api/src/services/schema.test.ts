@@ -9,6 +9,7 @@ import type { Collection } from '../types/collection.js';
 import type { Snapshot, SnapshotDiffWithHash } from '../types/snapshot.js';
 import { applyDiff } from '../utils/apply-diff.js';
 import { getSnapshot } from '../utils/get-snapshot.js';
+import { getVersionedHash } from '../utils/get-versioned-hash.js';
 
 vi.mock('../utils/package.js', () => ({ version: '0.0.0' }));
 
@@ -93,7 +94,8 @@ describe('Services / Schema', () => {
 
 	describe('apply', () => {
 		const snapshotDiffWithHash = {
-			hash: '813b3cdf7013310fafde7813b7d5e6bd4eb1e73f',
+			// Must match the hash of the current (mocked) snapshot for the diff to be accepted
+			hash: getVersionedHash(testSnapshot),
 			diff: {
 				collections: [testCollectionDiff],
 				fields: [],

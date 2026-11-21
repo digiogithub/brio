@@ -107,8 +107,8 @@ describe('processValue', () => {
 		});
 
 		const inputElement = wrapper.find('input').element;
-		// mock keyboard event
-		const keyboardEvent = new KeyboardEvent('keydown', event);
+		// mock keyboard event (cancelable like a real user-initiated keydown, otherwise preventDefault() is a no-op)
+		const keyboardEvent = new KeyboardEvent('keydown', { ...event, cancelable: true });
 		// manually attach the input element as the mocked event's target
 		Object.defineProperty(keyboardEvent, 'target', { value: inputElement });
 
@@ -138,8 +138,8 @@ describe('processValue', () => {
 		});
 
 		const inputElement = wrapper.find('input').element;
-		// mock keyboard event
-		const keyboardEvent = new KeyboardEvent('keydown', event);
+		// mock keyboard event (cancelable like a real user-initiated keydown, otherwise preventDefault() is a no-op)
+		const keyboardEvent = new KeyboardEvent('keydown', { ...event, cancelable: true });
 		// manually attach the input element as the mocked event's target
 		Object.defineProperty(keyboardEvent, 'target', { value: inputElement });
 
