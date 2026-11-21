@@ -12,7 +12,8 @@ export const i18n = createI18n({
 	messages: {
 		'en-US': enUSBase,
 	} as I18nOptions['messages'],
-	silentTranslationWarn: true,
+	missingWarn: false,
+	fallbackWarn: false,
 	datetimeFormats,
 	numberFormats,
 });
