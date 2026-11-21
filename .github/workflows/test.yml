@@ -41,5 +41,9 @@ jobs:
       - name: Build specs
         run: bun run --filter @brio/specs build
 
+      # The API app tests resolve the built admin app (`@brio/app` points at app/dist/index.html)
+      - name: Build app
+        run: bun run --filter @brio/app build
+
       - name: Run unit tests
         run: bun run test:unit
