@@ -38,16 +38,16 @@ export class FilesService extends ItemsService {
 	): Promise<PrimaryKey> {
 		const storage = await getStorage();
 
-		let existingFile = {};
+		const isReplacement = primaryKey !== undefined;
 
-		if (primaryKey !== undefined) {
-			existingFile =
-				(await this.knex
-					.select('folder', 'filename_download')
-					.from('brio_files')
-					.where({ id: primaryKey })
-					.first()) ?? {};
+		// Snapshot of the row before a replacement, used to roll it back if the new file turns out to be unusable
+		let previousFile: Record<string, any> | undefined;
+
+		if (isReplacement) {
+			previousFile = await this.knex.select('*').from('brio_files').where({ id: primaryKey }).first();
 		}
+
+		const existingFile = pick(previousFile ?? {}, ['folder', 'filename_download']);
 
 		const payload = { ...existingFile, ...clone(data) };
 
@@ -59,50 +59,93 @@ export class FilesService extends ItemsService {
 			}
 		}
 
+		let key: PrimaryKey;
+
 		if (primaryKey !== undefined) {
-			await this.updateOne(primaryKey, payload, { emitEvents: false });
-
-			// If the file you're uploading already exists, we'll consider this upload a replace. In that case, we'll
-			// delete the previously saved file and thumbnails to ensure they're generated fresh
-			const disk = storage.location(payload.storage);
-
-			for await (const filepath of disk.list(String(primaryKey))) {
-				await disk.delete(filepath);
-			}
+			key = primaryKey;
+			await this.updateOne(key, payload, { emitEvents: false });
 		} else {
-			primaryKey = await this.createOne(payload, { emitEvents: false });
+			key = await this.createOne(payload, { emitEvents: false });
 		}
 
 		const fileExtension =
 			path.extname(payload.filename_download!) || (payload.type && '.' + extension(payload.type)) || '';
 
-		payload.filename_disk = primaryKey + (fileExtension || '');
+		payload.filename_disk = key + (fileExtension || '');
 
 		if (!payload.type) {
 			payload.type = 'application/octet-stream';
 		}
 
+		const disk = storage.location(data.storage);
+
+		// A replacement is written next to the existing file first, so the previous file and its thumbnails are only
+		// removed once the new file has been stored and validated
+		const uploadFilename = isReplacement ? `${key}.upload${fileExtension || ''}` : payload.filename_disk;
+
 		try {
-			await storage.location(data.storage).write(payload.filename_disk, stream, payload.type);
+			try {
+				await disk.write(uploadFilename, stream, payload.type);
+			} catch (err: any) {
+				logger.warn(`Couldn't save file ${payload.filename_disk}`);
+				logger.warn(err);
+				throw new ServiceUnavailableException(`Couldn't save file ${payload.filename_disk}`, { service: 'files' });
+			}
+
+			const { size } = await disk.stat(uploadFilename);
+			payload.filesize = size;
+
+			if (SUPPORTED_IMAGE_METADATA_FORMATS.includes(payload.type)) {
+				const stream = await disk.read(uploadFilename);
+
+				let extracted: Metadata;
+
+				try {
+					extracted = await this.getMetadata(stream);
+				} catch (err: any) {
+					logger.warn(`Couldn't read image ${payload.filename_disk}`);
+					logger.warn(err);
+					throw new InvalidPayloadException(`"${payload.filename_download}" is not a valid ${payload.type} image`);
+				}
+
+				const { height, width, description, title, tags, metadata } = extracted;
+
+				payload.height ??= height ?? null;
+				payload.width ??= width ?? null;
+				payload.description ??= description ?? null;
+				payload.title ??= title ?? null;
+				payload.tags ??= tags ?? null;
+				payload.metadata ??= metadata ?? null;
+			}
+
+			if (isReplacement) {
+				// The upload is a replace: delete the previously saved file and thumbnails to ensure they're generated fresh
+				for await (const filepath of disk.list(String(key))) {
+					if (filepath !== uploadFilename) await disk.delete(filepath);
+				}
+
+				await disk.move(uploadFilename, payload.filename_disk);
+			}
 		} catch (err: any) {
-			logger.warn(`Couldn't save file ${payload.filename_disk}`);
-			logger.warn(err);
-			throw new ServiceUnavailableException(`Couldn't save file ${payload.filename_disk}`, { service: 'files' });
-		}
+			// Don't leave a half-created file behind: remove what was written and undo the database change
+			try {
+				await disk.delete(uploadFilename);
+			} catch (cleanupErr: any) {
+				logger.warn(`Couldn't clean up file ${uploadFilename}`);
+				logger.warn(cleanupErr);
+			}
 
-		const { size } = await storage.location(data.storage).stat(payload.filename_disk);
-		payload.filesize = size;
+			if (isReplacement === false) {
+				await this.knex('brio_files').where({ id: key }).delete();
+			} else if (previousFile) {
+				const changedColumns = Object.keys(payload).filter((key) => key !== 'id' && key in previousFile!);
 
-		if (SUPPORTED_IMAGE_METADATA_FORMATS.includes(payload.type)) {
-			const stream = await storage.location(data.storage).read(payload.filename_disk);
-			const { height, width, description, title, tags, metadata } = await this.getMetadata(stream);
+				if (changedColumns.length > 0) {
+					await this.knex('brio_files').where({ id: key }).update(pick(previousFile, changedColumns));
+				}
+			}
 
-			payload.height ??= height ?? null;
-			payload.width ??= width ?? null;
-			payload.description ??= description ?? null;
-			payload.title ??= title ?? null;
-			payload.tags ??= tags ?? null;
-			payload.metadata ??= metadata ?? null;
+			throw err;
 		}
 
 		// We do this in a service without accountability. Even if you don't have update permissions to the file,
@@ -112,7 +155,7 @@ export class FilesService extends ItemsService {
 			schema: this.schema,
 		});
 
-		await sudoService.updateOne(primaryKey, payload, { emitEvents: false });
+		await sudoService.updateOne(key, payload, { emitEvents: false });
 
 		if (this.cache && env['CACHE_AUTO_PURGE'] && opts?.autoPurgeCache !== false) {
 			await this.cache.clear();
@@ -123,7 +166,7 @@ export class FilesService extends ItemsService {
 				'files.upload',
 				{
 					payload,
-					key: primaryKey,
+					key,
 					collection: this.collection,
 				},
 				{
@@ -134,7 +177,7 @@ export class FilesService extends ItemsService {
 			);
 		}
 
-		return primaryKey;
+		return key;
 	}
 
 	/**
@@ -252,7 +295,7 @@ export class FilesService extends ItemsService {
 
 					resolve(metadata);
 				})
-			);
+			).catch(reject);
 		});
 	}
 
