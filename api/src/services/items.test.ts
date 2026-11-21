@@ -61,6 +61,8 @@ describe('Integration Tests', () => {
 
 	afterEach(() => {
 		tracker.reset();
+		// vi.spyOn() on an existing mock reuses it in vitest 4, so call history must be cleared between tests
+		vi.clearAllMocks();
 	});
 
 	describe('createOne', () => {
