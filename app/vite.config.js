@@ -96,6 +96,12 @@ export default defineConfig(async () => {
 		test: {
 			environment: 'happy-dom',
 			setupFiles: ['src/__setup__/mock-globals.ts'],
+			server: {
+				deps: {
+					// zod 4 ships both a default and a named `z` export; inline it so the named import survives interop
+					inline: ['zod'],
+				},
+			},
 		},
 	};
 });
