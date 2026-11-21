@@ -62,7 +62,8 @@ export class AssetsService {
 
 		const file = (await this.knex.select('*').from('brio_files').where({ id }).first()) as File;
 
-		if (!file) throw new ForbiddenException();
+		// A file without a stored object (e.g. a failed upload) can't be served
+		if (!file?.filename_disk) throw new ForbiddenException();
 
 		const exists = await storage.location(file.storage).exists(file.filename_disk);
 
