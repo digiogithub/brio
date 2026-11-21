@@ -15,7 +15,9 @@ let mockStorage: StorageManager;
 beforeEach(() => {
 	mockStorage = {} as StorageManager;
 	_cache.storage = null;
-	vi.mocked(StorageManager).mockReturnValue(mockStorage);
+	vi.mocked(StorageManager).mockImplementation(function () {
+		return mockStorage;
+	});
 });
 
 afterEach(() => {
