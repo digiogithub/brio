@@ -184,7 +184,7 @@ export default function useMedia(editor: Ref<any>, imageToken: Ref<string | unde
 	}
 
 	function saveMedia() {
-		editor.value.fire('focus');
+		editor.value.dispatch('focus');
 
 		if (embed.value === '') return;
 
@@ -192,7 +192,7 @@ export default function useMedia(editor: Ref<any>, imageToken: Ref<string | unde
 			const updatedContent = editor.value.getContent().replace(startEmbed.value, embed.value);
 			editor.value.setContent(updatedContent);
 		} else {
-			editor.value.selection.setContent(embed.value);
+			editor.value.insertContent(embed.value);
 		}
 
 		editor.value.undoManager.add();
