@@ -195,6 +195,12 @@ export async function up(knex: Knex): Promise<void> {
         }
       }
 
+      // `special` is stored as a comma-separated string (cast-csv). Passing the array straight to the
+      // driver stored a corrupted value such as '[object Object]'
+      if (Array.isArray(rest['special'])) {
+        rest['special'] = rest['special'].join(',');
+      }
+
       return rest;
     });
 
