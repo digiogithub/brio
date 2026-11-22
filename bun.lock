@@ -325,6 +325,7 @@
         "@brio/extensions-sdk": "workspace:*",
         "@types/express": "^4.17.21",
         "typescript": "^5.7.3",
+        "vitest": "4.1.12",
       },
     },
     "extensions/endpoints/idv-endpoints": {
@@ -361,6 +362,7 @@
       "devDependencies": {
         "@brio/extensions-sdk": "workspace:*",
         "typescript": "^5.7.3",
+        "vitest": "4.1.12",
       },
     },
     "extensions/hooks/idv-hooks": {

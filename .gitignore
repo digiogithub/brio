@@ -59,3 +59,8 @@ database/*
 .ai/*
 .mesnada/*
 .pando*
+
+# Built bundles of the age-encryption API extensions are committed: they are loaded as they are,
+# without an install or build step, when the extension folders are mounted into a container
+!extensions/endpoints/age-encryption/dist/
+!extensions/hooks/age-encryption/dist/

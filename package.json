@@ -22,7 +22,7 @@
 		"format": "prettier --write \"**/*.{md,y?(a)ml,json}\"",
 		"lint": "eslint .",
 		"test": "bun test",
-		"test:unit": "fail=0; for dir in api app packages/*; do grep -qs vitest \"$dir/package.json\" || continue; echo \"== $dir\"; (cd \"$dir\" && bun run test) || fail=1; done; exit $fail",
+		"test:unit": "fail=0; for dir in api app packages/* extensions/*/*; do grep -qs vitest \"$dir/package.json\" || continue; echo \"== $dir\"; (cd \"$dir\" && bun run test) || fail=1; done; exit $fail",
 		"test:blackbox": "bun run --filter tests-blackbox test",
 		"ext:install": "for dir in extensions/hooks/* extensions/endpoints/* extensions/interfaces/* extensions/modules/*; do [ -f \"$dir/package.json\" ] && (cd \"$dir\" && bun install); done",
 		"ext:build": "for dir in extensions/hooks/* extensions/endpoints/* extensions/interfaces/* extensions/modules/*; do [ -f \"$dir/package.json\" ] && (echo \"Building $dir...\" && cd \"$dir\" && bun run build && cd - > /dev/null); done",
